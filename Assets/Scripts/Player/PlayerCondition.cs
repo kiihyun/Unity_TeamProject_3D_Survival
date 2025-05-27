@@ -84,6 +84,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
+    private PlayerController controller;
+
     //테스트용 UI 요소들
     public Slider healthUI;
     public Slider staminaUI;
@@ -91,6 +93,16 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     public Slider thirstUI;
     public TextMeshProUGUI tempUI;
     //-------------------------
+
+    void Awake()
+    {
+        controller = GetComponent<PlayerController>(); //플레이어 컨트롤러 컴포넌트 가져오기
+        //예외처리
+        if (controller == null)
+        {
+            Debug.LogError("PlayerController is null");
+        }
+    }
 
     void Start()
     {
@@ -199,12 +211,12 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (stamina < maxStamina 
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && PlayerManager.Instance.controller.state != PlayerState.Run)
+            && controller.curSpeed <= controller.walkSpeed)
         {
             GenerateStamina(staminaRecovRate);
         }
         // 플레이어가 달릴 때 스태미나 감소
-        else if (stamina > 0f && PlayerManager.Instance.controller.state == PlayerState.Run)
+        else if (stamina > 0f && controller.curSpeed <= controller.sprintSpeed)
         {
             GenerateStamina(-staminaDecRate);
         }
