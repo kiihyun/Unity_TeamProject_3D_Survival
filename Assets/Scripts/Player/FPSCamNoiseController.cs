@@ -2,18 +2,10 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum eState
-{
-    Idle,
-    Walk,
-    Sprint
-}
-
 public class FPSCamNoiseController : MonoBehaviour
 {
     //해당 오브젝트를 플레이어의 Input Action에 넣어주세요
     [Header("Gain Settings")]
-    public eState curState;  //현재 상태
 
     [Header("Idle")]    //기본 상태의 흔들림 폭과 주기
     public float amplitudeOnIdle = 0.5f;
@@ -42,64 +34,17 @@ public class FPSCamNoiseController : MonoBehaviour
         noise = FPS_cam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
-    void Start()
+    private void Update()
     {
-        curState = eState.Idle;  //상태 초기화
-    }
-
-    //걷기 입력
-    public void OnMoveInput(InputAction.CallbackContext context)
-    {
-        if (!isRun)
+        switch (PlayerManager.Instance.controller.state)
         {
-            if (context.phase == InputActionPhase.Performed && !isRun)
-            {
-                isWalk = true;
-                StateSwitch(eState.Walk);
-            }
-            else if (context.phase == InputActionPhase.Canceled && !isRun)
-            {
-                isWalk = false;
-                StateSwitch(eState.Idle);
-            }
-        }
-    }
-
-    //달리기 입력
-    public void OnSprintInput(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed)
-        {
-            isRun = true;
-            StateSwitch(eState.Sprint);
-        }
-        else if (context.phase == InputActionPhase.Canceled)
-        {
-            isRun = false;
-            if (isWalk)
-            {
-                StateSwitch(eState.Walk);
-            }
-            else
-            {
-                StateSwitch(eState.Idle);
-            }
-        }
-    }
-
-    //상태 스위치 기능
-    public void StateSwitch(eState _state)
-    {
-        curState = _state;
-        switch (curState)
-        {
-            case eState.Idle:
+            case PlayerState.Idle:
                 NoiseHandler(idleSetting, amplitudeOnIdle, frequencyOnIdle);
                 break;
-            case eState.Walk:
+            case PlayerState.Walk:
                 NoiseHandler(walkSetting, amplitudeOnWalk, frequencyOnWalk);
                 break;
-            case eState.Sprint:
+            case PlayerState.Sprint:
                 NoiseHandler(runSetting, amplitudeOnRun, frequencyOnRun);
                 break;
         }

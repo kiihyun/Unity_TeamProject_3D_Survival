@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             case PlayerState.Walk:
                 curSpeed = walkSpeed;
                 break;
-            case PlayerState.Run:
+            case PlayerState.Sprint:
                 curSpeed = sprintSpeed;
                 break;
         }
@@ -95,9 +95,9 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.Stamina > 0)
+        if (context.phase == InputActionPhase.Performed && state == PlayerState.Walk && PlayerManager.Instance.condition.Stamina > 0)
         {
-            state = PlayerState.Run; //플레이어 상태 변경
+            state = PlayerState.Sprint; //플레이어 상태 변경
         }
         else if (context.phase == InputActionPhase.Canceled)
         {

@@ -199,12 +199,12 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (stamina < maxStamina 
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && PlayerManager.Instance.controller.state != PlayerState.Run)
+            && PlayerManager.Instance.controller.state != PlayerState.Sprint)
         {
             GenerateStamina(staminaRecovRate);
         }
         // 플레이어가 달릴 때 스태미나 감소
-        else if (stamina > 0f && PlayerManager.Instance.controller.state == PlayerState.Run)
+        else if (stamina > 0f && PlayerManager.Instance.controller.state == PlayerState.Sprint)
         {
             GenerateStamina(-staminaDecRate);
         }
