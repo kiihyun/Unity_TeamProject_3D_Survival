@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Transform foot;          //지면 감지
     public LayerMask groundLayer;   //지면 레이어
     public float jumpForce;         //점프 힘
-    public bool isJump;
 
     [Header("Look")]
     public Transform camContainer;  //카메라 부모오브젝트
@@ -26,7 +25,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     private float camXRot;          //시점의 x축 회전값
 
     [Header("Components")]
-    private Rigidbody _rigidbody;
+    public Rigidbody _rigidbody;
 
     void Awake()
     {
@@ -127,9 +126,9 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > 0)
         {
             state = PlayerState.Jump; //플레이어 상태 변경
-            PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            //PlayerManager.Instance.footStep.JumpClipPlay();
+            PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
+            PlayerManager.Instance.footStep.JumpClipPlay();
         }
     }
 

@@ -53,6 +53,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             lastHit = hit;
             hasHit = true;
             curDetectObject = hit.collider.gameObject;
+            if (curDetectObject != null) { return; }
             promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // 감지된 오브젝트의 상호작용 프롬프트를 가져옴
         }
         else
