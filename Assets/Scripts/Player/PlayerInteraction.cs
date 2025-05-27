@@ -9,6 +9,8 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     [Header("Interact")]
     public GameObject cam;
     public float maxDistance = 3f;
+    public RaycastHit lastHit { get; private set; }
+    public bool hasHit { get; private set; }
     public Collider detectedCollider; //감지된 오브젝트를 저장할 변수
 
 
@@ -48,7 +50,15 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
             Debug.Log(hit.collider.gameObject.name + " 감지");
+            lastHit = hit;
+            hasHit = true;
             detectedCollider = hit.collider; //감지된 오브젝트를 저장
+        }
+        else
+        {
+            lastHit = default;
+            hasHit = false;
+            detectedCollider = null;
         }
 
         return detectedCollider;
