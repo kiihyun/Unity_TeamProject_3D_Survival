@@ -186,7 +186,7 @@ public class Enemy : MonoBehaviour, IDamagable
         //{
         //    Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         //}
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     IEnumerator DamageFlash()
