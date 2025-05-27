@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     [Header("Components")]
     public Rigidbody _rigidbody;
+    private PlayerCondition condition;
 
     void Awake()
     {
@@ -40,6 +41,11 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         if (!TryGetComponent<Rigidbody>(out _rigidbody))
         {
             Debug.LogError("Rigidbody is null");
+        }
+
+        if (!TryGetComponent<PlayerCondition>(out condition))
+        {
+            Debug.LogError("PlayerCondition is null");
         }
     }
 
@@ -102,7 +108,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.stamina > 0)
+        if (context.phase == InputActionPhase.Performed && condition.stamina > 0)
         {
             state = PlayerState.Run; //플레이어 상태 변경
         }
@@ -130,10 +136,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.stamina > 0)
+        if (context.phase == InputActionPhase.Started && IsGrounded() && condition.stamina > 0)
         {
             state = PlayerState.Jump; //플레이어 상태 변경
-            PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
+            condition.JumpStamina(); //점프 시 스태미나 감소
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //PlayerManager.Instance.footStep.JumpClipPlay();
         }
