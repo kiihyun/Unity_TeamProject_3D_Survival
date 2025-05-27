@@ -327,7 +327,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 10
   runSpeed: 10
-  detectDistance: 10
+  detectDistance: 20
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
@@ -551,7 +551,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 1
   runSpeed: 4
-  detectDistance: 5
+  detectDistance: 20
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
@@ -999,7 +999,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 10
   runSpeed: 10
-  detectDistance: 10
+  detectDistance: 20
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 10
   runSpeed: 10
-  detectDistance: 10
+  detectDistance: 20
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
@@ -1842,7 +1842,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 10
   runSpeed: 10
-  detectDistance: 10
+  detectDistance: 20
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
