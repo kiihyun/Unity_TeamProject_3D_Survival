@@ -12,6 +12,7 @@ public class FootStepTerrain : MonoBehaviour
         controller = GetComponentInParent<PlayerController>();
         footStep = GetComponent<FootStep>();
     }
+
     void Update()
     {
         Ray ray = new Ray(transform.position, Vector3.down);

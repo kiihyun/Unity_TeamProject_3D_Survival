@@ -17,6 +17,7 @@ public class FootStep : MonoBehaviour
     [Header("Clips")]
     public AudioClip[] dirtClips;
     public AudioClip[] grassClips;
+    public AudioClip[] woodClips;
     //추가
 
     public FootStepTerrain footStepTerrain;
@@ -66,6 +67,7 @@ public class FootStep : MonoBehaviour
     public AudioClip[] FootStepClipSwitch(string _textureName)
     {
         string[] _textureNames = _textureName.Split('_'); //텍스처 이름을 '_'로 분리하여 배열로 만듭니다.
+        
         switch (_textureNames[0])
         {
             //추가 및 텍스트 수정 필요
@@ -73,6 +75,8 @@ public class FootStep : MonoBehaviour
                 return dirtClips;
             case "grass":
                 return grassClips;
+            case "wood (Instance)":
+                return woodClips;
             default:
                 return null;
         }
