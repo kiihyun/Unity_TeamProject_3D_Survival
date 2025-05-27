@@ -1177,9 +1177,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpForce: 30
-  isJump: 0
   camContainer: {fileID: 1660620233}
   mouseSensibility: 0.1
+  _rigidbody: {fileID: 0}
 --- !u!114 &859565902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1344,7 +1344,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1157862389}
   maxDistance: 3
-  detectedCollider: {fileID: 0}
+  curDetectObject: {fileID: 0}
+  promptUI: {fileID: 0}
 --- !u!114 &859565904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2042,6 +2043,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   condition: {fileID: 0}
   interaction: {fileID: 0}
+  footStep: {fileID: 0}
 --- !u!4 &1176509711
 Transform:
   m_ObjectHideFlags: 0
@@ -2840,6 +2842,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1876988521}
   - component: {fileID: 1876988520}
+  - component: {fileID: 1876988522}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2879,6 +2882,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1876988522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876988519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efecfc280ffc4b42bc58f4d4759b1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1932639521
 GameObject:
   m_ObjectHideFlags: 0
