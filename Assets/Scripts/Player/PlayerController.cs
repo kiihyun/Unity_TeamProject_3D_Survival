@@ -13,15 +13,16 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public float walkSpeed;         //속도
     public float sprintSpeed;
     public Vector2 curMoveInput;   //이동 입력값
+    public bool isRun;
 
     [Header("Jump")]
     public Transform foot;          //지면 감지
     public LayerMask groundLayer;   //지면 레이어
     public float jumpForce;         //점프 힘
+    public bool isJump;
 
     [Header("Look")]
     public Transform camContainer;  //카메라 부모오브젝트
-
     [Range(0.01f, 1f)] public float mouseSensibility;  //마우스감도
     private Vector2 curLookInput;   //시점 입력값
     private float camXRot;          //시점의 x축 회전값
@@ -81,10 +82,12 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     {
         if (context.phase == InputActionPhase.Performed)
         {
+            isRun = true;
             curSpeed = sprintSpeed;
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
+            isRun = false;
             curSpeed = walkSpeed;
         }
     }
@@ -109,6 +112,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     {
         if (context.phase == InputActionPhase.Started && IsGrounded())
         {
+            
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //PlayerManager.Instance.footStep.JumpClipPlay();
         }
