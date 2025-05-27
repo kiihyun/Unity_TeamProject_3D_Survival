@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,13 +9,15 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     public float maxDistance = 3f;
     public RaycastHit lastHit { get; private set; }
     public bool hasHit { get; private set; }
-    public GameObject curDetectObject; //°¨ÁöµÈ ¿ÀºêÁ§Æ®¸¦ ÀúÀåÇÒ º¯¼ö
+    public GameObject curDetectObject; //ê°ì§€ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ì €ì¥í•  ë³€ìˆ˜
     public TextMeshProUGUI promptUI;
 
 
+    private Inventory inventory;//Songdo í”Œë ˆì´ì–´ê°€ ê°€ì§€ëŠ” ì¸ë²¤í† ë¦¬
+
     void Start()
     {
-
+        inventory = GetComponent<Inventory>();//Songdo ì¸ë²¤í† ë¦¬ ê°€ì ¸ì˜´
     }
 
     void Update()
@@ -23,24 +25,27 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         DetectObject();
     }
 
-    // InputActionÀ» ÅëÇØ »óÈ£ÀÛ¿ë ÀÔ·ÂÀ» ¹Ş´Â ¸Ş¼Òµå
+    // InputActionì„ í†µí•´ ìƒí˜¸ì‘ìš© ì…ë ¥ì„ ë°›ëŠ” ë©”ì†Œë“œ
     public void OnInteractInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started)
         {
-            Interact(); //»óÈ£ÀÛ¿ë ¸Ş¼Òµå È£Ãâ
+            Interact(); //ìƒí˜¸ì‘ìš© ë©”ì†Œë“œ í˜¸ì¶œ
         }
-        //¾ÆÀÌÅÛ µ¥ÀÌÅÍ °¡Á®¿À±â
+        //ì•„ì´í…œ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
     }
 
-    // °¨ÁöµÈ ¿ÀºêÀèÆ®¸¦ ÀÌ¿ëÇÏ¿© »óÈ£ÀÛ¿ëÇÏ´Â ¸Ş¼Òµå
+    // ê°ì§€ëœ ì˜¤ë¸Œì­íŠ¸ë¥¼ ì´ìš©í•˜ì—¬ ìƒí˜¸ì‘ìš©í•˜ëŠ” ë©”ì†Œë“œ
     public void Interact()
     {
         curDetectObject.GetComponent<ItemObject>().OnInteract();
-        Debug.Log(curDetectObject.gameObject.name + "¿Í »óÈ£ÀÛ¿ë ¼º°ø");
+        Debug.Log(curDetectObject.gameObject.name + "ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ");
+
+        curDetectObject.GetComponent<ItemPickup>().ItemInteract(inventory);
+        //Songdo ì•„ì´í…œ ì˜¤ë¸Œì íŠ¸ì— ë¶™ì–´ìˆëŠ” itempickupì— ë“¤ì–´ìˆëŠ” ItemInteract í•¨ìˆ˜ë¥¼ í†µí•´ì„œ í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ì— ì •ë³´ë¥¼ ë„˜ê²¨ì¤Œ
     }
 
-    // ¿ÀºêÁ§Æ®¸¦ Raycast·Î °¨ÁöÇÏ´Â ¸Ş¼Òµå
+    // ì˜¤ë¸Œì íŠ¸ë¥¼ Raycastë¡œ ê°ì§€í•˜ëŠ” ë©”ì†Œë“œ
     public void DetectObject()
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
@@ -49,12 +54,12 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
-            Debug.Log(hit.collider.gameObject.name + " °¨Áö");
+            Debug.Log(hit.collider.gameObject.name + " ê°ì§€");
             lastHit = hit;
             hasHit = true;
             curDetectObject = hit.collider.gameObject;
             if (curDetectObject != null) { return; }
-            promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // °¨ÁöµÈ ¿ÀºêÁ§Æ®ÀÇ »óÈ£ÀÛ¿ë ÇÁ·ÒÇÁÆ®¸¦ °¡Á®¿È
+            promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // ê°ì§€ëœ ì˜¤ë¸Œì íŠ¸ì˜ ìƒí˜¸ì‘ìš© í”„ë¡¬í”„íŠ¸ë¥¼ ê°€ì ¸ì˜´
         }
         else
         {
