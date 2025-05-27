@@ -8,6 +8,9 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable, IJumpable
 {
+    [Header("State")]
+    public PlayerState state;  //플레이어 상태
+
     [Header("Movement")]
     public float curSpeed;
     public float walkSpeed;         //속도
@@ -18,16 +21,17 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Transform foot;          //지면 감지
     public LayerMask groundLayer;   //지면 레이어
     public float jumpForce;         //점프 힘
+    public bool isJump;
 
     [Header("Look")]
     public Transform camContainer;  //카메라 부모오브젝트
-
     [Range(0.01f, 1f)] public float mouseSensibility;  //마우스감도
     private Vector2 curLookInput;   //시점 입력값
     private float camXRot;          //시점의 x축 회전값
 
     [Header("Components")]
     public Rigidbody _rigidbody;
+    private PlayerCondition condition;
 
     void Awake()
     {
@@ -38,10 +42,16 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         {
             Debug.LogError("Rigidbody is null");
         }
+
+        if (!TryGetComponent<PlayerCondition>(out condition))
+        {
+            Debug.LogError("PlayerCondition is null");
+        }
     }
 
     private void Start()
     {
+        state = PlayerState.Idle; //플레이어 상태 초기화
         curSpeed = walkSpeed;
     }
 
@@ -54,11 +64,28 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         Look();
     }
 
+    private float CurrentSpeed(PlayerState _state)
+    {
+        switch (_state)
+        {
+            case PlayerState.Idle:
+                curSpeed = 0f;
+                break;
+            case PlayerState.Walk:
+                curSpeed = walkSpeed;
+                break;
+            case PlayerState.Run:
+                curSpeed = sprintSpeed;
+                break;
+        }
+        return curSpeed;
+    }
+
     //이동
     public void Move()
     {
         Vector3 moveDir = (transform.forward * curMoveInput.y) + (transform.right * curMoveInput.x);
-        moveDir *= curSpeed;
+        moveDir *= CurrentSpeed(state);
         moveDir.y = _rigidbody.velocity.y;
         _rigidbody.velocity = moveDir;
     }
@@ -68,10 +95,12 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     {
         if (context.phase == InputActionPhase.Performed)
         {
+            state = PlayerState.Walk; //플레이어 상태 변경
             curMoveInput = context.ReadValue<Vector2>();
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
+            state = PlayerState.Idle; //플레이어 상태 변경
             curMoveInput = Vector2.zero;
         }
     }
@@ -79,13 +108,13 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && condition.stamina > 0)
         {
-            curSpeed = sprintSpeed;
+            state = PlayerState.Run; //플레이어 상태 변경
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            curSpeed = walkSpeed;
+            state = PlayerState.Walk; //플레이어 상태 변경
         }
     }
 
@@ -107,8 +136,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded())
+        if (context.phase == InputActionPhase.Started && IsGrounded() && condition.stamina > 0)
         {
+            state = PlayerState.Jump; //플레이어 상태 변경
+            condition.JumpStamina(); //점프 시 스태미나 감소
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //PlayerManager.Instance.footStep.JumpClipPlay();
         }
