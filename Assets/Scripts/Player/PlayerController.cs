@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.stamina > 0)
+        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.Stamina > 0)
         {
             state = PlayerState.Run; //플레이어 상태 변경
         }
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.stamina > 0)
+        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > 0)
         {
             state = PlayerState.Jump; //플레이어 상태 변경
             PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
