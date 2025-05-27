@@ -6,6 +6,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public PlayerController controller;
     public PlayerCondition condition;
     public PlayerInteraction interaction;
+    public FootStep footStep;
 
     private void Start()
     {
@@ -23,6 +24,8 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             Debug.LogError("PlayerInteraction component is missing on the player GameObject.");
         }
+
+        footStep = player.GetComponentInChildren<FootStep>();
     }
 }
 
