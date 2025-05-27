@@ -38,7 +38,7 @@
                     "id": "c14ef8cc-0671-4d54-8853-18dda37c260b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -222,7 +222,7 @@
                 },
                 {
                     "name": "",
-                    "id": "14bc7fbe-6d1b-4822-b962-78de6407014b",
+                    "id": "2ca9c475-ebf2-40a6-b2f9-cb7625ecf2f4",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
