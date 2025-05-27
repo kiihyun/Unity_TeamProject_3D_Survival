@@ -167,17 +167,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8b9e407b-4542-43ad-8cfe-5323afe5a389",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "12a19686-2db9-4237-a926-fc17191b811b",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -228,6 +217,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Build",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14bc7fbe-6d1b-4822-b962-78de6407014b",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
