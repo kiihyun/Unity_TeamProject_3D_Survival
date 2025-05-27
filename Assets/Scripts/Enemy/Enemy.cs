@@ -15,7 +15,6 @@ public enum AIState // 임시, 추후 이넘스크립트로 이동
 
 public class Enemy : MonoBehaviour, IDamagable
 {
-    public GameObject player; // 테스트 플레이어
     [Header("Stats")]
     public int health;
     public float walkSpeed;
@@ -58,7 +57,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     void Update()
     {
-        playerDistance = Vector3.Distance(transform.position, player.transform.position);
+        playerDistance = Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position);
 
         switch (aiState)
         {
@@ -94,7 +93,7 @@ public class Enemy : MonoBehaviour, IDamagable
     }
 
     void PassiveUpdate()
-    {
+    {   
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
@@ -143,9 +142,9 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
-                if (agent.CalculatePath(player.transform.position, path))
+                if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
                 {
-                    agent.SetDestination(player.transform.position);
+                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
                 }
                 else
                 {
@@ -166,7 +165,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     bool IsPlayerInFieldOfView()
     {
-        Vector3 directionToPlayer = player.transform.position - transform.position;
+        Vector3 directionToPlayer = PlayerManager.Instance.player.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
         return angle < fieldOfView * 0.5f;
     }

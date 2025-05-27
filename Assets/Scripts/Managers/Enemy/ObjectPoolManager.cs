@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class ObjectPoolManager : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
     // Start is called before the first frame update
     void Start()
     {
