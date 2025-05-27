@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerState
@@ -18,20 +16,4 @@ public enum PlayerConditionState
     Thirsty,      //배고픔 상태
     Cold,      //추위 상태
     Fever,      //열 상태
-}
-
-
-public class Enums : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
