@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
 
 public class PlayerInteraction : MonoBehaviour, IInteractable
 {
@@ -11,7 +9,8 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     public float maxDistance = 3f;
     public RaycastHit lastHit { get; private set; }
     public bool hasHit { get; private set; }
-    public Collider detectedCollider; //감지된 오브젝트를 저장할 변수
+    public GameObject curDetectObject; //감지된 오브젝트를 저장할 변수
+    public TextMeshProUGUI promptUI;
 
 
     void Start()
@@ -37,11 +36,12 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     // 감지된 오브잭트를 이용하여 상호작용하는 메소드
     public void Interact()
     {
-        Debug.Log(detectedCollider.gameObject.name + "와 상호작용 성공");
+        curDetectObject.GetComponent<ItemObject>().OnInteract();
+        Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공");
     }
 
     // 오브젝트를 Raycast로 감지하는 메소드
-    public Collider DetectObject()
+    public void DetectObject()
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
@@ -52,16 +52,14 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             Debug.Log(hit.collider.gameObject.name + " 감지");
             lastHit = hit;
             hasHit = true;
-            detectedCollider = hit.collider; //감지된 오브젝트를 저장
+            curDetectObject = hit.collider.gameObject;
+            promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // 감지된 오브젝트의 상호작용 프롬프트를 가져옴
         }
         else
         {
             lastHit = default;
             hasHit = false;
-            detectedCollider = null;
+            promptUI.text = string.Empty;
         }
-
-        return detectedCollider;
-        //감지한 오브젝트를 반환하는 방식으로 하면 좋을 듯
     }
 }
