@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public float curSpeed;
     public float walkSpeed;         //속도
     public float sprintSpeed;
-    public Vector2 curMoveInput;   //이동 입력값
+    private Vector2 curMoveInput;   //이동 입력값
 
     [Header("Jump")]
     public Transform foot;          //지면 감지
@@ -30,8 +30,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     private float camXRot;          //시점의 x축 회전값
 
     [Header("Components")]
-    public Rigidbody _rigidbody;
-    private PlayerCondition condition;
+    private Rigidbody _rigidbody;
 
     void Awake()
     {
@@ -41,11 +40,6 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         if (!TryGetComponent<Rigidbody>(out _rigidbody))
         {
             Debug.LogError("Rigidbody is null");
-        }
-
-        if (!TryGetComponent<PlayerCondition>(out condition))
-        {
-            Debug.LogError("PlayerCondition is null");
         }
     }
 
@@ -85,9 +79,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public void Move()
     {
         Vector3 moveDir = (transform.forward * curMoveInput.y) + (transform.right * curMoveInput.x);
-        moveDir *= CurrentSpeed(state);
-        moveDir.y = _rigidbody.velocity.y;
-        _rigidbody.velocity = moveDir;
+        _rigidbody.MovePosition(_rigidbody.position + moveDir * CurrentSpeed(state) * Time.deltaTime);
     }
 
     //이동 입력
@@ -108,7 +100,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && condition.stamina > 0)
+        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.Stamina > 0)
         {
             state = PlayerState.Run; //플레이어 상태 변경
         }
@@ -136,10 +128,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded() && condition.stamina > 0)
+        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > 0)
         {
             state = PlayerState.Jump; //플레이어 상태 변경
-            condition.JumpStamina(); //점프 시 스태미나 감소
+            PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             //PlayerManager.Instance.footStep.JumpClipPlay();
         }
