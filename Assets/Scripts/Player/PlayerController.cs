@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             state = PlayerState.Jump; //플레이어 상태 변경
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
-            PlayerManager.Instance.footStepTerrain.JumpClipPlay();
+            PlayerManager.Instance.footStep.JumpClipPlay();
         }
     }
 

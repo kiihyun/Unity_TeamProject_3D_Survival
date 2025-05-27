@@ -4,38 +4,18 @@ using UnityEngine;
 
 public class FootStepTerrain : MonoBehaviour
 {
-    [Header("Settings")]
-    public Transform foot;
-
-    [Header("Walk")]
-    public float walkPeriod = 0.8f;
-
-    [Header("Sprint")]
-    public float runPeriod = 0.4f;
-
-    [Header("Clips")]
-    public AudioClip[] dirtClips;
-    public AudioClip[] grassClips;
-    //추가
-
-    public AudioClip[] footStepClips;
-
-    private AudioSource audioSource;
     public PlayerController controller;
-
-    private float time;
+    public FootStep footStep;
 
     private void Awake()
     {
-        foot = this.gameObject.transform;
-        audioSource = GetComponent<AudioSource>();
         controller = GetComponentInParent<PlayerController>();
+        footStep = GetComponent<FootStep>();
     }
     void Update()
     {
-        Ray ray = new Ray(foot.position, Vector3.down);
+        Ray ray = new Ray(transform.position, Vector3.down);
         RaycastHit hit;
-
 
         if (Physics.Raycast(ray, out hit, 0.2f))
         {
@@ -46,54 +26,13 @@ public class FootStepTerrain : MonoBehaviour
                 int index = GetDominantTerrainTextureIndex(hit.point, terrain);
                 string textureName = terrain.terrainData.terrainLayers[index].diffuseTexture.name;
 
-                footStepClips = FootStepClipSwitch(textureName);
-                AudioClip curClip = footStepClips[Random.Range(0, footStepClips.Length)];
-
-                if (controller.IsGrounded())
-                {
-                    time += Time.deltaTime;
-                    if (controller.curSpeed == controller.walkSpeed)  //걸을 때
-                    {
-                        if (time > walkPeriod)
-                        {
-                            audioSource.PlayOneShot(curClip);
-                            time = 0;
-                        }
-                    }
-                    else if(controller.curSpeed == controller.sprintSpeed)      //달릴 때
-                    {
-                        if (time > runPeriod)
-                        {
-                            audioSource.PlayOneShot(curClip);
-                            time = 0;
-                        }
-                    }
-                }
+                footStep.footStepClips = footStep.FootStepClipSwitch(textureName);
+                footStep.curClip = footStep.footStepClips[Random.Range(0, footStep.footStepClips.Length)];
             }
         }
     }
 
-    //클립을 바꿔주는 기능
-    private AudioClip[] FootStepClipSwitch(string _textureName)
-    {
-        string[] _textureNames = _textureName.Split('_'); //텍스처 이름을 '_'로 분리하여 배열로 만듭니다.
-        switch (_textureNames[0])
-        {
-            //추가 및 텍스트 수정 필요
-            case "dirt":
-                return dirtClips;
-            case "grass":
-                return grassClips;
-            default:
-                return null;
-        }
-    }
 
-    //점프 사운드
-    public void JumpClipPlay()
-    {
-        audioSource.PlayOneShot(footStepClips[Random.Range(0, footStepClips.Length)]);
-    }
 
     //터레인의 텍스처 감지
     int GetDominantTerrainTextureIndex(Vector3 hitPoint, Terrain terrain)
