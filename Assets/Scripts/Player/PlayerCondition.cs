@@ -14,7 +14,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     public List<PlayerConditionState> conditionStats = new List<PlayerConditionState>(); //플레이어 상태 리스트
 
     [Header("Health")]
-    [SerializeField] public float health;
+    [SerializeField] private float health;
     public float maxHealth; //최대 체력
     public float healthRecovRate; //체력 회복 속도
     public float healthDecRate; //체력 감소 속도
@@ -28,7 +28,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
 
     [Header("Stamina")]
-    [SerializeField] public float stamina;
+    [SerializeField] private float stamina;
     public float maxStamina; //최대 스태미나
     public float staminaRecovRate = 0.1f; //스태미나 회복 속도
     public float staminaDecRate = 0.1f; //스태미나 감소 속도
@@ -43,7 +43,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
 
     [Header("Hunger")]
-    [SerializeField] public float hunger;
+    [SerializeField] private float hunger;
     public float maxHunger;//최대 배고픔
     public float hungerDecRate = 3f;
     public float hungerToHeal;
@@ -57,7 +57,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
 
     [Header("Thirst")]
-    [SerializeField] public float thirst;
+    [SerializeField] private float thirst;
     public float maxThirst; //최대 목마름
     public float thirstDegenRate = 3f; //목마름 감소 속도
     public float thirstToHeal;
@@ -71,7 +71,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
 
     [Header("body Temperature")]
-    [SerializeField] public float bodyTemp;
+    [SerializeField] private float bodyTemp;
     public const float minBodyTemp = 33f; //최소 체온
     public const float maxBodyTemp = 40f; //최대 체온
     public float minNormalBodyTemp = 35f; //최소 정상 체온
