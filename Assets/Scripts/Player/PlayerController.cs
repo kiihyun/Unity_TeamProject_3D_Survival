@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Cinemachine;
 
 public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable, IJumpable
 {
