@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
 
-public interface IInteractable
+public interface IItemInteractable
 {
     public string GetInteractPrompt();
     public void OnInteract();
 }
 
 
-public class ItemObject : MonoBehaviour, IInteractable
+public class ItemObject : MonoBehaviour, IItemInteractable
 {
     public ItemData data;
 
