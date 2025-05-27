@@ -19,19 +19,3 @@ public enum PlayerConditionState
     Cold,      //추위 상태
     Fever,      //열 상태
 }
-
-
-public class Enums : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
