@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -12,6 +13,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     public RaycastHit lastHit { get; private set; }
     public bool hasHit { get; private set; }
     public GameObject curDetectObject; //감지된 오브젝트를 저장할 변수
+    public TextMeshProUGUI promptUI;
 
 
     void Start()
@@ -53,12 +55,14 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             Debug.Log(hit.collider.gameObject.name + " 감지");
             lastHit = hit;
             hasHit = true;
-            //<무슨무슨.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // 감지된 오브젝트의 상호작용 프롬프트를 가져옴
+            curDetectObject = hit.collider.gameObject;
+            promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // 감지된 오브젝트의 상호작용 프롬프트를 가져옴
         }
         else
         {
             lastHit = default;
             hasHit = false;
+            promptUI.text = string.Empty;
         }
     }
 }
