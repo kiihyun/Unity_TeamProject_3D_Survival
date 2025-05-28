@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         agent = GetComponent<NavMeshAgent>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        Debug.Log(meshRenderers.Length);
     }
 
     void Start()
@@ -93,7 +94,7 @@ public class Enemy : MonoBehaviour, IDamagable
     }
 
     void PassiveUpdate()
-    {   
+    {
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
@@ -174,12 +175,13 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public void TakePhysicalDamage(int damage)
     {
+        StartCoroutine(DamageFlash());
         health -= damage;
+        Debug.Log($"enemy {damage}피해받음 {health}체력남음");
         if (health <= 0)
         {
             Die();
         }
-        StartCoroutine(DamageFlash());
     }
     void Die()
     {
@@ -188,12 +190,15 @@ public class Enemy : MonoBehaviour, IDamagable
         //    Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         //}
         gameObject.SetActive(false);
+        Debug.Log("enemy Die");
     }
 
     IEnumerator DamageFlash()
     {
         for (int i = 0; i < meshRenderers.Length; i++)
         {
+            Debug.Log($"meshrendererName: {meshRenderers[i].name}");
+            Debug.Log("enemy데미지효과");
             meshRenderers[i].material.color = new Color(1.0f, 0.6f, 0.6f);
         }
         yield return new WaitForSeconds(0.1f);
