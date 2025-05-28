@@ -41,7 +41,7 @@ public class FootStep : MonoBehaviour
 
     void Update()
     {
-        if (controller.IsGrounded())
+        if (controller._rigidbody.velocity.magnitude > 0.1f)
         {
             time += Time.deltaTime;
             if (controller.curSpeed == controller.walkSpeed)  //∞…¿ª ∂ß
