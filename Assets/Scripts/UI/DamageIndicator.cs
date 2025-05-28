@@ -17,7 +17,6 @@ public class DamageIndicator : MonoBehaviour
     }
     public void Flash()
     {
-        Debug.Log("플래시 호출");
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
