@@ -42,8 +42,11 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public float fieldOfView = 120f;
 
+
     private Animator animator;
     private SkinnedMeshRenderer[] meshRenderers;
+
+    public System.Action<GameObject> OnDieCallback;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -193,7 +196,9 @@ public class Enemy : MonoBehaviour, IDamagable
         //{
         //    Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         //}
-        gameObject.SetActive(false);
+        // Pool에 반환하거나 파괴 전
+        OnDieCallback?.Invoke(this.gameObject);
+        gameObject.SetActive(false); // 혹은 ObjectPool 반환
         Debug.Log("enemy Die");
     }
 

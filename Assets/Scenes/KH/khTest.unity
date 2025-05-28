@@ -2976,10 +2976,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 8810653437333796905, guid: aa34d6829067bf743824f9ae2e1a9cf7, type: 3}
-  enemySpwanPos: {fileID: 1402101468}
-  minSpwanPos: 1
-  maxSpwanPos: 30
+  enemySpawnPos: {fileID: 1402101468}
+  minSpawnPos: 1
+  maxSpawnPos: 10
   enemyCount: 5
+  enemyRespawnTime: 10
 --- !u!4 &1876988521
 Transform:
   m_ObjectHideFlags: 0
