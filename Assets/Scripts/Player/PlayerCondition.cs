@@ -86,11 +86,14 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     private PlayerController controller;
 
+    float time;
+
     //테스트용 UI 요소들
     public Slider healthUI;
     public Slider staminaUI;
     public Slider hungerUI;
     public Slider thirstUI;
+    public TextMeshProUGUI bodyTempUI;
     public TextMeshProUGUI tempUI;
     //-------------------------
 
@@ -152,24 +155,15 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         // 체온 상태
         if (bodyTemp < minNormalBodyTemp)
         {
-            if (!conditionStats.Contains(PlayerConditionState.Cold))
+            //저체온증
+            if (!conditionStats.Contains(PlayerConditionState.Hypothermia))
             {
-                conditionStats.Add(PlayerConditionState.Cold);
+                conditionStats.Add(PlayerConditionState.Hypothermia);
             }
-            conditionStats.Remove(PlayerConditionState.Fever);
-        }
-        else if (bodyTemp > maxNormalBodyTemp)
-        {
-            if (!conditionStats.Contains(PlayerConditionState.Fever))
-            {
-                conditionStats.Add(PlayerConditionState.Fever);
-            }
-            conditionStats.Remove(PlayerConditionState.Cold);
         }
         else
         {
-            conditionStats.Remove(PlayerConditionState.Cold);
-            conditionStats.Remove(PlayerConditionState.Fever);
+            conditionStats.Remove(PlayerConditionState.Hypothermia);
         }
     }
 
@@ -179,7 +173,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         staminaUI.value = stamina / maxStamina; //스태미나 UI 업데이트
         hungerUI.value = hunger / maxHunger; //배고픔 UI 업데이트
         thirstUI.value = thirst / maxThirst; //목마름 UI 업데이트
-        tempUI.text = $"Temp: {bodyTemp:F1}°C"; //체온 UI 업데이트
+        bodyTempUI.text = $"BodyTemp: {bodyTemp:F1}°C"; //체온 UI 업데이트
+        tempUI.text = $"Temp: {TemperatureManager.Instance.currentTemperature:F1}°C";
     }
 
     //회복 조건
@@ -190,8 +185,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (health < maxHealth
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && !conditionStats.Contains(PlayerConditionState.Cold)
-            && !conditionStats.Contains(PlayerConditionState.Fever)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
             && hunger >= hungerToHeal
             && thirst >= thirstToHeal)
         {
@@ -200,15 +194,14 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         // 어떠한 이상상태가 있을 시 체력감소
         else if (conditionStats.Contains(PlayerConditionState.Hungry)
             || conditionStats.Contains(PlayerConditionState.Thirsty)
-            || conditionStats.Contains(PlayerConditionState.Cold)
-            || conditionStats.Contains(PlayerConditionState.Fever))
+            || conditionStats.Contains(PlayerConditionState.Hypothermia))
         {
             GenerateHealth(-healthDecRate);
         }
 
         // 스태미나
         // 플레이어가 달리지 않고, 스태미나가 최대가 아니며, 배고픔과 목마름 상태가 없을 때 스태미나 회복
-        if (stamina < maxStamina 
+        if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
             && controller.curSpeed <= controller.walkSpeed)
@@ -222,17 +215,16 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
 
         //배고픔 지속적으로 줄어듬
-        if(hunger > 0f)
+        if (hunger > 0f)
         {
             GenerateHunger(hungerDecRate);
         }
-        
+
         // 목마름 지속적으로 줄어듬
-        if(thirst > 0f)
+        if (thirst > 0f)
         {
             GenerateThirst(thirstDegenRate);
         }
-
     }
 
     //체력 증가와 감소 메소드
@@ -290,7 +282,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             Console.WriteLine("Player thirst is full");
         }
     }
-
 
     //체력 회복 메소드
     public void Heal(int _healAmount)

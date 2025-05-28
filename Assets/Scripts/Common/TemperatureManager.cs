@@ -26,13 +26,6 @@ public class TemperatureManager : MonoBehaviour
     [SerializeField]
     private float worldTemperature; // 현재 월드의 실제 온도 (DayNightCycle에서 설정함)
 
-    [Header("Player Body")]
-    public float playerBodyTemperature = 36.5f; // 플레이어 현재 체온 (기본값 36.5도)
-    public float normalBodyTemperature = 36.5f; // 기준 정상 체온
-
-    public float minBodyTemperature = 30f; // 최저 생존 체온 (이보다 낮으면 체력 손실 등 발생)
-    public float maxBodyTemperature = 42f; // 최고 생존 체온 (이보다 높으면 과열 상태)
-
     [Tooltip("환경 온도에 따라 체온이 얼마나 빠르게 변화하는지 (값이 클수록 빠르게 반응함)")]
     public float thermalAdjustmentSpeed = 0.5f;
 
@@ -83,30 +76,9 @@ public class TemperatureManager : MonoBehaviour
     /// 
     private void UpdatePlayerBodyTemperature()
     {
-        float delta = currentTemperature - playerBodyTemperature;
+        float delta = currentTemperature - PlayerManager.Instance.condition.BodyTemp;
 
         // 환경 온도와의 차이만큼 체온 조정
-        playerBodyTemperature += delta * thermalAdjustmentSpeed * Time.deltaTime;
-
-        // 비현실적인 체온을 방지 (예: 50도 이상, 20도 이하 등)
-        playerBodyTemperature = Mathf.Clamp(playerBodyTemperature, minBodyTemperature, maxBodyTemperature);
-    }
-
-    /// <summary>
-    /// 저체온증 여부 (기준: 체온 34도 이하)
-    /// 체력 감소, 이동 속도 저하 등과 연동 가능
-    /// </summary>
-    public bool IsHypothermia()
-    {
-        return playerBodyTemperature <= 34f;
-    }
-
-    /// <summary>
-    /// 고체온증(열사병 등) 여부 (기준: 체온 39도 이상)
-    /// 체력 감소, 시야 흐림 등의 효과와 연동 가능
-    /// </summary>
-    public bool IsHyperthermia()
-    {
-        return playerBodyTemperature >= 39f;
+        PlayerManager.Instance.condition.BodyTemp += delta * thermalAdjustmentSpeed * Time.deltaTime;
     }
 }
