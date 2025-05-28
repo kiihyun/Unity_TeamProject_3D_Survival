@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public float curSpeed;
     public float walkSpeed;         //속도
     public float sprintSpeed;
-    private Vector2 curMoveInput;   //이동 입력값
+    public Vector2 curMoveInput;   //이동 입력값
+    public bool isRun;
 
     [Header("Jump")]
     public Transform foot;          //지면 감지
@@ -83,10 +84,12 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         if (context.phase == InputActionPhase.Started)
         {
             curSpeed = sprintSpeed; //달리기 속도로 변경
+            isRun = true;
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
             curSpeed = walkSpeed; //걷기 속도로 변경
+            isRun = false;
         }
     }
 
