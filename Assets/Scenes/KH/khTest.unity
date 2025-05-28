@@ -1122,6 +1122,7 @@ GameObject:
   - component: {fileID: 859565903}
   - component: {fileID: 859565896}
   - component: {fileID: 859565900}
+  - component: {fileID: 859565905}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -1399,7 +1400,19 @@ MonoBehaviour:
     m_ActionId: 4d3edcfd-8291-4efc-8f45-ffcf13cc6b82
     m_ActionName: Player/Interaction[/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 859565905}
+        m_TargetAssemblyTypeName: EquipUnarmed, Assembly-CSharp
+        m_MethodName: OnAttackInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d73c9cb1-793b-44a7-a12c-61fdbf1b30b8
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -1472,7 +1485,24 @@ MonoBehaviour:
   staminaUI: {fileID: 1438190617}
   hungerUI: {fileID: 1601518862}
   thirstUI: {fileID: 1528739252}
+  bodyTempUI: {fileID: 0}
   tempUI: {fileID: 1031243599}
+--- !u!114 &859565905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859565895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa373abe4dd4b44d8a3676c6f8b526b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRate: 0.8
+  attackDistance: 2
+  damage: 5
+  useStamina: 5
 --- !u!1 &1031243597
 GameObject:
   m_ObjectHideFlags: 0
