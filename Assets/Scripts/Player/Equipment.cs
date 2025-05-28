@@ -9,21 +9,23 @@ public class Equipment : MonoBehaviour
     public Equip curEquip;
 
     private PlayerController controller;
+    [SerializeField] private EquipUnarmed defaultUnarmed;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        EquipNew(defaultUnarmed);
     }
 
-    public void EquipNew()
+    public void EquipNew(Equip newEquip)
     {
-
+        curEquip = newEquip;
     }
+
 
     public void UnEquip()
     {
-
+        curEquip = null;
     }
 
     public void OnAttackInput(InputAction.CallbackContext context)
