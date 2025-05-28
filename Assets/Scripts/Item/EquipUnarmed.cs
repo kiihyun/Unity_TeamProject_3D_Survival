@@ -8,7 +8,7 @@ public class EquipUnarmed : Equip
     public int damage = 1;
     public float useStamina = 5f;
 
-    private bool attacking;
+    private bool attacking = false;
     private Animator animator;
     private Camera cam;
 
@@ -26,12 +26,6 @@ public class EquipUnarmed : Equip
         Invoke(nameof(OnCanAttack), attackRate);
 
         PerformAttack();
-        //if (PlayerManager.Instance.condition.GenerateStamina(useStamina))
-        //{
-        //    attacking = true;
-        //    animator.SetTrigger("Punch"); // 공격 애니메이션
-        //    Invoke(nameof(OnCanAttack), attackRate);
-        //}
     }
 
     void PerformAttack()
@@ -51,15 +45,4 @@ public class EquipUnarmed : Equip
         attacking = false;
     }
 
-    void OnHit() // 애니메이션 이벤트에서 호출
-    {
-        Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        if (Physics.Raycast(ray, out RaycastHit hit, attackDistance))
-        {
-            if (hit.collider.TryGetComponent(out IDamagable target))
-            {
-                target.TakePhysicalDamage(damage);
-            }
-        }
-    }
 }

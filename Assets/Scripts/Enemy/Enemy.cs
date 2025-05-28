@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         agent = GetComponent<NavMeshAgent>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        Debug.Log(meshRenderers.Length);
     }
 
     void Start()
@@ -176,7 +177,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         StartCoroutine(DamageFlash());
         health -= damage;
-        Debug.Log($"enemy {damage}피해받음");
+        Debug.Log($"enemy {damage}피해받음 {health}체력남음");
         if (health <= 0)
         {
             Die();
@@ -196,6 +197,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         for (int i = 0; i < meshRenderers.Length; i++)
         {
+            Debug.Log($"meshrendererName: {meshRenderers[i].name}");
             Debug.Log("enemy데미지효과");
             meshRenderers[i].material.color = new Color(1.0f, 0.6f, 0.6f);
         }

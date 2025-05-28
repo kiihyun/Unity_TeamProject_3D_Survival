@@ -9,7 +9,7 @@ public class Equipment : MonoBehaviour
     public Equip curEquip;
 
     private PlayerController controller;
-    [SerializeField] private EquipUnarmed defaultUnarmed;
+    [SerializeField] private Equip defaultUnarmed;
 
     // Start is called before the first frame update
     void Start()
