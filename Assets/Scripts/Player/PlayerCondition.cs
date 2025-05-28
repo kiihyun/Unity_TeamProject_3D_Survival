@@ -44,6 +44,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     [SerializeField] private float hunger;
     public float maxHunger;//최대 배고픔
     public float hungerDecRate = 3f;
+    public float hungerDamage;
     public float hungerToHeal;
     public float Hunger
     {
@@ -58,6 +59,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     [SerializeField] private float thirst;
     public float maxThirst; //최대 목마름
     public float thirstDegenRate = 3f; //목마름 감소 속도
+    public float thirstDamage;
     public float thirstToHeal;
     public float Thirst
     {
@@ -89,18 +91,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     public event Action onTakeDamage; // DamageIndicotor
 
-    float time;
-
-
-    //테스트용 UI 요소들
-    public Slider healthUI;
-    public Slider staminaUI;
-    public Slider hungerUI;
-    public Slider thirstUI;
-    public TextMeshProUGUI bodyTempUI;
-    public TextMeshProUGUI tempUI;
-    //-------------------------
-
     void Awake()
     {
         controller = GetComponent<PlayerController>(); //플레이어 컨트롤러 컴포넌트 가져오기
@@ -124,7 +114,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     {
         UpdateConditions();
         ConditionState(); //플레이어 상태 변경 메소드 호출
-        TestUI(); //UI 업데이트 메소드 호출 (테스트용)
     }
 
     //플레이어 컨디션 상태 변경
@@ -171,16 +160,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-    public void TestUI()
-    {
-        healthUI.value = health / maxHealth; //체력 UI 업데이트
-        staminaUI.value = stamina / maxStamina; //스태미나 UI 업데이트
-        hungerUI.value = hunger / maxHunger; //배고픔 UI 업데이트
-        thirstUI.value = thirst / maxThirst; //목마름 UI 업데이트
-        bodyTempUI.text = $"BodyTemp: {bodyTemp:F1}°C"; //체온 UI 업데이트
-        tempUI.text = $"Temp: {TemperatureManager.Instance.currentTemperature:F1}°C";
-    }
-
     //회복 조건
     public void UpdateConditions()
     {
@@ -200,7 +179,14 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             || conditionStats.Contains(PlayerConditionState.Thirsty)
             || conditionStats.Contains(PlayerConditionState.Hypothermia))
         {
-            GenerateHealth(-healthDecRate);
+            if (conditionStats.Contains(PlayerConditionState.Hungry))
+            {
+                GenerateHealth(-hungerDamage);
+            }
+            else if (conditionStats.Contains(PlayerConditionState.Thirsty))
+            {
+                GenerateHealth(-thirstDamage);
+            }
         }
 
         // 스태미나
