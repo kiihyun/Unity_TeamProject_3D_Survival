@@ -86,6 +86,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     private PlayerController controller;
 
+    public event Action onTakeDamage; // DamageIndicotor
+
     //테스트용 UI 요소들
     public Slider healthUI;
     public Slider staminaUI;
@@ -318,5 +320,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             //체력이 0이 되면 죽음 처리
             Debug.Log("Player is dead");
         }
+        onTakeDamage?.Invoke(); // damageIndicator
     }
 }
