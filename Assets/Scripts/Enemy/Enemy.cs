@@ -180,6 +180,10 @@ public class Enemy : MonoBehaviour, IDamagable
         Debug.Log($"enemy {damage}피해받음 {health}체력남음");
         if (health <= 0)
         {
+            for (int i = 0; i < meshRenderers.Length; i++)
+            {
+                meshRenderers[i].material.color = Color.white;
+            }
             Die();
         }
     }
@@ -197,8 +201,6 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         for (int i = 0; i < meshRenderers.Length; i++)
         {
-            Debug.Log($"meshrendererName: {meshRenderers[i].name}");
-            Debug.Log("enemy데미지효과");
             meshRenderers[i].material.color = new Color(1.0f, 0.6f, 0.6f);
         }
         yield return new WaitForSeconds(0.1f);

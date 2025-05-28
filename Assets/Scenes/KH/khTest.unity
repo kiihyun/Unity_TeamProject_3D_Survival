@@ -2979,7 +2979,7 @@ MonoBehaviour:
   enemySpwanPos: {fileID: 1402101468}
   minSpwanPos: 1
   maxSpwanPos: 30
-  enemyCount: 30
+  enemyCount: 5
 --- !u!4 &1876988521
 Transform:
   m_ObjectHideFlags: 0
