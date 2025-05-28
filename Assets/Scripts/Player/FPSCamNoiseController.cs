@@ -63,7 +63,7 @@ public class FPSCamNoiseController : MonoBehaviour
     //달리기 입력
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && isWalk)
         {
             StateSwitch(PlayerState.Sprint);
         }
