@@ -134,6 +134,8 @@ public class Enemy : MonoBehaviour, IDamagable
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
+                PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+                lastAttackTime = Time.time;
             }
         }
         else
