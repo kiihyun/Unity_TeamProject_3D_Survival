@@ -5690,6 +5690,7 @@ MonoBehaviour:
   bodyTemp: 0
   minNormalBodyTemp: 35
   maxNormalBodyTemp: 38
+  hypothermiaDamage: 0
   hitClips: []
   dieClips: []
   tiredClip: {fileID: 0}
@@ -5718,9 +5719,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpForce: 30
+  jumpClips: []
   camContainer: {fileID: 1693168019}
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
+  canControl: 1
 --- !u!114 &1540680863
 MonoBehaviour:
   m_ObjectHideFlags: 0
