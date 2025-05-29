@@ -1,5 +1,4 @@
-﻿using UnityEditor.ShortcutManagement;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InventoryHotkey : MonoBehaviour
 {
