@@ -3897,11 +3897,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8194829804268333832}
   - component: {fileID: 6412728762575952555}
-  - component: {fileID: 5659841014746832927}
+  - component: {fileID: 7626783387476105381}
   - component: {fileID: 6759789591993602433}
   - component: {fileID: 4280969504020511615}
   - component: {fileID: 3802199252818512467}
   - component: {fileID: 2801932009820194353}
+  - component: {fileID: 3005631685914134993}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3954,7 +3955,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5659841014746832927}
+      - m_Target: {fileID: 7626783387476105381}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnMoveInput
         m_Mode: 0
@@ -3982,7 +3983,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5659841014746832927}
+      - m_Target: {fileID: 7626783387476105381}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnLookInput
         m_Mode: 0
@@ -3998,7 +3999,7 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5659841014746832927}
+      - m_Target: {fileID: 7626783387476105381}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnJumpInput
         m_Mode: 0
@@ -4014,7 +4015,7 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5659841014746832927}
+      - m_Target: {fileID: 7626783387476105381}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnSprintInput
         m_Mode: 0
@@ -4077,7 +4078,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &5659841014746832927
+--- !u!114 &7626783387476105381
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4093,12 +4094,17 @@ MonoBehaviour:
   walkSpeed: 1.5
   sprintSpeed: 3
   curMoveInput: {x: 0, y: 0}
-  isRun: 0
+  isRun: 1
   foot: {fileID: 2419651263007219341}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   jumpForce: 30
+  jumpClips:
+  - {fileID: 8300000, guid: 3f3669dc2bf61434783f4934700e82f6, type: 3}
+  - {fileID: 8300000, guid: 55520881781472649ac612614a24f148, type: 3}
+  - {fileID: 8300000, guid: 8fd5ff887d615154e8ba739faaf3999f, type: 3}
+  - {fileID: 8300000, guid: 2547873d23b27ec468d3928555b8a483, type: 3}
   camContainer: {fileID: 7261169556917553914}
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
@@ -4127,16 +4133,27 @@ MonoBehaviour:
   hunger: 0
   maxHunger: 100
   hungerDecRate: 0.5
-  hungerDamage: 0
+  hungerDamage: 2
   hungerToHeal: 90
   thirst: 0
   maxThirst: 100
-  thirstDegenRate: 0.5
-  thirstDamage: 0
+  thirstDegenRate: 0.2
+  thirstDamage: 5
   thirstToHeal: 90
   bodyTemp: 0
   minNormalBodyTemp: 35
   maxNormalBodyTemp: 38
+  hypothermiaDamage: 0.1
+  hitClips:
+  - {fileID: 8300000, guid: 5319d335f47c30c45a098c3b7207d360, type: 3}
+  - {fileID: 8300000, guid: a118b77559d9f764cbc3b30b4be64c29, type: 3}
+  dieClips:
+  - {fileID: 8300000, guid: 37670623b2aa89a4589af3d795088c80, type: 3}
+  - {fileID: 8300000, guid: 6857c17d0b39a594298d2c0ebc09f389, type: 3}
+  tiredClip: {fileID: 8300000, guid: bc264f9fcbb62e6418ffd5cfe49df693, type: 3}
+  hungerClip: {fileID: 8300000, guid: b32d83cb6ff69e34a803f10df391f702, type: 3}
+  thirstClip: {fileID: 8300000, guid: f45d62392d901004d9ad7677000eba3f, type: 3}
+  hypothermiaClip: {fileID: 8300000, guid: 873ac1bc9be564043b3e8c223f60a51f, type: 3}
 --- !u!114 &4280969504020511615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4203,6 +4220,102 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!82 &3005631685914134993
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8307605642993439931}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 2.5
+  MaxDistance: 5
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8384466031092537439
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 
 
@@ -76,6 +75,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     public const float maxBodyTemp = 40f; //최대 체온
     public float minNormalBodyTemp = 35f; //최소 정상 체온
     public float maxNormalBodyTemp = 38f; //최대 정상 체온
+    public float hypothermiaDamage;
 
     public float BodyTemp
     {
@@ -88,16 +88,29 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     private PlayerController controller;
 
+    [Header("Sound")]
+    private AudioSource audioSource;
+    public AudioClip[] hitClips;
+    public AudioClip[] dieClips;
+    public AudioClip tiredClip;
+    public AudioClip hungerClip;
+    public AudioClip thirstClip;
+    public AudioClip hypothermiaClip;
 
     public event Action onTakeDamage; // DamageIndicotor
 
     void Awake()
     {
-        controller = GetComponent<PlayerController>(); //플레이어 컨트롤러 컴포넌트 가져오기
-        //예외처리
-        if (controller == null)
+        if (!TryGetComponent<PlayerController>(out controller))
         {
             Debug.LogError("PlayerController is null");
+            return;
+        }
+        
+        if (!TryGetComponent<AudioSource>(out audioSource))
+        {
+            Debug.LogError("AudioSource is null");
+            return;
         }
     }
 
@@ -125,6 +138,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             if (!conditionStats.Contains(PlayerConditionState.Hungry))
             {
                 conditionStats.Add(PlayerConditionState.Hungry);
+                audioSource.clip = hungerClip;
+                audioSource.Play();   //배고픔 사운드
             }
         }
         else
@@ -138,6 +153,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             if (!conditionStats.Contains(PlayerConditionState.Thirsty))
             {
                 conditionStats.Add(PlayerConditionState.Thirsty);
+                audioSource.clip = thirstClip;
+                audioSource.Play();   //목마름 사운드
             }
         }
         else
@@ -152,11 +169,28 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             if (!conditionStats.Contains(PlayerConditionState.Hypothermia))
             {
                 conditionStats.Add(PlayerConditionState.Hypothermia);
+                audioSource.clip = hypothermiaClip;
+                audioSource.Play();   //저체온증 사운드
             }
         }
         else
         {
             conditionStats.Remove(PlayerConditionState.Hypothermia);
+        }
+
+        //지쳤을 때 사운드 재생
+        if (stamina <= 0f)
+        {
+            if (!conditionStats.Contains(PlayerConditionState.Tired))
+            {
+                conditionStats.Add(PlayerConditionState.Tired);
+                audioSource.clip = tiredClip;
+                audioSource.Play();   //지쳤을 때 사운드
+            }
+        }
+        else
+        {
+            conditionStats.Remove(PlayerConditionState.Tired);
         }
     }
 
@@ -187,6 +221,10 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             {
                 GenerateHealth(-thirstDamage);
             }
+            else if (conditionStats.Contains(PlayerConditionState.Hypothermia))
+            {
+                GenerateHealth(-hypothermiaDamage);
+            }
         }
 
         // 스태미나
@@ -194,12 +232,13 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && controller.curSpeed <= controller.walkSpeed)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
+            && controller.curSpeed != controller.sprintSpeed)
         {
             GenerateStamina(staminaRecovRate);
         }
         // 플레이어가 달릴 때 스태미나 감소
-        else if (stamina > 0f && controller.curSpeed <= controller.sprintSpeed)
+        else if (stamina > 0f && controller.curSpeed == controller.sprintSpeed)
         {
             GenerateStamina(-staminaDecRate);
         }
@@ -293,11 +332,15 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (health > 0f)
         {
             health -= _damageAmount;
+            audioSource.clip = hitClips[Random.Range(0, hitClips.Length)];
+            audioSource.Play();
         }
         else if (health <= 0f)
         {
             //체력이 0이 되면 죽음 처리
             Debug.Log("Player is dead");
+            audioSource.clip = hitClips[Random.Range(0, dieClips.Length)];
+            audioSource.Play();
         }
         onTakeDamage?.Invoke(); // damageIndicator
     }
