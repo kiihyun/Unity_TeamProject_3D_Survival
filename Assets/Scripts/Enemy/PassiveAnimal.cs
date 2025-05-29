@@ -8,13 +8,14 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     [Header("Stats")]
     private int curHealth;
     public ItemData[] dropOnDeath;
+    private float lastFleeTime; // 마지막 도망 시간
+    public float fleeCooldown = 2f; // 도망 재시도까지의 지연
 
     [Header("AI")]
     private NavMeshAgent agent;
     private AIState aiState;
 
     [Header("Combat")]
-    private float lastAttackTime;
     private float playerDistance;
 
 
@@ -57,10 +58,12 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     {
         if (playerDistance < data.detectDistance)
         {
-            if (agent.remainingDistance < 1f)
+            if (Time.time > lastFleeTime + fleeCooldown && agent.remainingDistance < 1f)
             {
                 agent.SetDestination(GetFleeLocation());
+                lastFleeTime = Time.time; // 다음 도망은 쿨타임 이후에 가능
             }
+
         }
         else
         {
@@ -70,6 +73,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
 
     public void SetState(AIState state)
     {
+        if (aiState == state) return; //중복전환 방지
         aiState = state;
 
         switch (aiState)
@@ -97,9 +101,10 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
             Invoke(nameof(WanderToNewLocation), Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
         }
 
-        if (playerDistance < data.detectDistance)
+        if (playerDistance < data.detectDistance && Time.time > lastFleeTime + fleeCooldown)
         {
             SetState(AIState.Running);
+            lastFleeTime = Time.time; // 도망 간 시점 저장
         }
     }
 
@@ -129,17 +134,10 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
 
         if (NavMesh.SamplePosition(fleeTarget, out NavMeshHit hit, data.maxWanderDistance, NavMesh.AllAreas))
             return hit.position;
-
         return transform.position;
     }
 
 
-    bool IsPlayerInFieldOfView()
-    {
-        Vector3 directionToPlayer = PlayerManager.Instance.player.transform.position - transform.position;
-        float angle = Vector3.Angle(transform.forward, directionToPlayer);
-        return angle < data.fieldOfView * 0.5f;
-    }
 
     public void TakePhysicalDamage(int damage)
     {

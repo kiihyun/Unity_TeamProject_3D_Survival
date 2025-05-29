@@ -172,8 +172,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.1677952, z: 1}
+  m_Center: {x: 0, y: 0.1073212, z: 0}
 --- !u!195 &909008540245310567
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -209,4 +209,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropOnDeath: []
+  fleeCooldown: 2
   data: {fileID: 11400000, guid: 48913369f2435764fa7a8d34b21dfd8b, type: 2}
