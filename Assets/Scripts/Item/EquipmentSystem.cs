@@ -8,6 +8,7 @@ public class EquipmentSystem : MonoBehaviour
     {
         foreach (var slot in equipSlots)
         {
+            Debug.Log($"[장비 체크] 슬롯 타입: {slot.slotType}, 아이템 타입: {item.equipSlotType}");
             if (slot.slotType == item.equipSlotType)
             {
                 slot.equippedItem = item;
@@ -15,6 +16,7 @@ public class EquipmentSystem : MonoBehaviour
                 return;
             }
         }
+        Debug.LogWarning("EquipItem 실패: 일치하는 슬롯을 찾을 수 없습니다.");
     }
 
     public void UnequipItem(EquipSlotType slotType)//아이템 해제
