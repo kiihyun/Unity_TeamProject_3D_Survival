@@ -1,4 +1,4 @@
-using TMPro;
+ï»¿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +13,15 @@ public class InventoryDetailUI : MonoBehaviour
     public GameObject equipButton;
     public GameObject dropButton;
 
+
+
     private ItemData currentItem;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
 
     public void ShowItemDetail(ItemData data)
     {
@@ -21,13 +29,13 @@ public class InventoryDetailUI : MonoBehaviour
         itemNameText.text = data.displayName;
         itemDescText.text = data.description;
 
-        ////¾ÆÀÌÅÛ µ¥ÀÌÅÍ°¡ »ç¿ë °¡´ÉÇÑ °æ¿ì
+        ////ì•„ì´í…œ ë°ì´í„°ê°€ ì‚¬ìš© ê°€ëŠ¥í•œ ê²½ìš°
         //useButton.gameObject.SetActive(data.type.Consumable);
-        ////¾ÆÀÌÅÛ µ¥ÀÌÅÍ°¡ ÀåÂø °¡´ÉÇÑ °æ¿ì
+        ////ì•„ì´í…œ ë°ì´í„°ê°€ ì¥ì°© ê°€ëŠ¥í•œ ê²½ìš°
         //equipButton.gameObject.SetActive(data.isEquipable);
     }
 
-    public void OnClickUse() { /* ¾ÆÀÌÅÛ »ç¿ë Ã³¸® */ }
-    public void OnClickEquip() { /* ÀåÂø Ã³¸® */ }
-    public void OnClickDrop() { /* µå·Ó Ã³¸® */ }
+    public void OnClickUse() { /* ì•„ì´í…œ ì‚¬ìš© ì²˜ë¦¬ */ }
+    public void OnClickEquip() { /* ì¥ì°© ì²˜ë¦¬ */ }
+    public void OnClickDrop() { /* ë“œë¡­ ì²˜ë¦¬ */ }
 }

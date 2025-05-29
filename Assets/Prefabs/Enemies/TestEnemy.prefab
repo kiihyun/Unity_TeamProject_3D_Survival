@@ -211,6 +211,7 @@ MonoBehaviour:
   health: 10
   walkSpeed: 1
   runSpeed: 4
+  dropOnDeath: []
   detectDistance: 5
   minWanderDistance: 5
   maxWanderDistance: 10
@@ -220,3 +221,4 @@ MonoBehaviour:
   attackRate: 2
   attackDistance: 2
   fieldOfView: 120
+  data: {fileID: 11400000, guid: 4b48f0b5d3054aa449daa7e21dca9b02, type: 2}
