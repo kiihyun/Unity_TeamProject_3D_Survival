@@ -18,6 +18,7 @@ public class FootStep : MonoBehaviour
     public AudioClip[] dirtClips;
     public AudioClip[] grassClips;
     public AudioClip[] woodClips;
+    public AudioClip[] asphaltClips;
     //Ãß°¡
 
     public FootStepTerrain footStepTerrain;
@@ -77,6 +78,8 @@ public class FootStep : MonoBehaviour
                 return grassClips;
             case "wood (Instance)":
                 return woodClips;
+            case "asphalt":
+                return asphaltClips;
             default:
                 return null;
         }
