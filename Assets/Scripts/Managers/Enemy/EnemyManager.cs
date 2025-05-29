@@ -1,32 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform enemySpwanPos;
-    [SerializeField] private float minSpwanPos;
-    [SerializeField] private float maxSpwanPos;
-    [SerializeField] private int enemyCount;
-    
+    [SerializeField] private Transform enemySpawnPos;
+    [SerializeField] private float minSpawnPos;
+    [SerializeField] private float maxSpawnPos;
+    [SerializeField] private float respawnDelay = 5f;
+    [SerializeField] private List<EnemyDataEntry> enemyEntries;
+
     void Start()
     {
-        for (int i = 0; i < enemyCount; i++)
+        foreach (var entry in enemyEntries)
         {
-            Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpwanPos, maxSpwanPos);
-            Vector3 spawnPos = new Vector3(randCircle.x, 0f, randCircle.y);
-            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(enemyPrefab, enemySpwanPos, spawnPos);
-
+            SpawnEnemies(entry, entry.data.spawnCount);
         }
-        
-
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawnEnemies(EnemyDataEntry entry, int count)
     {
-        
+        var data = entry.data;
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpawnPos, maxSpawnPos);
+            Vector3 spawnPos = new(randCircle.x, 0f, randCircle.y);
+
+            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, enemySpawnPos, spawnPos);
+            obj.SetActive(true);
+
+            entry.activeEnemies.Add(obj);
+
+            Enemy enemy = obj.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.data = data;
+                enemy.OnDieCallback = (deadObj) =>
+                {
+                    entry.activeEnemies.Remove(deadObj);
+                    deadObj.SetActive(false);
+                    StartCoroutine(RespawnOneAfterDelay(entry));
+                };
+            }
+        }
+    }
+
+    IEnumerator RespawnOneAfterDelay(EnemyDataEntry entry)
+    {
+        yield return new WaitForSeconds(respawnDelay);
+        SpawnEnemies(entry, 1);
     }
 }
