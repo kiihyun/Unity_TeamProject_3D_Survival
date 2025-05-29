@@ -75,6 +75,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     public const float maxBodyTemp = 40f; //최대 체온
     public float minNormalBodyTemp = 35f; //최소 정상 체온
     public float maxNormalBodyTemp = 38f; //최대 정상 체온
+    public float hypothermiaDamage;
 
     public float BodyTemp
     {
@@ -220,6 +221,10 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             {
                 GenerateHealth(-thirstDamage);
             }
+            else if (conditionStats.Contains(PlayerConditionState.Hypothermia))
+            {
+                GenerateHealth(-hypothermiaDamage);
+            }
         }
 
         // 스태미나
@@ -227,7 +232,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && controller.curSpeed == controller.walkSpeed)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
+            && controller.curSpeed != controller.sprintSpeed)
         {
             GenerateStamina(staminaRecovRate);
         }
