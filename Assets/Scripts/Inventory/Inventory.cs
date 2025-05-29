@@ -54,11 +54,15 @@ public class Inventory : MonoBehaviour
         InventorySlot slot = slots.Find(s => s.item == item);
         return slot != null && slot.count >= amount;
     }
-
-
     //인덱스를 기반으로 슬롯을 가져오기
     public InventorySlot GetSlotByIndex(int index)
     {
         return (index >= 0 && index < slots.Count) ? slots[index] : null;
+    }
+    //제작할 때 사용될 재료의 정확한 갯수 확인.(ex. 나무 2/5, 3개 부족하다는 뜻)
+    public int GetItemCount(ItemData item)
+    {
+        InventorySlot slot = slots.Find(s => s.item == item);
+        return slot != null ? slot.count : 0;
     }
 }
