@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Rigidbody _rigidbody;
     private AudioSource _audioSource;
 
+    public bool canControl = true; //플레이어 컨트롤 가능 여부
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;   //마우스 커서 숨기기 & 잠그기
@@ -51,8 +53,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     void Update()
     {
+        if (!canControl) return; //컨트롤 불가능하면 업데이트 중지
+
         Move();
-        if(PlayerManager.Instance.condition.Stamina <= 0)
+        if (PlayerManager.Instance.condition.Stamina <= 0)
         {
             curSpeed = walkSpeed; //스태미나가 없으면 이동 불가
         }
@@ -60,6 +64,19 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     void LateUpdate()
     {
         Look();
+    }
+
+    public void SetControl(bool value)
+    {
+        canControl = value;
+        if (value)
+        {
+            Cursor.lockState = CursorLockMode.Locked; //컨트롤 가능하면 커서 잠금
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None; //컨트롤 불가능하면 커서 잠금 해제
+        }
     }
 
     //이동
@@ -74,6 +91,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //이동 입력
     public void OnMoveInput(InputAction.CallbackContext context)
     {
+        if (!canControl) return;
         if (context.phase == InputActionPhase.Performed)
         {
             curSpeed = walkSpeed; //걷기 속도로 변경
@@ -89,6 +107,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
+        if (!canControl) return;
         if (context.phase == InputActionPhase.Started)
         {
             curSpeed = sprintSpeed; //달리기 속도로 변경
@@ -114,11 +133,13 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //시점 입력
     public void OnLookInput(InputAction.CallbackContext context)
     {
+        if (!canControl) return;
         curLookInput = context.ReadValue<Vector2>();
     }
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
+        if (!canControl) return;
         if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > PlayerManager.Instance.condition.jumpDecStamina)
         {
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
