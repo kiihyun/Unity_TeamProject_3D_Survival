@@ -3,13 +3,15 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     public GameObject player;
+
     public PlayerController controller;
     public PlayerAnimController animator;
     public PlayerCondition condition;
     public PlayerInteraction interaction;
     public FootStep footStep;
 
-    private void Start()
+
+    protected override void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
