@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7253f3c863e4dc24091825a717c0424c, type: 3}
+  m_Name: EnemyNormal
+  m_EditorClassIdentifier: 
+  enemyName: "\uC77C\uBC18\uC880\uBE44"
+  maxHealth: 5
+  walkSpeed: 1
+  runSpeed: 2
+  spawnCount: 10
+  prefab: {fileID: 8810653437333796905, guid: aa34d6829067bf743824f9ae2e1a9cf7, type: 3}
+  dropOnDeath: []
+  detectDistance: 5
+  minWanderDistance: 5
+  maxWanderDistance: 10
+  minWanderWaitTime: 1
+  maxWanderWaitTime: 5
+  damage: 10
+  attackRate: 2
+  attackDistance: 3
+  fieldOfView: 120

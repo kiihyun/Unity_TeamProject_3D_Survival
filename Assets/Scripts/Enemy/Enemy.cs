@@ -14,32 +14,20 @@ public enum AIState // 임시, 추후 이넘스크립트로 이동
 public class Enemy : MonoBehaviour, IDamagable
 {
     [Header("Stats")]
-    public int health;
-    public float walkSpeed;
-    public float runSpeed;
-    //public ItemData[] dropOnDeath;
+    private int curHealth;
+    public ItemData[] dropOnDeath;
 
     [Header("AI")]
     private NavMeshAgent agent;
-    public float detectDistance;
     private AIState aiState;
 
-    [Header("Wandering")]
-    public float minWanderDistance;
-    public float maxWanderDistance;
-    public float minWanderWaitTime;
-    public float maxWanderWaitTime;
-
     [Header("Combat")]
-    public int damage;
-    public float attackRate;
     private float lastAttackTime;
-    public float attackDistance;
-
     private float playerDistance;
 
-    public float fieldOfView = 120f;
 
+    [Header("Data")]
+    public EnemyDataSO data;
 
     private Animator animator;
     private SkinnedMeshRenderer[] meshRenderers;
@@ -49,12 +37,14 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         agent = GetComponent<NavMeshAgent>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        Debug.Log(meshRenderers.Length);
     }
 
     void Start()
     {
         SetState(AIState.Wandering);
+        curHealth = data.maxHealth;
+        
+
     }
 
     void Update()
@@ -79,15 +69,15 @@ public class Enemy : MonoBehaviour, IDamagable
         switch (aiState)
         {
             case AIState.Idle:
-                agent.speed = walkSpeed;
+                agent.speed = data.walkSpeed;
                 agent.isStopped = true;
                 break;
             case AIState.Wandering:
-                agent.speed = walkSpeed;
+                agent.speed = data.walkSpeed;
                 agent.isStopped = false;
                 break;
             case AIState.Attacking:
-                agent.speed = runSpeed;
+                agent.speed = data.runSpeed;
                 agent.isStopped = false;
                 break;
         }
@@ -99,10 +89,10 @@ public class Enemy : MonoBehaviour, IDamagable
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
-            Invoke("WanderToNewLocation", Random.Range(minWanderWaitTime, maxWanderWaitTime));
+            Invoke("WanderToNewLocation", Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
         }
 
-        if (playerDistance < detectDistance)
+        if (playerDistance < data.detectDistance)
         {
             SetState(AIState.Attacking);
         }
@@ -122,27 +112,27 @@ public class Enemy : MonoBehaviour, IDamagable
 
         do
         {
-            NavMesh.SamplePosition(transform.position + (Random.onUnitSphere * Random.Range(minWanderDistance, maxWanderDistance)), out hit, maxWanderDistance, NavMesh.AllAreas);
+            NavMesh.SamplePosition(transform.position + (Random.onUnitSphere * Random.Range(data.minWanderDistance, data.maxWanderDistance)), out hit, data.maxWanderDistance, NavMesh.AllAreas);
         }
-        while (Vector3.Distance(transform.position, hit.position) < detectDistance);
+        while (Vector3.Distance(transform.position, hit.position) < data.detectDistance);
         return hit.position;
     }
 
     void AttackingUpdate()
     {
-        if (playerDistance < attackDistance && IsPlayerInFieldOfView())
+        if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
         {
             agent.isStopped = true;
-            if (Time.time - lastAttackTime > attackRate)
+            if (Time.time - lastAttackTime > data.attackRate)
             {
                 lastAttackTime = Time.time;
-                PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(damage);
+                PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
                 lastAttackTime = Time.time;
             }
         }
         else
         {
-            if (playerDistance < detectDistance)
+            if (playerDistance < data.detectDistance)
             {
                 agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
@@ -171,15 +161,15 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         Vector3 directionToPlayer = PlayerManager.Instance.player.transform.position - transform.position;
         float angle = Vector3.Angle(transform.forward, directionToPlayer);
-        return angle < fieldOfView * 0.5f;
+        return angle < data.fieldOfView * 0.5f;
     }
 
     public void TakePhysicalDamage(int damage)
     {
         StartCoroutine(DamageFlash());
-        health -= damage;
-        Debug.Log($"enemy {damage}피해받음 {health}체력남음");
-        if (health <= 0)
+        curHealth -= damage;
+        Debug.Log($"enemy {damage}피해받음 {curHealth}체력남음");
+        if (curHealth <= 0)
         {
             for (int i = 0; i < meshRenderers.Length; i++)
             {
@@ -190,10 +180,10 @@ public class Enemy : MonoBehaviour, IDamagable
     }
     void Die()
     {
-        //for (int i = 0; i < dropOnDeath.Length; i++)
-        //{
-        //    Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
-        //}
+        for (int i = 0; i < dropOnDeath.Length; i++)
+        {
+            Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
+        }
         // Pool에 반환하거나 파괴 전
         OnDieCallback?.Invoke(this.gameObject);
         gameObject.SetActive(false); // 혹은 ObjectPool 반환
