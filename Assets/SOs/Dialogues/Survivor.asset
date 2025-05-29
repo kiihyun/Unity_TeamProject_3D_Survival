@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280d9be2516b92942a3cc55ac45733b1, type: 3}
+  m_Name: Survivor
+  m_EditorClassIdentifier: 
+  dialogueId: 1
+  npcName: John
+  dialogueType: 0
+  requiredQuestId: 
+  requiredQuestState: 0
+  dialogueLines:
+  - "\uC548\uB155\uD558\uC138\uC694, \uCC98\uC74C \uBCF4\uB294 \uC5BC\uAD74\uC774\uB124\uC694.\n"
+  - "\uC774\uACF3\uC5D0\uB294 \uC5B4\uB5BB\uAC8C \uC624\uC2DC\uAC8C \uB418\uC168\uB098\uC694.."
+  - "\uB3C4\uC6C0\uC774 \uD544\uC694\uD558\uBA74 \uC5B8\uC81C\uB4E0\uC9C0 \uB9D0\uC500\uD558\uC138\uC694."
