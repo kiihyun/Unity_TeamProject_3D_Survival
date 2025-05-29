@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7253f3c863e4dc24091825a717c0424c, type: 3}
-  m_Name: EnemyBoss
+  m_Name: EnemyRabbit
   m_EditorClassIdentifier: 
-  enemyName: "\uBCF4\uC2A4\uC880\uBE44"
-  maxHealth: 50
+  enemyName: "\uD1A0"
+  maxHealth: 1
   walkSpeed: 1
-  runSpeed: 2
-  spawnCount: 2
-  prefab: {fileID: 8810653437333796905, guid: f58bf4de5d2c6074f9a7269e49b0d7eb, type: 3}
+  runSpeed: 5
+  spawnCount: 20
+  prefab: {fileID: 8810653437333796905, guid: 638c6fb1e64ebad4bad35750d90d4faa, type: 3}
   dropOnDeath: []
   detectDistance: 5
   minWanderDistance: 5
-  maxWanderDistance: 10
-  minWanderWaitTime: 1
-  maxWanderWaitTime: 5
-  damage: 10
-  attackRate: 2
-  attackDistance: 3
+  maxWanderDistance: 7
+  minWanderWaitTime: 5
+  maxWanderWaitTime: 10
+  damage: 0
+  attackRate: 0
+  attackDistance: 0
   fieldOfView: 120

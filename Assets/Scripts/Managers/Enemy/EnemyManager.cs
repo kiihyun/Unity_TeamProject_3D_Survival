@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    [SerializeField] private Transform enemySpawnPos;
+    [SerializeField] private Transform enemyParent;
     [SerializeField] private float minSpawnPos;
     [SerializeField] private float maxSpawnPos;
     [SerializeField] private float respawnDelay = 5f;
@@ -24,9 +24,10 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpawnPos, maxSpawnPos);
-            Vector3 spawnPos = new(randCircle.x, 0f, randCircle.y);
+            Vector3 spawnPos = entry.spawnPoint.localPosition+ new Vector3(randCircle.x, 0f, randCircle.y);
 
-            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, enemySpawnPos, spawnPos);
+            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, null, spawnPos);
+            obj.transform.SetParent(enemyParent);
             obj.SetActive(true);
 
             entry.activeEnemies.Add(obj);

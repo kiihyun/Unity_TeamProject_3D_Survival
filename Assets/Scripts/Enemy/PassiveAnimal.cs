@@ -1,18 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AIState // 임시, 추후 이넘스크립트로 이동
-{
-    Idle,
-    Wandering,
-    Attacking,
-    Running,
-}
-
-public class Enemy : MonoBehaviour, IDamagable
+public class PassiveAnimal : MonoBehaviour, IDamagable
 {
     [Header("Stats")]
     private int curHealth;
@@ -44,8 +35,6 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         SetState(AIState.Wandering);
         curHealth = data.maxHealth;
-        
-
     }
 
     void Update()
@@ -58,11 +47,27 @@ public class Enemy : MonoBehaviour, IDamagable
             case AIState.Wandering:
                 PassiveUpdate();
                 break;
-            case AIState.Attacking:
-                AttackingUpdate();
+            case AIState.Running:
+                RunningUpdate();
                 break;
         }
     }
+
+    private void RunningUpdate()
+    {
+        if (playerDistance < data.detectDistance)
+        {
+            if (agent.remainingDistance < 1f)
+            {
+                agent.SetDestination(GetFleeLocation());
+            }
+        }
+        else
+        {
+            SetState(AIState.Wandering);
+        }
+    }
+
     public void SetState(AIState state)
     {
         aiState = state;
@@ -77,12 +82,11 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.speed = data.walkSpeed;
                 agent.isStopped = false;
                 break;
-            case AIState.Attacking:
+            case AIState.Running:
                 agent.speed = data.runSpeed;
                 agent.isStopped = false;
                 break;
         }
-
     }
 
     void PassiveUpdate()
@@ -90,12 +94,12 @@ public class Enemy : MonoBehaviour, IDamagable
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
-            Invoke("WanderToNewLocation", Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
+            Invoke(nameof(WanderToNewLocation), Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
         }
 
         if (playerDistance < data.detectDistance)
         {
-            SetState(AIState.Attacking);
+            SetState(AIState.Running);
         }
     }
 
@@ -118,45 +122,17 @@ public class Enemy : MonoBehaviour, IDamagable
         while (Vector3.Distance(transform.position, hit.position) < data.detectDistance);
         return hit.position;
     }
-
-    void AttackingUpdate()
+    Vector3 GetFleeLocation()
     {
-        if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
-        {
-            agent.isStopped = true;
-            if (Time.time - lastAttackTime > data.attackRate)
-            {
-                lastAttackTime = Time.time;
-                PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
-                lastAttackTime = Time.time;
-            }
-        }
-        else
-        {
-            if (playerDistance < data.detectDistance)
-            {
-                agent.isStopped = false;
-                NavMeshPath path = new NavMeshPath();
-                if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
-                {
-                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
-                }
-                else
-                {
-                    agent.SetDestination(transform.position);
-                    agent.isStopped = true;
-                    SetState(AIState.Wandering);
-                }
+        Vector3 dirFromPlayer = (transform.position - PlayerManager.Instance.player.transform.position).normalized;
+        Vector3 fleeTarget = transform.position + dirFromPlayer * data.maxWanderDistance;
 
-            }
-            else
-            {
-                agent.SetDestination(transform.position);
-                agent.isStopped = true;
-                SetState(AIState.Wandering);
-            }
-        }
+        if (NavMesh.SamplePosition(fleeTarget, out NavMeshHit hit, data.maxWanderDistance, NavMesh.AllAreas))
+            return hit.position;
+
+        return transform.position;
     }
+
 
     bool IsPlayerInFieldOfView()
     {
@@ -181,6 +157,7 @@ public class Enemy : MonoBehaviour, IDamagable
     }
     void Die()
     {
+        CancelInvoke();
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);

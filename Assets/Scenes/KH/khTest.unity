@@ -736,6 +736,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365797251}
   m_CullTransparentMesh: 1
+--- !u!1 &376849291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 376849292}
+  m_Layer: 0
+  m_Name: EnemyPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &376849292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376849291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 23.9, y: 0, z: 23.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &388848950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,7 +1529,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curEquip: {fileID: 0}
-  defaultUnarmed: {fileID: 5958820702816386519, guid: bd733b01519a8834997a2143a8833ef1, type: 3}
+  defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
+--- !u!1 &910413675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 910413676}
+  m_Layer: 0
+  m_Name: AnimalPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &910413676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910413675}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.5, y: 0, z: 23.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1031243597
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,7 +2339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1402101468}
   m_Layer: 0
-  m_Name: EnemySpwanPos
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2291,7 +2353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1402101467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 23.9, y: 0, z: 23.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2960,7 +3022,7 @@ GameObject:
   - component: {fileID: 1876988520}
   - component: {fileID: 1876988522}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: EnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2978,14 +3040,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4169f4fb2be444aa30af660f8cf270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpawnPos: {fileID: 1402101468}
+  enemyParent: {fileID: 1402101468}
   minSpawnPos: 1
   maxSpawnPos: 10
   respawnDelay: 5
   enemyEntries:
   - data: {fileID: 11400000, guid: 10fb5135dd84c82419cb37506e4f83e2, type: 2}
+    spawnPoint: {fileID: 376849292}
     activeEnemies: []
   - data: {fileID: 11400000, guid: 4b48f0b5d3054aa449daa7e21dca9b02, type: 2}
+    spawnPoint: {fileID: 376849292}
+    activeEnemies: []
+  - data: {fileID: 11400000, guid: 48913369f2435764fa7a8d34b21dfd8b, type: 2}
+    spawnPoint: {fileID: 910413676}
     activeEnemies: []
 --- !u!4 &1876988521
 Transform:
@@ -3623,7 +3690,9 @@ SceneRoots:
   - {fileID: 2089309550}
   - {fileID: 156885995}
   - {fileID: 1176509711}
-  - {fileID: 1876988521}
   - {fileID: 1402101468}
+  - {fileID: 1876988521}
+  - {fileID: 910413676}
+  - {fileID: 376849292}
   - {fileID: 1985208300}
   - {fileID: 1252900930637024514}
