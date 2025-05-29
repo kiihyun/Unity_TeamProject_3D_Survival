@@ -232,7 +232,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && controller.curSpeed == controller.walkSpeed)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
+            && controller.curSpeed != controller.sprintSpeed)
         {
             GenerateStamina(staminaRecovRate);
         }
