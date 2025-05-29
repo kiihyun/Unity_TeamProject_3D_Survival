@@ -62,23 +62,23 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: -112
+        x: -112.288
         y: 100.03
-        z: -119.69
+        z: -119.754
       TangentIn:
         x: -0
         y: -0
-        z: -1.6633008
+        z: -1.6646049
       TangentOut:
         x: 0
         y: 0
-        z: 1.6633008
+        z: 1.6646049
       Rotation:
         value:
-          x: 0.000015507865
-          y: -0.0915182
-          z: 0.000001668256
-          w: 0.9958034
+          x: 0.000015486903
+          y: -0.08269522
+          z: 0.0000018064615
+          w: 0.99657494
     - Position:
         x: -115.03167
         y: 100.02948
@@ -2895,6 +2895,22 @@ PrefabInstance:
     - target: {fileID: 1000012433200114, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
       propertyPath: m_Name
       value: Concrete_fence_v2_Gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012362539954, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.317
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012836490786, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012836490786, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.062
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000012836490786, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.037
       objectReference: {fileID: 0}
     - target: {fileID: 4000014133883218, guid: 60cf315f432990a41b67cef3d41a92f4, type: 3}
       propertyPath: m_LocalPosition.x

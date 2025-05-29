@@ -3,31 +3,52 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     public GameObject player;
-    public PlayerController controller;
-    public PlayerAnimController animator;
-    public PlayerCondition condition;
-    public PlayerInteraction interaction;
-    public FootStep footStep;
+    private PlayerController Controller;
+    private PlayerAnimController Animator;
+    private PlayerCondition Condition;
+    private PlayerInteraction Interaction;
+    private FootStep FootStep;
+
+    public PlayerController controller
+    {
+        get; private set;
+    }
+    public PlayerAnimController animator
+    {
+        get; private set;
+    }
+    public PlayerCondition condition
+    {
+        get; private set;
+    }
+    public PlayerInteraction interaction
+    {
+        get; private set;
+    }
+    public FootStep footStep
+    {
+        get; private set;
+    }
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = this.gameObject;
 
-        if (!player.TryGetComponent<PlayerController>(out controller))
+        if (!TryGetComponent<PlayerController>(out Controller))
         {
             Debug.LogError("PlayerController component is missing on the player GameObject.");
         }
-        if (!player.TryGetComponent<PlayerCondition>(out condition))
+        if (!TryGetComponent<PlayerCondition>(out Condition))
         {
             Debug.LogError("PlayerCondition component is missing on the player GameObject.");
         }
-        if (!player.TryGetComponent<PlayerInteraction>(out interaction))
+        if (!TryGetComponent<PlayerInteraction>(out Interaction))
         {
             Debug.LogError("PlayerInteraction component is missing on the player GameObject.");
         }
 
-        footStep = player.GetComponentInChildren<FootStep>();
-        animator = player.GetComponentInChildren<PlayerAnimController>();
+        FootStep = GetComponentInChildren<FootStep>();
+        Animator = GetComponentInChildren<PlayerAnimController>();
     }
 }
 
