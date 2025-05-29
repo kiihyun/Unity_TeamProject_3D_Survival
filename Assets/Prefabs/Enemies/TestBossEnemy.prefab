@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 909008540245310567}
   - component: {fileID: 7879236292549752674}
   m_Layer: 0
-  m_Name: TestEnemy
+  m_Name: TestBossEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.47, y: 0.8900001, z: 21.34}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4828084588655383167}
@@ -221,4 +221,4 @@ MonoBehaviour:
   attackRate: 2
   attackDistance: 2
   fieldOfView: 120
-  data: {fileID: 11400000, guid: 4b48f0b5d3054aa449daa7e21dca9b02, type: 2}
+  data: {fileID: 11400000, guid: 10fb5135dd84c82419cb37506e4f83e2, type: 2}
