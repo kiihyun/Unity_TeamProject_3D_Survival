@@ -75,6 +75,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     public const float maxBodyTemp = 40f; //최대 체온
     public float minNormalBodyTemp = 35f; //최소 정상 체온
     public float maxNormalBodyTemp = 38f; //최대 정상 체온
+    public float hypothermiaDamage;
 
     public float BodyTemp
     {
@@ -219,6 +220,10 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             else if (conditionStats.Contains(PlayerConditionState.Thirsty))
             {
                 GenerateHealth(-thirstDamage);
+            }
+            else if (conditionStats.Contains(PlayerConditionState.Hypothermia))
+            {
+                GenerateHealth(-hypothermiaDamage);
             }
         }
 
