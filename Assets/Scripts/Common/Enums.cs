@@ -11,4 +11,5 @@ public enum PlayerConditionState
     Hungry,       //부상 상태
     Thirsty,      //배고픔 상태
     Hypothermia,      //추위 상태
+    Tired
 }
