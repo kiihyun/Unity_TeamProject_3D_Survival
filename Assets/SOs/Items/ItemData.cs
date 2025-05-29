@@ -7,6 +7,19 @@ public enum ItemType
     ForEvent
 }
 
+public enum EquipSlotType
+{
+    Weapon,
+    Armor,
+    Accessory
+}
+[System.Serializable]
+public class EquipSlot
+{
+    public EquipSlotType slotType;
+    public ItemData equippedItem;
+}
+
 public enum ConsumableType
 {
     Health,
@@ -41,6 +54,7 @@ public class ItemData : ScriptableObject
     public ItemDataConsumable[] consumables;
 
     [Header("Equip")]
+    public EquipSlotType equipSlotType;
     public GameObject equipPrefab;
     public int durability;
     public bool canPlace;

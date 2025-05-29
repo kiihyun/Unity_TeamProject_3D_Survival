@@ -4,7 +4,22 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    //플레이어에게 붙이는 컴포넌트입니다.
+    //플레이어에게 붙이는 싱글턴 컴포넌트입니다.
+
+    public static Inventory Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     public List<InventorySlot> slots = new();
     public int maxSlots = 20; //최대 슬롯 개수
