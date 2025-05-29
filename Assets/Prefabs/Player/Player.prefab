@@ -4100,6 +4100,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpForce: 30
+  jumpClips:
+  - {fileID: 8300000, guid: 3f3669dc2bf61434783f4934700e82f6, type: 3}
+  - {fileID: 8300000, guid: 55520881781472649ac612614a24f148, type: 3}
+  - {fileID: 8300000, guid: 8fd5ff887d615154e8ba739faaf3999f, type: 3}
+  - {fileID: 8300000, guid: 2547873d23b27ec468d3928555b8a483, type: 3}
   camContainer: {fileID: 7261169556917553914}
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
@@ -4138,6 +4143,7 @@ MonoBehaviour:
   bodyTemp: 0
   minNormalBodyTemp: 35
   maxNormalBodyTemp: 38
+  hypothermiaDamage: 0.1
   hitClips:
   - {fileID: 8300000, guid: 5319d335f47c30c45a098c3b7207d360, type: 3}
   - {fileID: 8300000, guid: a118b77559d9f764cbc3b30b4be64c29, type: 3}
@@ -4226,7 +4232,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -4234,7 +4240,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.2
+  MinDistance: 2.5
   MaxDistance: 5
   Pan2D: 0
   rolloffMode: 0

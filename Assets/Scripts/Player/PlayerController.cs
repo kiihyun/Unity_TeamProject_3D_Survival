@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable, IJumpable
 {
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Transform foot;          //지면 감지
     public LayerMask groundLayer;   //지면 레이어
     public float jumpForce;         //점프 힘
+    public AudioClip[] jumpClips;
 
     [Header("Look")]
     public Transform camContainer;  //카메라 부모오브젝트
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     [Header("Components")]
     public Rigidbody _rigidbody;
+    private AudioSource _audioSource;
 
     void Awake()
     {
@@ -33,6 +36,11 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         if (!TryGetComponent<Rigidbody>(out _rigidbody))
         {
             Debug.LogError("Rigidbody is null");
+        }
+
+        if(!TryGetComponent<AudioSource>(out _audioSource))
+        {
+            Debug.LogError("AudioSource is null");
         }
     }
 
@@ -116,6 +124,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
             PlayerManager.Instance.footStep.JumpClipPlay();
+            _audioSource.PlayOneShot(jumpClips[Random.Range(0, jumpClips.Length)]);
         }
     }
 
