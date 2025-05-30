@@ -7,6 +7,8 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     [Header("Interact")]
     public GameObject cam;
     public float maxDistance = 3f;
+    public int hitTreeCount;
+    public int maxHitTreeCount;
     public RaycastHit lastHit { get; private set; }
     public bool hasHit { get; private set; }
     public GameObject curDetectObject; //감지된 오브젝트를 저장할 변수
@@ -73,14 +75,22 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
 
     }
 
-    public void Attack()
+    public void Attack(InputAction.CallbackContext context)
     {
         var tree = curDetectObject.GetComponent<Tree>();
-        if (tree != null)
+        if (context.phase == InputActionPhase.Started)
         {
-            tree.ItemInteract(inventory);
-            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
-            return;
+            if (tree != null)
+            {
+                hitTreeCount++;
+                if (hitTreeCount == maxHitTreeCount)
+                {
+                    tree.ItemInteract(inventory);
+                    Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+                    hitTreeCount = 0;
+                    return;
+                }
+            }
         }
     }
 
@@ -99,11 +109,14 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             // 상호작용 프롬프트 표시
             var npc = curDetectObject.GetComponent<NPCInteraction>();
             var item = curDetectObject.GetComponent<ItemObject>();
+            var tree = curDetectObject.GetComponent<Tree>();
 
             if (npc != null)
                 promptUI.text = "NPC와 대화하기";
             else if (item != null)
                 promptUI.text = item.GetInteractPrompt();
+            else if(tree != null)
+                promptUI.text = "나무";
             else
                 promptUI.text = string.Empty;
         }
