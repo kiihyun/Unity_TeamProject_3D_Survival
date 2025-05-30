@@ -77,18 +77,21 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
 
     public void Attack(InputAction.CallbackContext context)
     {
-        var tree = curDetectObject.GetComponent<Tree>();
-        if (context.phase == InputActionPhase.Started)
+        if (!PlayerManager.Instance.controller.isInventoryOpen)
         {
-            if (tree != null)
+            var tree = curDetectObject.GetComponent<Tree>();
+            if (context.phase == InputActionPhase.Started)
             {
-                hitTreeCount++;
-                if (hitTreeCount == maxHitTreeCount)
+                if (tree != null)
                 {
-                    tree.ItemInteract(inventory);
-                    Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
-                    hitTreeCount = 0;
-                    return;
+                    hitTreeCount++;
+                    if (hitTreeCount == maxHitTreeCount)
+                    {
+                        tree.ItemInteract(inventory);
+                        Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+                        hitTreeCount = 0;
+                        return;
+                    }
                 }
             }
         }

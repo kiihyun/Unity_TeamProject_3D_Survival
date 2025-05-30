@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public GameObject uiInventory;
     public GameObject uiCrafting;
 
+    private PlayerController playerController;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -25,12 +27,16 @@ public class UIManager : MonoBehaviour
     {
         uiInventory.SetActive(true);
         uiCrafting.SetActive(false);
+        // 플레이어 컨트롤러 비활성화
+        playerController?.SetControl(false);
     }
 
     public void OpenCrafting()
     {
         uiCrafting.SetActive(true);
         uiInventory.SetActive(false);
+        // 플레이어 컨트롤러 비활성화
+        playerController?.SetControl(false);
     }
 
     public void ShowDialogueUI()
