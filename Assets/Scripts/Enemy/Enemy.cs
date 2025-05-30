@@ -88,7 +88,6 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
-        animator.speed = agent.speed / data.walkSpeed;
     }
 
     void PassiveUpdate()
@@ -197,10 +196,7 @@ public class Enemy : MonoBehaviour, IDamagable
     }
     void Die()
     {
-        //this.gameObject.GetComponent<Collider>().enabled = false;
-        //this.gameObject.GetComponent<Collider>().isTrigger = true;
-        //agent.GetComponent<Collider>().enabled = false;
-        //agent.GetComponent<Collider>().isTrigger = true;
+
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
@@ -228,7 +224,7 @@ public class Enemy : MonoBehaviour, IDamagable
     IEnumerator DieCoroutine()
     {
         Debug.Log("die코루틴");
-        animator.SetBool("Die", true); // 죽는 애니메이션
+        animator.SetTrigger("Die"); // 죽는 애니메이션
 
         yield return new WaitForSeconds(5f); // 죽는 애니메이션 길이만큼 대기
 

@@ -2608,14 +2608,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1187929360}
     - target: {fileID: 1718249608988410361, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
-      propertyPath: maxSpawnPos
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1718249608988410361, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
-      propertyPath: minSpawnPos
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1718249608988410361, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
       propertyPath: enemyEntries.Array.data[0].spawnPoint
       value: 
       objectReference: {fileID: 1310921238}
@@ -2623,6 +2615,10 @@ PrefabInstance:
       propertyPath: enemyEntries.Array.data[1].spawnPoint
       value: 
       objectReference: {fileID: 1935736330}
+    - target: {fileID: 1718249608988410361, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
+      propertyPath: enemyEntries.Array.data[2].spawnPoint
+      value: 
+      objectReference: {fileID: 1310921238}
     - target: {fileID: 4852827789339331962, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2666,10 +2662,6 @@ PrefabInstance:
     - target: {fileID: 7122939024961167432, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
       propertyPath: m_Name
       value: EnemyManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7122939024961167432, guid: 4a9db09fb2e94dd44ade96051faa2dd9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
