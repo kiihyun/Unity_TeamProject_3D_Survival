@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public bool canControl = true; //플레이어 컨트롤 가능 여부
 
+    public GameObject craftingUI; // 유니티에서 UI 캔버스 연결
+
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;   //마우스 커서 숨기기 & 잠그기
@@ -53,6 +55,14 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     void Update()
     {
+        if (!canControl) // UI가 열려 있을 때 ESC로 닫기
+        {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseCraftingUI();
+                return;
+            }
+        }
         if (!canControl) return; //컨트롤 불가능하면 업데이트 중지
 
         Move();
@@ -153,6 +163,30 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public void OnAttackInput(InputAction.CallbackContext context)
     {
         PlayerManager.Instance.interaction.Attack();
+    }
+
+
+    public void OpenCraftingUI()
+    {
+        craftingUI.SetActive(true); // UI 띄우기
+        SetControl(false);          // 플레이어 조작 막기
+        Cursor.visible = true;      // 마우스 커서 보이기
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void OnOpenCraftingInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OpenCraftingUI();
+        }
+    }
+    public void CloseCraftingUI()
+    {
+        craftingUI.SetActive(false);      // UI 끄기
+        SetControl(true);                 // 플레이어 조작 다시 허용
+        Cursor.visible = false;           // 마우스 커서 숨기기
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     //지면 감지
