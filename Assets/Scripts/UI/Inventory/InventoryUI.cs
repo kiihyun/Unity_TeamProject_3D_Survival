@@ -73,6 +73,7 @@ public class InventoryUI : MonoBehaviour
     public void OnItemClicked(ItemData itemData)
     {
         //InventoryDetailUI.Instance.ShowItemDetail(itemData);
-        InventoryInfoUI.Instance.ShowItemDetail(itemData);
+        //InventoryInfoUI.Instance.ShowItemDetail(itemData);
+        InventoryDetailUI.Instance.ShowItemDetail(itemData);
     }
 }
