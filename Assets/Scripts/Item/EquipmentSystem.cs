@@ -3,6 +3,7 @@ using UnityEngine;
 public class EquipmentSystem : MonoBehaviour
 {
     public EquipSlot[] equipSlots; //ÀåÂø °¡´ÉÇÑ ¾ÆÀÌÅÛµé
+    public Transform equipPos;
 
     public void EquipItem(ItemData item)//ÀåÂø
     {
@@ -13,6 +14,9 @@ public class EquipmentSystem : MonoBehaviour
             {
                 slot.equippedItem = item;
                 Debug.Log($"Âø¿ëµÊ: {item.displayName}");
+
+                GameObject gameObject = Instantiate(item.equipPrefab, equipPos);
+
                 return;
             }
         }

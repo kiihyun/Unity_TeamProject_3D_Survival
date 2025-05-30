@@ -104,7 +104,7 @@ public class InventoryDetailUI : MonoBehaviour
         }
 
 
-        var equipmentSystem = PlayerManager.Instance.GetComponent<EquipmentSystem>();
+        var equipmentSystem = PlayerManager.Instance.player.GetComponent<EquipmentSystem>();
         if (equipmentSystem == null) return;
 
         var equipped = equipmentSystem.GetEquippedItem(currentItem.equipSlotType);
