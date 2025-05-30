@@ -59,7 +59,7 @@ public class TemperatureManager : MonoBehaviour
 
         // 1초마다 로그 출력
         logTimer += Time.deltaTime;
-        if (logTimer >= 1f)
+        if (logTimer >= 5f)
         {
             logTimer = 0f;
             Debug.Log($"[TemperatureManager] 현재 온도: {currentTemperature:F1}°C (시간: {time:F2})");
