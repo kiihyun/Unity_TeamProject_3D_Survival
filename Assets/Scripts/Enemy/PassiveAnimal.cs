@@ -65,6 +65,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
             {
                 agent.SetDestination(GetFleeLocation());
                 lastFleeTime = Time.time; // 다음 도망은 쿨타임 이후에 가능
+                Debug.Log("토끼도망상태");
             }
             else
             {
@@ -74,7 +75,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
         }
         else
         {
-            SetState(AIState.Wandering);
+            SetState(AIState.Idle);
         }
     }
 
@@ -171,7 +172,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
         }
         // Pool에 반환하거나 파괴 전
         OnDieCallback?.Invoke(this.gameObject);
-        gameObject.SetActive(false); // 혹은 ObjectPool 반환
+        StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
     }
 
@@ -188,4 +189,15 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
             meshRenderers[i].material.color = Color.white;
         }
     }
+    IEnumerator DieCoroutine()
+    {
+        animator.SetBool("Die", true); // 죽는 애니메이션
+
+        yield return new WaitForSeconds(2f); // 죽는 애니메이션 길이만큼 대기
+
+        OnDieCallback?.Invoke(this.gameObject); //  리스폰 트리거
+
+        gameObject.SetActive(false); // 여기서 비활성화
+    }
+
 }

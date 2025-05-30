@@ -40,7 +40,6 @@ public class EnemyManager : MonoBehaviour
                 enemy.OnDieCallback = (deadObj) =>
                 {
                     entry.activeEnemies.Remove(deadObj);
-                    deadObj.SetActive(false);
                     StartCoroutine(RespawnOneAfterDelay(entry));
                 };
             }
@@ -53,7 +52,6 @@ public class EnemyManager : MonoBehaviour
                     animal.OnDieCallback = (deadObj) =>
                     {
                         entry.activeEnemies.Remove(deadObj);
-                        deadObj.SetActive(false);
                         StartCoroutine(RespawnOneAfterDelay(entry));
                     };
                 }
