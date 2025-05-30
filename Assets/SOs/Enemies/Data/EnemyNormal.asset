@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: "\uC77C\uBC18\uC880\uBE44"
   maxHealth: 5
-  walkSpeed: 1
+  walkSpeed: 0.5
   runSpeed: 2
-  spawnCount: 10
-  prefab: {fileID: 8810653437333796905, guid: aa34d6829067bf743824f9ae2e1a9cf7, type: 3}
+  spawnCount: 1
+  prefab: {fileID: 8065048971340992996, guid: 02e0fe25656e4754f9d712dd3b3007e2, type: 3}
   dropOnDeath: []
   detectDistance: 5
   minWanderDistance: 5
   maxWanderDistance: 10
   minWanderWaitTime: 1
   maxWanderWaitTime: 5
-  damage: 10
+  damage: 5
   attackRate: 2
-  attackDistance: 3
+  attackDistance: 2
   fieldOfView: 120

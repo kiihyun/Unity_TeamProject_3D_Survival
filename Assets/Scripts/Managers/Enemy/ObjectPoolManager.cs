@@ -21,14 +21,14 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             if (!item.gameObject.activeInHierarchy)
             {
                 item.transform.SetParent(parent);
-                item.transform.localPosition = position;
+                item.transform.position = position;
                 item.gameObject.SetActive(true);
                 return item;
             }
         }
 
-        GameObject obj = Instantiate(prefab, parent);
-        obj.transform.localPosition = position;
+        GameObject obj = Instantiate(prefab);
+        obj.transform.position = position;
         dics[hashCode].Add(obj);
         return obj;
     }
