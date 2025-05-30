@@ -3903,6 +3903,8 @@ GameObject:
   - component: {fileID: 3802199252818512467}
   - component: {fileID: 2801932009820194353}
   - component: {fileID: 3005631685914134993}
+  - component: {fileID: 6090599093838530000}
+  - component: {fileID: 2338312085905560428}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -4058,11 +4060,35 @@ MonoBehaviour:
     m_ActionId: 4d3edcfd-8291-4efc-8f45-ffcf13cc6b82
     m_ActionName: Player/Interaction[/Keyboard/e]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4280969504020511615}
+        m_TargetAssemblyTypeName: PlayerInteraction, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d73c9cb1-793b-44a7-a12c-61fdbf1b30b8
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7626783387476105381}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 015dcd2d-ac63-4891-802a-05e37effe996
     m_ActionName: Player/Inventory[/Keyboard/tab]
   - m_PersistentCalls:
@@ -4108,6 +4134,10 @@ MonoBehaviour:
   camContainer: {fileID: 7261169556917553914}
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  isInventoryOpen: 0
+  canControl: 1
+  craftingUI: {fileID: 0}
 --- !u!114 &6759789591993602433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4168,6 +4198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 8894407635509271169}
   maxDistance: 3
+  hitTreeCount: 0
+  maxHitTreeCount: 3
   curDetectObject: {fileID: 0}
   promptUI: {fileID: 0}
 --- !u!136 &3802199252818512467
@@ -4316,6 +4348,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6090599093838530000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8307605642993439931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c5e86606723864fbed04ecfd3cb760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slots: []
+  maxSlots: 20
+--- !u!114 &2338312085905560428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8307605642993439931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e65fafce704c2d443828f59437ebda46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipSlots:
+  - slotType: 0
+    equippedItem: {fileID: 0}
 --- !u!1 &8384466031092537439
 GameObject:
   m_ObjectHideFlags: 0
