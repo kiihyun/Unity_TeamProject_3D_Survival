@@ -132,24 +132,28 @@ public class Enemy : MonoBehaviour, IDamagable
         if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
         {
             agent.isStopped = true;
+            Debug.Log($"agent.isStopped : {agent.isStopped}");
             if (Time.time - lastAttackTime > data.attackRate)
             {
                 Debug.Log("좀비가 공격");
                 animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
                 PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
-                lastAttackTime = Time.time;
             }
+            return;
         }
         else
         {
             if (playerDistance < data.detectDistance)
             {
-                agent.isStopped = false;
+                if (agent.isStopped) agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
                 if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
                 {
-                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
+                    if (!agent.isStopped)
+                    {
+                        agent.SetDestination(PlayerManager.Instance.player.transform.position);
+                    }
                 }
                 else
                 {
@@ -186,11 +190,17 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 meshRenderers[i].material.color = Color.white;
             }
+            agent.enabled = false;
             Die();
+
         }
     }
     void Die()
     {
+        //this.gameObject.GetComponent<Collider>().enabled = false;
+        //this.gameObject.GetComponent<Collider>().isTrigger = true;
+        //agent.GetComponent<Collider>().enabled = false;
+        //agent.GetComponent<Collider>().isTrigger = true;
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
