@@ -17,10 +17,11 @@ MonoBehaviour:
   itemMass: 1
   type: 2
   icon: {fileID: 0}
-  dropPrefab: {fileID: 4516344575775485775, guid: 56ab0a629b8691a41a75040ea8806fe8, type: 3}
+  dropPrefab: {fileID: 4140774597986965270, guid: 58cd8dc8c2359174baa15aa31e302c8b, type: 3}
   canStack: 1
   maxStackAmount: 99
   consumables: []
+  equipSlotType: 0
   equipPrefab: {fileID: 0}
   durability: 0
   canPlace: 0
