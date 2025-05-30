@@ -69,7 +69,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             return;
         }
 
-        
+
 
         Debug.LogWarning("상호작용 가능한 컴포넌트가 없습니다: " + curDetectObject.name);
 
@@ -77,18 +77,21 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
 
     public void Attack(InputAction.CallbackContext context)
     {
-        var tree = curDetectObject.GetComponent<Tree>();
-        if (context.phase == InputActionPhase.Started)
+        if (!PlayerManager.Instance.controller.isInventoryOpen)
         {
-            if (tree != null)
+            var tree = curDetectObject.GetComponent<Tree>();
+            if (context.phase == InputActionPhase.Started)
             {
-                hitTreeCount++;
-                if (hitTreeCount == maxHitTreeCount)
+                if (tree != null)
                 {
-                    tree.ItemInteract(inventory);
-                    Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
-                    hitTreeCount = 0;
-                    return;
+                    hitTreeCount++;
+                    if (hitTreeCount == maxHitTreeCount)
+                    {
+                        tree.ItemInteract(inventory);
+                        Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+                        hitTreeCount = 0;
+                        return;
+                    }
                 }
             }
         }
@@ -115,7 +118,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
                 promptUI.text = "NPC와 대화하기";
             else if (item != null)
                 promptUI.text = item.GetInteractPrompt();
-            else if(tree != null)
+            else if (tree != null)
                 promptUI.text = "나무";
             else
                 promptUI.text = string.Empty;
