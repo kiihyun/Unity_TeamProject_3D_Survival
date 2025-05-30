@@ -16,16 +16,16 @@ public class PlayerManager : Singleton<PlayerManager>
         base.Awake();
         Debug.Log("[PlayerManager] Awake 실행됨");
 
-        player = gameObject;
+        player = GameObject.FindWithTag("Player");
 
         // 필수 컴포넌트 가져오기
-        controller = GetComponent<PlayerController>();
-        condition = GetComponent<PlayerCondition>();
-        interaction = GetComponent<PlayerInteraction>();
+        controller = player.GetComponent<PlayerController>();
+        condition = player.GetComponent<PlayerCondition>();
+        interaction = player.GetComponent<PlayerInteraction>();
 
         // 자식 오브젝트에서 가져오기
-        footStep = GetComponentInChildren<FootStep>();
-        animator = GetComponentInChildren<PlayerAnimController>();
+        footStep = player.GetComponentInChildren<FootStep>();
+        animator = player.GetComponentInChildren<PlayerAnimController>();
 
         // 예외 상황을 로그로 확인
         if (controller == null) Debug.LogError("PlayerController가 Player에 없습니다.");
