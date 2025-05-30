@@ -88,7 +88,6 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
-        animator.speed = agent.speed / data.walkSpeed;
     }
 
     void PassiveUpdate()
@@ -132,24 +131,28 @@ public class Enemy : MonoBehaviour, IDamagable
         if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
         {
             agent.isStopped = true;
+            Debug.Log($"agent.isStopped : {agent.isStopped}");
             if (Time.time - lastAttackTime > data.attackRate)
             {
                 Debug.Log("좀비가 공격");
                 animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
                 PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
-                lastAttackTime = Time.time;
             }
+            return;
         }
         else
         {
             if (playerDistance < data.detectDistance)
             {
-                agent.isStopped = false;
+                if (agent.isStopped) agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
                 if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
                 {
-                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
+                    if (!agent.isStopped)
+                    {
+                        agent.SetDestination(PlayerManager.Instance.player.transform.position);
+                    }
                 }
                 else
                 {
@@ -186,11 +189,14 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 meshRenderers[i].material.color = Color.white;
             }
+            agent.enabled = false;
             Die();
+
         }
     }
     void Die()
     {
+
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
@@ -218,7 +224,7 @@ public class Enemy : MonoBehaviour, IDamagable
     IEnumerator DieCoroutine()
     {
         Debug.Log("die코루틴");
-        animator.SetBool("Die", true); // 죽는 애니메이션
+        animator.SetTrigger("Die"); // 죽는 애니메이션
 
         yield return new WaitForSeconds(5f); // 죽는 애니메이션 길이만큼 대기
 

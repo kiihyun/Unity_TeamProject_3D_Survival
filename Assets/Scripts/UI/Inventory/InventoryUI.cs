@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -72,8 +73,21 @@ public class InventoryUI : MonoBehaviour
 
     public void OnItemClicked(ItemData itemData)
     {
-        //InventoryDetailUI.Instance.ShowItemDetail(itemData);
+
         //InventoryInfoUI.Instance.ShowItemDetail(itemData);
+        //만약 아래거 쓰고 싶으면 위에거 비활성화 시키고 쓰기
         InventoryDetailUI.Instance.ShowItemDetail(itemData);
+        if (itemData == null)
+        {
+            Debug.LogError("클릭된 슬롯의 item이 null입니다.");
+            return;
+        }
+
+        if (InventoryInfoUI.Instance == null)
+        {
+            Debug.LogError("InventoryInfoUI.Instance가 null입니다.");
+            return;
+        }
+
     }
 }
