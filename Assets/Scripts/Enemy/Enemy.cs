@@ -90,7 +90,9 @@ public class Enemy : MonoBehaviour, IDamagable
 
     void PassiveUpdate()
     {
-        if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
+        if (!agent.isOnNavMesh)
+            Debug.LogWarning($"{gameObject.name} is not on a NavMesh!");
+        if (agent.isOnNavMesh && aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
             Invoke("WanderToNewLocation", Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
