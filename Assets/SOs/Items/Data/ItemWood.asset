@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ebf089e22d9344fbbea5ff9349f550, type: 3}
   m_Name: ItemWood
   m_EditorClassIdentifier: 
-  displayName: 
-  description: 
-  itemMass: 0
-  type: 0
+  displayName: "\uB098\uBB34"
+  description: "\uC6B0\uB4DC\uB4DD"
+  itemMass: 0.1
+  type: 2
   icon: {fileID: 0}
   dropPrefab: {fileID: 0}
   canStack: 0
