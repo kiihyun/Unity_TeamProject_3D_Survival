@@ -4,6 +4,7 @@
 public class CraftItemData : ScriptableObject
 {
     [Header("Output")]
+    public string recipeName;        // 레시피 이름
     public ItemData resultItem;      // 만들어지는 아이템
     public int resultAmount = 1;     // 만들어지는 수량
 

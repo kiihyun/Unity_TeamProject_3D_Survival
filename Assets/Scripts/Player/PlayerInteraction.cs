@@ -67,20 +67,31 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             return;
         }
 
+        
+
         Debug.LogWarning("상호작용 가능한 컴포넌트가 없습니다: " + curDetectObject.name);
 
+    }
+
+    public void Attack()
+    {
+        var tree = curDetectObject.GetComponent<Tree>();
+        if (tree != null)
+        {
+            tree.ItemInteract(inventory);
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+            return;
+        }
     }
 
     // 오브젝트를 Raycast로 감지하는 메소드
     public void DetectObject()
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
 
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
-            Debug.Log(hit.collider.gameObject.name + " 감지");
             lastHit = hit;
             hasHit = true;
             curDetectObject = hit.collider.gameObject;
