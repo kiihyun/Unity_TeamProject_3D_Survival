@@ -43,9 +43,9 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         var itemObject = curDetectObject.GetComponent<ItemObject>();
         if (itemObject != null)
         {
-            //NPC 상호작용 처리
+            //itemObject 상호작용 처리
             itemObject.OnInteract();
-            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (NPC)");
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (itemObject)");
             return;
         }
 
