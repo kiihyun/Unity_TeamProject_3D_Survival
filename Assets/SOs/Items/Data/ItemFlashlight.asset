@@ -22,6 +22,6 @@ MonoBehaviour:
   maxStackAmount: 0
   consumables: []
   equipSlotType: 0
-  equipPrefab: {fileID: 0}
+  equipPrefab: {fileID: 4335138848613300408, guid: 25af87cfc5dec654e83c65bedc15903b, type: 3}
   durability: 80
   canPlace: 0
