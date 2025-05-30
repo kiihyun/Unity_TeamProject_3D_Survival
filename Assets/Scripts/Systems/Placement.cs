@@ -16,7 +16,7 @@ public class PlacementPreview : MonoBehaviour
         if (ghostObject != null)
             Destroy(ghostObject);
 
-        ghostObject = Instantiate(item.dropPrefab);
+        ghostObject = Instantiate(item.placeablePrefab);
         MakeTransparent(ghostObject);
     }
 
@@ -24,23 +24,60 @@ public class PlacementPreview : MonoBehaviour
     {
         if (ghostObject == null || currentItem == null || !playerInteraction.hasHit) return;
 
-        Vector3 pos = playerInteraction.lastHit.point;
-        Vector3 normal = playerInteraction.lastHit.normal;
+        if (playerInteraction.lastHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            Vector3 pos = playerInteraction.lastHit.point;
+            Vector3 normal = playerInteraction.lastHit.normal;
 
-        ghostObject.transform.position = pos;
-        isPlacementValid = ValidatePlacement(pos, normal);
+            ghostObject.transform.position = pos;
+            isPlacementValid = ValidatePlacement(pos, normal);
+            float slope = Vector3.Angle(normal, Vector3.up);
+            Debug.Log($"[현재 설치 위치 경사] slope: {slope}도");
 
-        UpdatePreviewColor(isPlacementValid);
+            UpdatePreviewColor(isPlacementValid);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                ConfirmPlacement();
+            }
+        }
+
+
     }
 
     bool ValidatePlacement(Vector3 pos, Vector3 normal)
     {
+
         float slope = Vector3.Angle(normal, Vector3.up);
         if (slope > 25f) return false;
 
-        Collider[] overlaps = Physics.OverlapBox(pos, ghostObject.transform.localScale / 2, ghostObject.transform.rotation);
+        // ghostObject의 BoxCollider 기준으로 정확한 extents 계산
+        BoxCollider collider = ghostObject.GetComponentInChildren<BoxCollider>();
+        if (collider == null)
+        {
+            Debug.LogWarning("BoxCollider가 없습니다.");
+            return false;
+        }
+
+        Vector3 halfExtents = collider.size * 0.5f;
+        Quaternion rotation = ghostObject.transform.rotation;
+        int layerMask = ~(1 << LayerMask.NameToLayer("IgnorePlacementCheck")); // 고스트 오브젝트에 해당하는 레이어만 무시해서 설치 여부를 판단
+
+        Collider[] overlaps = Physics.OverlapBox(
+            pos + collider.center,
+            halfExtents,
+            rotation,
+            layerMask
+            );
+
+        Debug.Log($"[Overlap Check] Found {overlaps.Length} colliders");
+
         foreach (Collider c in overlaps)
         {
+            Debug.Log($"겹침 오브젝트: {c.name}, isTrigger: {c.isTrigger}");
+            if (c.gameObject == ghostObject) continue; // 자기 자신이면 무시
+            if (c.gameObject.GetComponent<Terrain>() != null) continue; // Terrain도 무시
+
             if (!c.isTrigger) return false;
         }
 
@@ -79,12 +116,17 @@ public class PlacementPreview : MonoBehaviour
     }
 
     public void ConfirmPlacement()
-    {
+    {//
         if (ghostObject == null || !isPlacementValid || currentItem == null) return;
 
         Instantiate(currentItem.dropPrefab, ghostObject.transform.position, Quaternion.identity);
         Destroy(ghostObject);
-        ghostObject = null;
-        currentItem = null;
+        Inventory.Instance.RemoveItem(currentItem, 1);
+        Debug.Log($"{currentItem.name}설치완료");
+        //ghostObject = null;
+        //currentItem = null;
+
+        // 인벤토리가 변경될 때마다 UI 새로고침
+        
     }
 }
