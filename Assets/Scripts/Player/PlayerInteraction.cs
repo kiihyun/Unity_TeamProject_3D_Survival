@@ -69,7 +69,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             return;
         }
 
-        
+
 
         Debug.LogWarning("상호작용 가능한 컴포넌트가 없습니다: " + curDetectObject.name);
 
@@ -118,7 +118,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
                 promptUI.text = "NPC와 대화하기";
             else if (item != null)
                 promptUI.text = item.GetInteractPrompt();
-            else if(tree != null)
+            else if (tree != null)
                 promptUI.text = "나무";
             else
                 promptUI.text = string.Empty;
