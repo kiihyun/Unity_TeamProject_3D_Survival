@@ -149,6 +149,12 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         }
     }
 
+    //공격, 자원캐기 등등
+    public void OnAttackInput(InputAction.CallbackContext context)
+    {
+        PlayerManager.Instance.interaction.Attack();
+    }
+
     //지면 감지
     public bool IsGrounded()
     {
