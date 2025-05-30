@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 3556563226462864392}
   - component: {fileID: 3214843344285331754}
   - component: {fileID: 8218235254731221537}
-  - component: {fileID: 5320408699185689908}
   - component: {fileID: 8394788776836231929}
+  - component: {fileID: 274290598633271981}
+  - component: {fileID: 1996109725969313985}
+  - component: {fileID: 2807508642567246977}
   m_Layer: 0
   m_Name: CraftItemCookedMeat
   m_TagString: Untagged
@@ -85,7 +87,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5320408699185689908
+--- !u!114 &8394788776836231929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763702191823007956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680925cad200bea4ba1634e9522cea3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 0fee91195fa41fd4db332589f74a82bb, type: 2}
+--- !u!114 &274290598633271981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763702191823007956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 0}
+  amount: 1
+--- !u!65 &1996109725969313985
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,18 +133,32 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8394788776836231929
-MonoBehaviour:
+  m_Size: {x: 0.45981598, y: 0.04043288, z: 0.29153767}
+  m_Center: {x: 0.004028484, y: 0.021826347, z: 0.008569971}
+--- !u!54 &2807508642567246977
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7763702191823007956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680925cad200bea4ba1634e9522cea3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 0fee91195fa41fd4db332589f74a82bb, type: 2}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
