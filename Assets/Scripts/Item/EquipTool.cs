@@ -5,7 +5,7 @@ using UnityEngine;
 public class EquipTool : Equip
 {
     public float attackRate;
-    private bool attacking;
+    private bool attacking = false;
     public float attackDistance;
     public float useStamina;
 

@@ -1,29 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AIState // 임시, 추후 이넘스크립트로 이동
-{
-    Idle,
-    Wandering,
-    Attacking,
-    Running,
-}
-
-public class Enemy : MonoBehaviour, IDamagable
+public class PassiveAnimal : MonoBehaviour, IDamagable
 {
     [Header("Stats")]
     private int curHealth;
     public ItemData[] dropOnDeath;
+    private float lastFleeTime; // 마지막 도망 시간
+    public float fleeCooldown = 2f; // 도망 재시도까지의 지연
 
     [Header("AI")]
     private NavMeshAgent agent;
     private AIState aiState;
 
     [Header("Combat")]
-    private float lastAttackTime;
     private float playerDistance;
 
 
@@ -37,6 +29,7 @@ public class Enemy : MonoBehaviour, IDamagable
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
@@ -44,13 +37,13 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         SetState(AIState.Wandering);
         curHealth = data.maxHealth;
-        
-
     }
 
     void Update()
     {
         playerDistance = Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position);
+
+        animator.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
         {
@@ -58,13 +51,37 @@ public class Enemy : MonoBehaviour, IDamagable
             case AIState.Wandering:
                 PassiveUpdate();
                 break;
-            case AIState.Attacking:
-                AttackingUpdate();
+            case AIState.Running:
+                RunningUpdate();
                 break;
         }
     }
+
+    private void RunningUpdate()
+    {
+        if (playerDistance < data.detectDistance)
+        {
+            if (Time.time > lastFleeTime + fleeCooldown && agent.remainingDistance < 1f)
+            {
+                agent.SetDestination(GetFleeLocation());
+                lastFleeTime = Time.time; // 다음 도망은 쿨타임 이후에 가능
+                Debug.Log("토끼도망상태");
+            }
+            else
+            {
+                SetState(AIState.Idle);
+            }
+
+        }
+        else
+        {
+            SetState(AIState.Idle);
+        }
+    }
+
     public void SetState(AIState state)
     {
+        if (aiState == state) return; //중복전환 방지
         aiState = state;
 
         switch (aiState)
@@ -77,11 +94,12 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.speed = data.walkSpeed;
                 agent.isStopped = false;
                 break;
-            case AIState.Attacking:
+            case AIState.Running:
                 agent.speed = data.runSpeed;
                 agent.isStopped = false;
                 break;
         }
+        animator.speed = agent.speed / data.walkSpeed;
 
     }
 
@@ -90,12 +108,13 @@ public class Enemy : MonoBehaviour, IDamagable
         if (aiState == AIState.Wandering && agent.remainingDistance < 0.1f)
         {
             SetState(AIState.Idle);
-            Invoke("WanderToNewLocation", Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
+            Invoke(nameof(WanderToNewLocation), Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
         }
 
-        if (playerDistance < data.detectDistance)
+        if (playerDistance < data.detectDistance && Time.time > lastFleeTime + fleeCooldown)
         {
-            SetState(AIState.Attacking);
+            SetState(AIState.Running);
+            lastFleeTime = Time.time; // 도망 간 시점 저장
         }
     }
 
@@ -118,52 +137,17 @@ public class Enemy : MonoBehaviour, IDamagable
         while (Vector3.Distance(transform.position, hit.position) < data.detectDistance);
         return hit.position;
     }
-
-    void AttackingUpdate()
+    Vector3 GetFleeLocation()
     {
-        if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
-        {
-            agent.isStopped = true;
-            if (Time.time - lastAttackTime > data.attackRate)
-            {
-                lastAttackTime = Time.time;
-                PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
-                lastAttackTime = Time.time;
-            }
-        }
-        else
-        {
-            if (playerDistance < data.detectDistance)
-            {
-                agent.isStopped = false;
-                NavMeshPath path = new NavMeshPath();
-                if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
-                {
-                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
-                }
-                else
-                {
-                    agent.SetDestination(transform.position);
-                    agent.isStopped = true;
-                    SetState(AIState.Wandering);
-                }
+        Vector3 dirFromPlayer = (transform.position - PlayerManager.Instance.player.transform.position).normalized;
+        Vector3 fleeTarget = transform.position + dirFromPlayer * data.maxWanderDistance;
 
-            }
-            else
-            {
-                agent.SetDestination(transform.position);
-                agent.isStopped = true;
-                SetState(AIState.Wandering);
-            }
-        }
+        if (NavMesh.SamplePosition(fleeTarget, out NavMeshHit hit, data.maxWanderDistance, NavMesh.AllAreas))
+            return hit.position;
+        return transform.position;
     }
 
-    bool IsPlayerInFieldOfView()
-    {
-        Vector3 directionToPlayer = PlayerManager.Instance.player.transform.position - transform.position;
-        float angle = Vector3.Angle(transform.forward, directionToPlayer);
-        return angle < data.fieldOfView * 0.5f;
-    }
+
 
     public void TakePhysicalDamage(int damage)
     {
@@ -181,13 +165,14 @@ public class Enemy : MonoBehaviour, IDamagable
     }
     void Die()
     {
+        CancelInvoke();
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         }
         // Pool에 반환하거나 파괴 전
         OnDieCallback?.Invoke(this.gameObject);
-        gameObject.SetActive(false); // 혹은 ObjectPool 반환
+        StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
     }
 
@@ -204,4 +189,15 @@ public class Enemy : MonoBehaviour, IDamagable
             meshRenderers[i].material.color = Color.white;
         }
     }
+    IEnumerator DieCoroutine()
+    {
+        animator.SetBool("Die", true); // 죽는 애니메이션
+
+        yield return new WaitForSeconds(2f); // 죽는 애니메이션 길이만큼 대기
+
+        OnDieCallback?.Invoke(this.gameObject); //  리스폰 트리거
+
+        gameObject.SetActive(false); // 여기서 비활성화
+    }
+
 }

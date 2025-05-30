@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyDataEntry
 {
     public EnemyDataSO data;
+    public Transform spawnPoint;
     [HideInInspector] public List<GameObject> activeEnemies = new();
 }
 
