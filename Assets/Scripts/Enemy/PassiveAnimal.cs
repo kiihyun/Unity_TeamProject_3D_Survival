@@ -29,6 +29,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
@@ -41,6 +42,8 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     void Update()
     {
         playerDistance = Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position);
+
+        animator.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
         {
@@ -62,6 +65,10 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
             {
                 agent.SetDestination(GetFleeLocation());
                 lastFleeTime = Time.time; // 다음 도망은 쿨타임 이후에 가능
+            }
+            else
+            {
+                SetState(AIState.Idle);
             }
 
         }
@@ -91,6 +98,8 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
+        animator.speed = agent.speed / data.walkSpeed;
+
     }
 
     void PassiveUpdate()

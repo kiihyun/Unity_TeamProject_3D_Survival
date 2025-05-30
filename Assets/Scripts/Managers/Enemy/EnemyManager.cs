@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform enemyParent;
     [SerializeField] private float minSpawnPos;
     [SerializeField] private float maxSpawnPos;
-    [SerializeField] private float respawnDelay = 5f;
+    [SerializeField] private float respawnDelay =  5f;
     [SerializeField] private List<EnemyDataEntry> enemyEntries;
 
     void Start()
@@ -32,6 +32,7 @@ public class EnemyManager : MonoBehaviour
 
             entry.activeEnemies.Add(obj);
 
+            //리스폰
             Enemy enemy = obj.GetComponent<Enemy>();
             if (enemy != null)
             {
@@ -42,6 +43,20 @@ public class EnemyManager : MonoBehaviour
                     deadObj.SetActive(false);
                     StartCoroutine(RespawnOneAfterDelay(entry));
                 };
+            }
+            else // BaseEnemy로 상속받아 중복코드 정리 예정
+            {
+                PassiveAnimal animal = obj.GetComponent<PassiveAnimal>();
+                if (animal != null)
+                {
+                    animal.data = data;
+                    animal.OnDieCallback = (deadObj) =>
+                    {
+                        entry.activeEnemies.Remove(deadObj);
+                        deadObj.SetActive(false);
+                        StartCoroutine(RespawnOneAfterDelay(entry));
+                    };
+                }
             }
         }
     }

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7253f3c863e4dc24091825a717c0424c, type: 3}
   m_Name: EnemyRabbit
   m_EditorClassIdentifier: 
-  enemyName: "\uD1A0"
+  enemyName: "\uD1A0\uB07C"
   maxHealth: 1
-  walkSpeed: 1
+  walkSpeed: 3
   runSpeed: 5
   spawnCount: 20
-  prefab: {fileID: 8810653437333796905, guid: 638c6fb1e64ebad4bad35750d90d4faa, type: 3}
+  prefab: {fileID: 6206966632080291316, guid: 1dc60f7a8e12ca943b5446fc88a463e3, type: 3}
   dropOnDeath: []
   detectDistance: 5
   minWanderDistance: 5
-  maxWanderDistance: 7
+  maxWanderDistance: 10
   minWanderWaitTime: 5
   maxWanderWaitTime: 10
   damage: 0
