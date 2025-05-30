@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
         // 인벤토리를 처음엔 꺼둠
         inventoryPanel.SetActive(false);
+        craftingUI.SetActive(false); // 제작 UI도 처음엔 꺼둠
         SetCursorState(false);
     }
 
