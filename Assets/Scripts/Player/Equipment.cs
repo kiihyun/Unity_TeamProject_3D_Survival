@@ -30,7 +30,7 @@ public class Equipment : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && curEquip != null )
+        if (context.phase == InputActionPhase.Started && curEquip != null )
         { 
             curEquip.OnAttackInput(); // 현재 장비된 맨손 스크립트 실행
         }
