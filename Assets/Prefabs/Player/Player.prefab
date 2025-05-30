@@ -3905,7 +3905,6 @@ GameObject:
   - component: {fileID: 3005631685914134993}
   - component: {fileID: 6090599093838530000}
   - component: {fileID: 2338312085905560428}
-  - component: {fileID: 2443672982554889919}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -4136,6 +4135,7 @@ MonoBehaviour:
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
   inventoryPanel: {fileID: 0}
+  isInventoryOpen: 0
   canControl: 1
   craftingUI: {fileID: 0}
 --- !u!114 &6759789591993602433
@@ -4377,21 +4377,6 @@ MonoBehaviour:
   equipSlots:
   - slotType: 0
     equippedItem: {fileID: 0}
---- !u!114 &2443672982554889919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8307605642993439931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4a638aee2031f43be33bc4539060f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventory: {fileID: 6090599093838530000}
-  playerCondition: {fileID: 6759789591993602433}
-  shortcutManager: {fileID: 0}
 --- !u!1 &8384466031092537439
 GameObject:
   m_ObjectHideFlags: 0
