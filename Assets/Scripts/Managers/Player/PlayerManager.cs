@@ -10,6 +10,8 @@ public class PlayerManager : Singleton<PlayerManager>
     public PlayerInteraction interaction { get; private set; }
     public FootStep footStep { get; private set; }
 
+    public PlacementPreview placeSystem;
+
 
     protected override void Awake()
     {
@@ -22,6 +24,7 @@ public class PlayerManager : Singleton<PlayerManager>
         controller = player.GetComponent<PlayerController>();
         condition = player.GetComponent<PlayerCondition>();
         interaction = player.GetComponent<PlayerInteraction>();
+        placeSystem = player.GetComponent<PlacementPreview>();
 
         // 자식 오브젝트에서 가져오기
         footStep = player.GetComponentInChildren<FootStep>();
@@ -31,6 +34,7 @@ public class PlayerManager : Singleton<PlayerManager>
         if (controller == null) Debug.LogError("PlayerController가 Player에 없습니다.");
         if (condition == null) Debug.LogError("PlayerCondition이 Player에 없습니다.");
         if (interaction == null) Debug.LogError("PlayerInteraction이 Player에 없습니다.");
+        if (placeSystem == null) Debug.LogError("PlacementPreview이 Player에 없습니다.");
         if (footStep == null) Debug.LogWarning("FootStep이 자식에 없습니다.");
         if (animator == null) Debug.LogWarning("PlayerAnimController가 자식에 없습니다.");
     }
