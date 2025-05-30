@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 1074626296961081376}
   - component: {fileID: 4521514012137045793}
   - component: {fileID: 8971101153357715192}
-  - component: {fileID: 1346495077857500000}
   - component: {fileID: 2735953402310377806}
+  - component: {fileID: 4234072694868240083}
+  - component: {fileID: 8346833299526902747}
+  - component: {fileID: 6602142287419178250}
   m_Layer: 0
   m_Name: ItemHammer
   m_TagString: Untagged
@@ -85,8 +87,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1346495077857500000
-CapsuleCollider:
+--- !u!114 &2735953402310377806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93134635677331774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680925cad200bea4ba1634e9522cea3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 760c50357941007489159a67bdda0e03, type: 2}
+--- !u!65 &4234072694868240083
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,12 +118,37 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2735953402310377806
+  serializedVersion: 3
+  m_Size: {x: 0.11333236, y: 0.29099455, z: 0.028593678}
+  m_Center: {x: 0.010345191, y: 0.045141827, z: -0.00028718077}
+--- !u!54 &8346833299526902747
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93134635677331774}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &6602142287419178250
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,7 +157,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 93134635677331774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680925cad200bea4ba1634e9522cea3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 760c50357941007489159a67bdda0e03, type: 2}
+  itemData: {fileID: 0}
+  amount: 1
