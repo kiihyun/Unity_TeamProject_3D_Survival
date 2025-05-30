@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Rigidbody _rigidbody;
     private AudioSource _audioSource;
 
+    [Header("UI 패널 참조")]
+    public GameObject inventoryPanel;
+    private bool isInventoryOpen = false;
+
     public bool canControl = true; //플레이어 컨트롤 가능 여부
 
     void Awake()
