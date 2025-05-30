@@ -39,11 +39,14 @@ public class Enemy : MonoBehaviour, IDamagable
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        NavMeshUtility.TrySnapToNavMesh(transform); // NavMesh 보정
     }
 
     void Start()
     {
         SetState(AIState.Wandering);
+
         curHealth = data.maxHealth;
     }
 
@@ -77,7 +80,7 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = true;
                 break;
             case AIState.Wandering:
-                agent.speed = data.walkSpeed; 
+                agent.speed = data.walkSpeed;
                 agent.isStopped = false;
                 break;
             case AIState.Attacking:
@@ -85,7 +88,7 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
-        animator.speed = agent.speed /data.walkSpeed;
+        animator.speed = agent.speed / data.walkSpeed;
     }
 
     void PassiveUpdate()
@@ -222,5 +225,19 @@ public class Enemy : MonoBehaviour, IDamagable
         OnDieCallback?.Invoke(this.gameObject); //  리스폰 트리거
 
         gameObject.SetActive(false); // 여기서 비활성화
+    }
+
+    public static class NavMeshUtility
+    {
+        public static bool TrySnapToNavMesh(Transform objTransform, float maxDistance = 2f)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(objTransform.position, out hit, maxDistance, NavMesh.AllAreas))
+            {
+                objTransform.position = hit.position;
+                return true;
+            }
+            return false;
+        }
     }
 }
