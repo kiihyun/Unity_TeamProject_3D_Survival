@@ -2645,6 +2645,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 1911631167}
   dialogueUI: {fileID: 870164425}
+  uiInventory: {fileID: 0}
+  uiCrafting: {fileID: 0}
 --- !u!114 &1117599481
 MonoBehaviour:
   m_ObjectHideFlags: 0

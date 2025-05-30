@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     [Header("UI 패널 참조")]
     public GameObject inventoryPanel;
-    private bool isInventoryOpen = false;
+    public bool isInventoryOpen = false;
 
     public bool canControl = true; //플레이어 컨트롤 가능 여부
 
