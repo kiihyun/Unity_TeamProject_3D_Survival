@@ -37,6 +37,7 @@ public class Enemy : MonoBehaviour, IDamagable
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
@@ -44,13 +45,13 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         SetState(AIState.Wandering);
         curHealth = data.maxHealth;
-        
-
     }
 
     void Update()
     {
         playerDistance = Vector3.Distance(transform.position, PlayerManager.Instance.player.transform.position);
+
+        animator.SetBool("Moving", aiState != AIState.Idle);
 
         switch (aiState)
         {
@@ -62,6 +63,8 @@ public class Enemy : MonoBehaviour, IDamagable
                 AttackingUpdate();
                 break;
         }
+
+        animator.speed = agent.speed / data.walkSpeed;
     }
     public void SetState(AIState state)
     {
@@ -74,7 +77,7 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = true;
                 break;
             case AIState.Wandering:
-                agent.speed = data.walkSpeed;
+                agent.speed = data.walkSpeed; 
                 agent.isStopped = false;
                 break;
             case AIState.Attacking:
@@ -82,7 +85,7 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
-
+        animator.speed = agent.speed /data.walkSpeed;
     }
 
     void PassiveUpdate()
@@ -126,6 +129,8 @@ public class Enemy : MonoBehaviour, IDamagable
             agent.isStopped = true;
             if (Time.time - lastAttackTime > data.attackRate)
             {
+                Debug.Log("좀비가 공격");
+                animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
                 PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
                 lastAttackTime = Time.time;
@@ -187,7 +192,7 @@ public class Enemy : MonoBehaviour, IDamagable
         }
         // Pool에 반환하거나 파괴 전
         OnDieCallback?.Invoke(this.gameObject);
-        gameObject.SetActive(false); // 혹은 ObjectPool 반환
+        StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
     }
 
@@ -203,5 +208,17 @@ public class Enemy : MonoBehaviour, IDamagable
         {
             meshRenderers[i].material.color = Color.white;
         }
+    }
+
+    IEnumerator DieCoroutine()
+    {
+        Debug.Log("die코루틴");
+        animator.SetBool("Die", true); // 죽는 애니메이션
+
+        yield return new WaitForSeconds(5f); // 죽는 애니메이션 길이만큼 대기
+
+        OnDieCallback?.Invoke(this.gameObject); //  리스폰 트리거
+
+        gameObject.SetActive(false); // 여기서 비활성화
     }
 }

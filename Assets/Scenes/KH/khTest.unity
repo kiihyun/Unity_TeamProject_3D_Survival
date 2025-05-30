@@ -2226,11 +2226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  controller: {fileID: 0}
-  animator: {fileID: 0}
-  condition: {fileID: 0}
-  interaction: {fileID: 0}
-  footStep: {fileID: 0}
 --- !u!4 &1176509711
 Transform:
   m_ObjectHideFlags: 0
@@ -3054,9 +3049,6 @@ MonoBehaviour:
   maxSpawnPos: 10
   respawnDelay: 5
   enemyEntries:
-  - data: {fileID: 11400000, guid: 10fb5135dd84c82419cb37506e4f83e2, type: 2}
-    spawnPoint: {fileID: 376849292}
-    activeEnemies: []
   - data: {fileID: 11400000, guid: 4b48f0b5d3054aa449daa7e21dca9b02, type: 2}
     spawnPoint: {fileID: 376849292}
     activeEnemies: []

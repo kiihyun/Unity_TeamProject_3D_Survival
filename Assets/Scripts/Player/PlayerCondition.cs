@@ -332,8 +332,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (health > 0f)
         {
             health -= _damageAmount;
-            audioSource.clip = hitClips[Random.Range(0, hitClips.Length)];
-            audioSource.Play();
+            //audioSource.clip = hitClips[Random.Range(0, hitClips.Length)];
+            //audioSource.Play();
         }
         else if (health <= 0f)
         {
