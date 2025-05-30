@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -24,10 +25,28 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpawnPos, maxSpawnPos);
-            Vector3 spawnPos = entry.spawnPoint.localPosition+ new Vector3(randCircle.x, 0f, randCircle.y);
+            Vector3 rawPos = entry.spawnPoint.position+ new Vector3(randCircle.x, 0f, randCircle.y);
+
+            Vector3 spawnPos = GetValidNavMeshPosition(rawPos, 2f); // NavMesh 위 위치로 보정
 
             GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, null, spawnPos);
             obj.transform.SetParent(enemyParent);
+            NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
+            if (agent != null)
+            {
+                agent.enabled = false;
+                agent.transform.position = spawnPos;
+                agent.enabled = true;
+            }
+
+            if (NavMesh.SamplePosition(spawnPos, out NavMeshHit hit, 100f, NavMesh.AllAreas))
+            {
+                spawnPos = hit.position;
+            }
+            else
+            {
+                Debug.LogWarning($"No NavMesh nearby! spawnPos: {spawnPos}");
+            }
             obj.SetActive(true);
 
             entry.activeEnemies.Add(obj);
@@ -63,5 +82,17 @@ public class EnemyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnDelay);
         SpawnEnemies(entry, 1);
+    }
+    Vector3 GetValidNavMeshPosition(Vector3 position, float maxDistance = 2f)
+    {
+        if (NavMesh.SamplePosition(position, out NavMeshHit hit, maxDistance, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        else
+        {
+            Debug.LogWarning($"NavMesh 위에 유효한 위치가 없음: {position}");
+            return position; // 실패 시 원래 위치 사용 (오류는 날 수 있음)
+        }
     }
 }
