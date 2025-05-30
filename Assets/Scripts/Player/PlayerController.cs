@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Rigidbody _rigidbody;
     private AudioSource _audioSource;
 
+    [Header("UI 패널 참조")]
+    public GameObject inventoryPanel;
+    private bool isInventoryOpen = false;
+
     public bool canControl = true; //플레이어 컨트롤 가능 여부
 
     public GameObject craftingUI; // 유니티에서 UI 캔버스 연결
@@ -51,6 +55,10 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     private void Start()
     {
         curSpeed = walkSpeed;
+
+        // 인벤토리를 처음엔 꺼둠
+        inventoryPanel.SetActive(false);
+        SetCursorState(false);
     }
 
     void Update()
@@ -159,12 +167,27 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
         }
     }
 
-    //공격, 자원캐기 등등
-    public void OnAttackInput(InputAction.CallbackContext context)
+    // Input System의 "Inventory" 액션에 연결됨
+    public void OnToggleInventory(InputAction.CallbackContext context)
     {
-        PlayerManager.Instance.interaction.Attack();
+        if (context.performed)
+        {
+            ToggleInventory();
+        }
     }
 
+    private void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+        SetCursorState(isInventoryOpen);
+    }
+
+    private void SetCursorState(bool isVisible)
+    {
+        Cursor.visible = isVisible;
+        Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
 
     public void OpenCraftingUI()
     {

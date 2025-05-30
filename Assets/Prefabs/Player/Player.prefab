@@ -4078,8 +4078,8 @@ MonoBehaviour:
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InventoryUIManager, Assembly-CSharp
+      - m_Target: {fileID: 7626783387476105381}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: OnToggleInventory
         m_Mode: 0
         m_Arguments:
@@ -4135,7 +4135,9 @@ MonoBehaviour:
   camContainer: {fileID: 7261169556917553914}
   mouseSensibility: 0.1
   _rigidbody: {fileID: 0}
+  inventoryPanel: {fileID: 0}
   canControl: 1
+  craftingUI: {fileID: 0}
 --- !u!114 &6759789591993602433
 MonoBehaviour:
   m_ObjectHideFlags: 0
