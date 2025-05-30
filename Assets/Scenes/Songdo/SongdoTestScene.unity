@@ -5653,6 +5653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 2033418807}
   maxDistance: 3
+  hitTreeCount: 0
+  maxHitTreeCount: 0
   curDetectObject: {fileID: 0}
   promptUI: {fileID: 1885862925}
 --- !u!114 &1540680861

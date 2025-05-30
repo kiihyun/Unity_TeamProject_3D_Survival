@@ -18,9 +18,10 @@ MonoBehaviour:
   type: 2
   icon: {fileID: 0}
   dropPrefab: {fileID: 0}
-  canStack: 0
-  maxStackAmount: 0
+  canStack: 1
+  maxStackAmount: 64
   consumables: []
+  equipSlotType: 0
   equipPrefab: {fileID: 0}
   durability: 0
   canPlace: 0
