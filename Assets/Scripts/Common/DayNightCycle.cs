@@ -32,6 +32,10 @@ public class DayNightCycle : MonoBehaviour
     public AnimationCurve lightingIntensityMultiplier;     // 시간에 따른 환경광 밝기 변화
     public AnimationCurve reflectionIntensityMultiplier;   // 시간에 따른 반사광 밝기 변화
 
+    [Header("Weather Settings")]
+    public float weatherChangeInterval = 0.25f; // 하루 중 날씨 변경 간격 (0.25 = 6시간)
+    private float lastWeatherCheckTime = -1f;
+
     private void Start()
     {
         // 하루가 얼마나 빠르게 흐를지 계산 (ex. 120초 = 1일이면 1/120만큼씩 증가)
@@ -53,6 +57,9 @@ public class DayNightCycle : MonoBehaviour
         // 전역 조명 반영
         RenderSettings.ambientIntensity = lightingIntensityMultiplier.Evaluate(time);
         RenderSettings.reflectionIntensity = reflectionIntensityMultiplier.Evaluate(time);
+
+        // 날씨 업데이트
+        UpdateWeather();
     }
 
     /// <summary>
@@ -76,5 +83,23 @@ public class DayNightCycle : MonoBehaviour
         bool shouldBeActive = intensity > 0f;
         if (go.activeSelf != shouldBeActive)
             go.SetActive(shouldBeActive);
+    }
+
+    private void UpdateWeather()
+    {
+        // 일정 시간대마다 한 번만 날씨 변경 시도
+        float currentChunk = Mathf.Floor(time / weatherChangeInterval) * weatherChangeInterval;
+        if (Mathf.Approximately(currentChunk, lastWeatherCheckTime)) return;
+
+        lastWeatherCheckTime = currentChunk;
+
+        // 모든 날씨 타입 중에서 무작위 선택
+        WeatherType[] allWeathers = (WeatherType[])System.Enum.GetValues(typeof(WeatherType));
+        WeatherType newWeather = allWeathers[Random.Range(0, allWeathers.Length)];
+
+        WeatherManager.Instance.SetWeather(newWeather);
+
+        // 현재 날씨 디버그 출력
+        Debug.Log($"[DayNightCycle] {System.DateTime.Now:T} - 날씨 변경됨 → {newWeather}");
     }
 }

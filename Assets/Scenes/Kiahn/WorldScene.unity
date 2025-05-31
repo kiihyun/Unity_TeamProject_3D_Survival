@@ -586,6 +586,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  weatherChangeInterval: 0.25
 --- !u!114 &230993869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2034,7 +2035,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -617.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6256892457664209537, guid: 838b7c9e868878544b9d960d477e34bb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
