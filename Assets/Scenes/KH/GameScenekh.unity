@@ -405,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curEquip: {fileID: 0}
   animator: {fileID: 0}
+  meshRenderer: {fileID: 1970388869}
   defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
 --- !u!1001 &555424918
 PrefabInstance:
@@ -417,6 +418,10 @@ PrefabInstance:
     - target: {fileID: 1104351902857617713, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105671100586821084, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2281185550190995533, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_IsActive
@@ -549,9 +554,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8307605642993439931, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2015350963}
-    - targetCorrespondingSourceObject: {fileID: 8307605642993439931, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2015350964}
     - targetCorrespondingSourceObject: {fileID: 2187052019189463651, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       insertIndex: -1
       addedObject: {fileID: 391636679}
@@ -3647,6 +3649,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3567521142176859338, guid: 074947dc66d043a43aec7d799ae8352a, type: 3}
   m_PrefabInstance: {fileID: 1120846937}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &1970388869 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2105671100586821084, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+  m_PrefabInstance: {fileID: 555424918}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2015350954 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8307605642993439931, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
@@ -3666,28 +3673,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curEquip: {fileID: 0}
   animator: {fileID: 0}
+  meshRenderer: {fileID: 0}
   defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
---- !u!95 &2015350964
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015350954}
-  m_Enabled: 0
-  m_Avatar: {fileID: 9000000, guid: 0e55d5c42cc96404f872b45455603f8b, type: 3}
-  m_Controller: {fileID: 9100000, guid: aa9522bc2a0a7b64484885f783e360a0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
