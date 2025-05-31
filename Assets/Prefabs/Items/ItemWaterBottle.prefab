@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 2415020858822255876}
   - component: {fileID: 1176226589675395019}
   - component: {fileID: 3521196383124789289}
-  - component: {fileID: 2411428462312719653}
   m_Layer: 0
   m_Name: ItemWaterBottle
   m_TagString: Untagged
@@ -163,17 +162,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2411428462312719653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5191722598147987414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 0}
-  amount: 1

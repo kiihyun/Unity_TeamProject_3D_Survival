@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Random = UnityEngine.Random;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             Debug.LogError("Rigidbody is null");
         }
 
-        if(!TryGetComponent<AudioSource>(out _audioSource))
+        if (!TryGetComponent<AudioSource>(out _audioSource))
         {
             Debug.LogError("AudioSource is null");
         }

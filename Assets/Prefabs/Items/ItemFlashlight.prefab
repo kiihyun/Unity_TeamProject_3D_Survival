@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4521514012137045793}
   - component: {fileID: 8971101153357715192}
   - component: {fileID: 2735953402310377806}
+  - component: {fileID: 6401850255385521970}
   - component: {fileID: 2930664038423980500}
   - component: {fileID: 960064056278960056}
-  - component: {fileID: 6401850255385521970}
   m_Layer: 0
   m_Name: ItemFlashlight
   m_TagString: Untagged
@@ -103,6 +103,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: c1f947cf51761124f8aa177f346c48bb, type: 2}
+--- !u!114 &6401850255385521970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93134635677331774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: c1f947cf51761124f8aa177f346c48bb, type: 2}
+  amount: 1
 --- !u!54 &2930664038423980500
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,19 +163,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.038086526, y: 0.038086526, z: 0.13274792}
-  m_Center: {x: 0, y: 9.313226e-10, z: -0.055225465}
---- !u!114 &6401850255385521970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 93134635677331774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: c1f947cf51761124f8aa177f346c48bb, type: 2}
-  amount: 1
+  m_Size: {x: 0.07378827, y: 0.07854912, z: 0.17230663}
+  m_Center: {x: 0, y: 0, z: -0.057909533}

@@ -15,8 +15,8 @@ public class EquipmentSystem : MonoBehaviour
                 slot.equippedItem = item;
                 Debug.Log($"ย๘ฟ๋ตส: {item.displayName}");
 
-                GameObject gameObject = Instantiate(item.equipPrefab, equipPos);
-
+                GameObject gameObject = Instantiate(slot.equippedItem.equipPrefab, equipPos);
+                gameObject.transform.position = equipPos.position;
                 return;
             }
         }

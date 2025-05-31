@@ -1,6 +1,8 @@
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -9,9 +11,15 @@ public class MainMenuController : MonoBehaviour
     public GameObject SettingButton;
     public GameObject exitButton;
     public GameObject creditButton;
+    
+    public GameObject mainMenuPanel; // ë©”ì¸ ë©”ë‰´ íŒ¨ë„ ì°¸ì¡°
+    public GameObject settingsPanel; // ì„¤ì • íŒ¨ë„ ì°¸ì¡°
 
-    public GameObject mainMenuPanel; // ¸ŞÀÎ ¸Ş´º ÆĞ³Î ÂüÁ¶
-    public GameObject settingsPanel; // ¼³Á¤ ÆĞ³Î ÂüÁ¶
+    [Header("Fade Settings")]
+    public Image fadePanel;
+    public float fadeStartAlpha = 0.3f;
+    public float fadeEndAlpha = 1f;
+    public float fadeDuration = 1f;
 
     void Start()
     {
@@ -20,19 +28,21 @@ public class MainMenuController : MonoBehaviour
 
     public void OnClickNewGame()
     {
-        SceneManager.LoadScene("IntroScene"); // ÀÌ¸§À¸·Î ·Îµå
-        // ¶Ç´Â Index·Î ·Îµå: SceneManager.LoadScene(1);
+        mainMenuPanel.gameObject.SetActive(true); // í˜ì´ë“œ íŒ¨ë„ í™œì„±í™”
+        fadePanel.gameObject.SetActive(true); // í˜ì´ë“œ íŒ¨ë„ í™œì„±í™”
+
+        StartCoroutine(PlayIntroSequence());
     }
 
     public void OnClickLoadGame()
     {
-        // ·Îµå °ÔÀÓ ·ÎÁ÷À» ¿©±â¿¡ Ãß°¡
+        // ë¡œë“œ ê²Œì„ ë¡œì§ì„ ì—¬ê¸°ì— ì¶”ê°€
         Debug.Log("Load Game clicked");
     }
     public void OnClickSettings()
     {
-        settingsPanel.SetActive(!settingsPanel.activeSelf); // ¼³Á¤ ÆĞ³Î Åä±Û
-        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // ¸ŞÀÎ ¸Ş´º ÆĞ³Î ¼û±è/º¸ÀÓ
+        settingsPanel.SetActive(!settingsPanel.activeSelf); // ì„¤ì • íŒ¨ë„ í† ê¸€
+        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // ë©”ì¸ ë©”ë‰´ íŒ¨ë„ ìˆ¨ê¹€/ë³´ì„
 
     }
         
@@ -40,24 +50,54 @@ public class MainMenuController : MonoBehaviour
     {
         #if UNITY_EDITOR
             Debug.Log("Exit Game clicked");
-            // ¿¡µğÅÍ¿¡¼­´Â ÇÃ·¹ÀÌ ¸ğµå Á¾·á
+            // ì—ë””í„°ì—ì„œëŠ” í”Œë ˆì´ ëª¨ë“œ ì¢…ë£Œ
             UnityEditor.EditorApplication.isPlaying = false;
         #else
-            // ºôµåµÈ °ÔÀÓ¿¡¼­´Â ¾ÖÇÃ¸®ÄÉÀÌ¼Ç Á¾·á
+            // ë¹Œë“œëœ ê²Œì„ì—ì„œëŠ” ì• í”Œë¦¬ì¼€ì´ì…˜ ì¢…ë£Œ
             Application.Quit();
         #endif
     }
 
     public void OnClickCredit()
     {
-        // Å©·¹µ÷ ·ÎÁ÷À» ¿©±â¿¡ Ãß°¡
+        // í¬ë ˆë”§ ë¡œì§ì„ ì—¬ê¸°ì— ì¶”ê°€
         Debug.Log("Credit clicked");
-        SceneManager.LoadScene("CreditScene"); // Å©·¹µ÷ ¾À ·Îµå
+        SceneManager.LoadScene("CreditScene"); // í¬ë ˆë”§ ì”¬ ë¡œë“œ
     }
 
     public void OnConfirmBtn()
     {
-        settingsPanel.SetActive(!settingsPanel.activeSelf); // ¼³Á¤ ÆĞ³Î Åä±Û
-        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // ¸ŞÀÎ ¸Ş´º ÆĞ³Î ¼û±è/º¸ÀÓ
+        settingsPanel.SetActive(!settingsPanel.activeSelf); // ì„¤ì • íŒ¨ë„ í† ê¸€
+        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // ë©”ì¸ ë©”ë‰´ íŒ¨ë„ ìˆ¨ê¹€/ë³´ì„
+    }
+
+    IEnumerator PlayIntroSequence()
+    {
+        // 1. í˜ì´ë“œ ì¸
+        yield return StartCoroutine(FadeIn());
+
+        // 2. ì ê¹ ëŒ€ê¸°
+        yield return new WaitForSeconds(1f);
+
+        // 3. ì¸íŠ¸ë¡œ ì”¬ìœ¼ë¡œ ì „í™˜
+        SceneManager.LoadScene("IntroScene");
+    }
+
+
+    IEnumerator FadeIn()
+    {
+        Color color = fadePanel.color;
+        color.a = fadeStartAlpha;
+        fadePanel.color = color;
+
+        float timer = 0f;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(fadeStartAlpha, fadeEndAlpha, timer / fadeDuration);
+            color.a = alpha;
+            fadePanel.color = color;
+            yield return null;
+        }
     }
 }
