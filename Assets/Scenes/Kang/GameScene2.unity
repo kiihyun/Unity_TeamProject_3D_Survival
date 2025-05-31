@@ -805,26 +805,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7667419187089624632, guid: aa3911fd15e5ed04d99ac2bae0f26631, type: 3}
   m_PrefabInstance: {fileID: 393405990}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &485302394 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2187052019189463651, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
-  m_PrefabInstance: {fileID: 555424918}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &485302396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485302394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41690b120a21e6546934950230d6a2e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  curEquip: {fileID: 0}
-  animator: {fileID: 0}
-  defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
 --- !u!1001 &550786373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -966,7 +946,7 @@ PrefabInstance:
     - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 485302396}
+      objectReference: {fileID: 0}
     - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1062,10 +1042,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2187052019189463651, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 485302396}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
 --- !u!114 &555424919 stripped
 MonoBehaviour:
