@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 public enum PlayerState
 {
     Idle,
@@ -8,8 +8,16 @@ public enum PlayerState
 
 public enum PlayerConditionState
 {
-    Hungry,       //ºÎ»ó »óÅÂ
-    Thirsty,      //¹è°íÇÄ »óÅÂ
-    Hypothermia,      //ÃßÀ§ »óÅÂ
+    Hungry,       //ë¶€ìƒ ìƒíƒœ
+    Thirsty,      //ë°°ê³ í”” ìƒíƒœ
+    Hypothermia,      //ì¶”ìœ„ ìƒíƒœ
     Tired
+}
+
+public enum WeightState
+{
+    Light,
+    Normal,
+    Heavy,
+    Overloaded
 }

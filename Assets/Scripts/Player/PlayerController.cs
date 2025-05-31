@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Random = UnityEngine.Random;
@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public void Move()
     {
         Vector3 moveDir = (transform.forward * curMoveInput.y) + (transform.right * curMoveInput.x);
+        UpdateMoveSpeed();
         moveDir *= curSpeed;
         moveDir.y = _rigidbody.velocity.y;
         _rigidbody.velocity = moveDir; //이동 방향으로 속도 설정
@@ -138,6 +139,32 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             isRun = false;
         }
     }
+
+    /// <summary>
+    /// 무게에 따라서 이동 속도를 조절하게 만듭니다.
+    /// </summary>
+
+    private void UpdateMoveSpeed()
+    {
+        var weightStatus = PlayerManager.Instance.condition.WeightStatus;
+
+        switch (weightStatus)
+        {
+            case WeightState.Light:
+                curSpeed = walkSpeed * 1.2f;
+                break;
+            case WeightState.Normal:
+                curSpeed = walkSpeed;
+                break;
+            case WeightState.Heavy:
+                curSpeed = walkSpeed * 0.6f;
+                break;
+            case WeightState.Overloaded:
+                curSpeed = 0f;
+                break;
+        }
+    }
+
 
     //시점
     public void Look()
