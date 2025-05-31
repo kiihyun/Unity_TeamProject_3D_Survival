@@ -239,12 +239,12 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
             && !conditionStats.Contains(PlayerConditionState.Hypothermia)
-            && controller.curSpeed != controller.sprintSpeed)
+            && !controller.isRun)
         {
             GenerateStamina(staminaRecovRate);
         }
         // 플레이어가 달릴 때 스태미나 감소
-        else if (stamina > 0f && controller.curSpeed == controller.sprintSpeed)
+        else if (stamina > 0f && controller.isRun)
         {
             GenerateStamina(-staminaDecRate);
         }
