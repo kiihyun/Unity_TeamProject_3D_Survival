@@ -29,6 +29,8 @@ public class TemperatureManager : MonoBehaviour
     [Tooltip("환경 온도에 따라 체온이 얼마나 빠르게 변화하는지 (값이 클수록 빠르게 반응함)")]
     public float thermalAdjustmentSpeed = 0.5f;
 
+    private float logTimer = 0f; // 시간 누적용 타이머
+
     private void Awake()
     {
         // 싱글턴 인스턴스 설정 (중복 생성 방지)
@@ -55,8 +57,13 @@ public class TemperatureManager : MonoBehaviour
         // 현재 시간에 따른 온도 계산
         currentTemperature = temperatureCurve.Evaluate(time);
 
-        // 디버그 로그로 현재 온도 출력
-        Debug.Log($"[TemperatureManager] 현재 온도: {currentTemperature:F1}°C (시간: {time:F2})");
+        // 1초마다 로그 출력
+        logTimer += Time.deltaTime;
+        if (logTimer >= 1f)
+        {
+            logTimer = 0f;
+            Debug.Log($"[TemperatureManager] 현재 온도: {currentTemperature:F1}°C (시간: {time:F2})");
+        }
 
         // 매 프레임 플레이어 체온을 현재 월드 온도에 맞춰 서서히 변화시킴
         UpdatePlayerBodyTemperature();

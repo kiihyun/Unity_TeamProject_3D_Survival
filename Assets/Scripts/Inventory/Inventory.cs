@@ -4,7 +4,22 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    //플레이어에게 붙이는 컴포넌트입니다.
+    //플레이어에게 붙이는 싱글턴 컴포넌트입니다.
+
+    public static Inventory Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Start is called before the first frame update
     public List<InventorySlot> slots = new();
     public int maxSlots = 20; //최대 슬롯 개수
@@ -54,11 +69,15 @@ public class Inventory : MonoBehaviour
         InventorySlot slot = slots.Find(s => s.item == item);
         return slot != null && slot.count >= amount;
     }
-
-
     //인덱스를 기반으로 슬롯을 가져오기
     public InventorySlot GetSlotByIndex(int index)
     {
         return (index >= 0 && index < slots.Count) ? slots[index] : null;
+    }
+    //제작할 때 사용될 재료의 정확한 갯수 확인.(ex. 나무 2/5, 3개 부족하다는 뜻)
+    public int GetItemCount(ItemData item)
+    {
+        InventorySlot slot = slots.Find(s => s.item == item);
+        return slot != null ? slot.count : 0;
     }
 }

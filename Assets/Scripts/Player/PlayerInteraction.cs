@@ -38,11 +38,37 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
     // 감지된 오브잭트를 이용하여 상호작용하는 메소드
     public void Interact()
     {
-        curDetectObject.GetComponent<ItemObject>().OnInteract();
-        Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공");
+        if (curDetectObject == null) return;
 
-        curDetectObject.GetComponent<ItemPickup>().ItemInteract(inventory);
-        //Songdo 아이템 오브젝트에 붙어있는 itempickup에 들어있는 ItemInteract 함수를 통해서 플레이어 인벤토리에 정보를 넘겨줌
+        var itemObject = curDetectObject.GetComponent<ItemObject>();
+        if (itemObject != null)
+        {
+            //itemObject 상호작용 처리
+            itemObject.OnInteract();
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (itemObject)");
+            return;
+        }
+
+        var npc = curDetectObject.GetComponent<NPCInteraction>();
+        if (npc != null)
+        {
+            //NPC 상호작용 처리
+            npc.StartDialogue();
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (NPC)");
+            return;
+        }
+
+        var itemPickup = curDetectObject.GetComponent<ItemPickup>();
+        if (itemPickup != null)
+        {
+            //Songdo 아이템 오브젝트에 붙어있는 itempickup에 들어있는 ItemInteract 함수를 통해서 플레이어 인벤토리에 정보를 넘겨줌
+            itemPickup.ItemInteract(inventory);
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+            return;
+        }
+
+        Debug.LogWarning("상호작용 가능한 컴포넌트가 없습니다: " + curDetectObject.name);
+
     }
 
     // 오브젝트를 Raycast로 감지하는 메소드
@@ -58,13 +84,23 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             lastHit = hit;
             hasHit = true;
             curDetectObject = hit.collider.gameObject;
-            if (curDetectObject != null) { return; }
-            promptUI.text = curDetectObject.GetComponent<ItemObject>().GetInteractPrompt();    // 감지된 오브젝트의 상호작용 프롬프트를 가져옴
+
+            // 상호작용 프롬프트 표시
+            var npc = curDetectObject.GetComponent<NPCInteraction>();
+            var item = curDetectObject.GetComponent<ItemObject>();
+
+            if (npc != null)
+                promptUI.text = "NPC와 대화하기";
+            else if (item != null)
+                promptUI.text = item.GetInteractPrompt();
+            else
+                promptUI.text = string.Empty;
         }
         else
         {
             lastHit = default;
             hasHit = false;
+            curDetectObject = null;
             promptUI.text = string.Empty;
         }
     }
