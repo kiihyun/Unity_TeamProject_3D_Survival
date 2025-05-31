@@ -1,4 +1,4 @@
-using Cinemachine;
+ï»¿using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -22,7 +22,7 @@ public class DialogueManager : MonoBehaviour
 
     private PlayerController playerController;
 
-    private HashSet<string> seenStroyDialogues = new HashSet<string>(); // ½ºÅä¸® ´ëÈ­ Áßº¹ ¹æÁö¿ë
+    private HashSet<string> seenStroyDialogues = new HashSet<string>(); // ìŠ¤í† ë¦¬ ëŒ€í™” ì¤‘ë³µ ë°©ì§€ìš©
 
     void Start()
     {
@@ -50,7 +50,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (dialogue.dialogueType == DialogueType.Tip)
         {
-            // ÆÁÀº ·£´ı ´ë»ç ÇÑ ÁÙ¸¸ Ãâ·Â
+            // íŒì€ ëœë¤ ëŒ€ì‚¬ í•œ ì¤„ë§Œ ì¶œë ¥
             string ramdomLine = dialogue.dialogueLines[Random.Range(0, dialogue.dialogueLines.Length)];
             StartDialogue(dialogue.npcName, new string[] { ramdomLine }, npcTarget);
             return;
@@ -60,17 +60,17 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string npcName, string[] dialogueLines, Transform npcTarget)
     {
-        // ÇÃ·¹ÀÌ¾î Ä«¸Ş¶ó¸¦ ºñÈ°¼ºÈ­ÇÏ°í NPC Ä«¸Ş¶ó¸¦ È°¼ºÈ­
+        // í”Œë ˆì´ì–´ ì¹´ë©”ë¼ë¥¼ ë¹„í™œì„±í™”í•˜ê³  NPC ì¹´ë©”ë¼ë¥¼ í™œì„±í™”
         npcCamera.Follow = npcTarget;
         npcCamera.LookAt = npcTarget;
 
         playerCamera.gameObject.SetActive(false);
         npcCamera.gameObject.SetActive(true);
 
-        // ÇÃ·¹ÀÌ¾î ÄÁÆ®·Ñ·¯ ºñÈ°¼ºÈ­
+        // í”Œë ˆì´ì–´ ì»¨íŠ¸ë¡¤ëŸ¬ ë¹„í™œì„±í™”
         playerController?.SetControl(false);
 
-        UIManager.Instance.ShowDialogueUI(); // ¸ğµç ºñ°ÔÀÓ UI ²¨Áö°í ´ëÈ­ UI¸¸ ÄÑÁü
+        UIManager.Instance.ShowDialogueUI(); // ëª¨ë“  ë¹„ê²Œì„ UI êº¼ì§€ê³  ëŒ€í™” UIë§Œ ì¼œì§
 
         nameText.text = npcName;
 
@@ -88,11 +88,11 @@ public class DialogueManager : MonoBehaviour
     {
         if (isTyping)
         {
-            // ÇöÀç Å¸ÀÌÇÎ ÁßÀÎ °æ¿ì, Áï½Ã ÀüÃ¼ ¹®ÀåÀ» Ç¥½Ã
+            // í˜„ì¬ íƒ€ì´í•‘ ì¤‘ì¸ ê²½ìš°, ì¦‰ì‹œ ì „ì²´ ë¬¸ì¥ì„ í‘œì‹œ
             if (typingCoroutine != null)
             {
                 StopCoroutine(typingCoroutine);
-                dialogueText.text = currentSentence; // ÀüÃ¼ ¹®Àå Ç¥½Ã
+                dialogueText.text = currentSentence; // ì „ì²´ ë¬¸ì¥ í‘œì‹œ
                 typingCoroutine = null;
             }
         }
@@ -120,7 +120,7 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(0.03f); // ±ÛÀÚ ÇÏ³ª Ãâ·Â ÈÄ ´ë±â
+            yield return new WaitForSeconds(0.03f); // ê¸€ì í•˜ë‚˜ ì¶œë ¥ í›„ ëŒ€ê¸°
         }
 
         typingCoroutine = null;
@@ -128,12 +128,12 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        UIManager.Instance.HideDialogueUI(); // ´Ù½Ã UI º¹±¸
+        UIManager.Instance.HideDialogueUI(); // ë‹¤ì‹œ UI ë³µêµ¬
 
-        // ÇÃ·¹ÀÌ¾î ÄÁÆ®·Ñ·¯ È°¼ºÈ­
+        // í”Œë ˆì´ì–´ ì»¨íŠ¸ë¡¤ëŸ¬ í™œì„±í™”
         playerController?.SetControl(true);
 
-        // Ä«¸Ş¶ó ÀüÈ¯: NPC Ä«¸Ş¶ó ºñÈ°¼ºÈ­, ÇÃ·¹ÀÌ¾î Ä«¸Ş¶ó È°¼ºÈ­
+        // ì¹´ë©”ë¼ ì „í™˜: NPC ì¹´ë©”ë¼ ë¹„í™œì„±í™”, í”Œë ˆì´ì–´ ì¹´ë©”ë¼ í™œì„±í™”
         npcCamera.gameObject.SetActive(false);
         playerCamera.gameObject.SetActive(true);
     }

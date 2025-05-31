@@ -1,39 +1,39 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// °ÔÀÓ ³» ÀüÃ¼ ¿Âµµ¸¦ °ü¸®ÇÏ´Â ¸Å´ÏÀú.
-/// - ³·/¹ã ÁÖ±â¿¡ µû¶ó º¯ÇÏ´Â "¿ùµå ¿Âµµ"¸¦ DayNightCycle·ÎºÎÅÍ ¹ŞÀ½.
-/// - ÇÃ·¹ÀÌ¾îÀÇ Ã¼¿ÂÀ» È¯°æ ¿Âµµ¿¡ µû¶ó ÀÚµ¿À¸·Î º¯È­½ÃÅ´.
-/// - ÀúÃ¼¿ÂÁõ/°í¿­ ¿©ºÎµµ ÆÇÁ¤ °¡´É.
+/// ê²Œì„ ë‚´ ì „ì²´ ì˜¨ë„ë¥¼ ê´€ë¦¬í•˜ëŠ” ë§¤ë‹ˆì €.
+/// - ë‚®/ë°¤ ì£¼ê¸°ì— ë”°ë¼ ë³€í•˜ëŠ” "ì›”ë“œ ì˜¨ë„"ë¥¼ DayNightCycleë¡œë¶€í„° ë°›ìŒ.
+/// - í”Œë ˆì´ì–´ì˜ ì²´ì˜¨ì„ í™˜ê²½ ì˜¨ë„ì— ë”°ë¼ ìë™ìœ¼ë¡œ ë³€í™”ì‹œí‚´.
+/// - ì €ì²´ì˜¨ì¦/ê³ ì—´ ì—¬ë¶€ë„ íŒì • ê°€ëŠ¥.
 /// 
-/// ½Ì±ÛÅÏ ÆĞÅÏÀ¸·Î ±¸¼ºµÇ¾î ¾î´À ½ºÅ©¸³Æ®µç TemperatureManager.Instance¸¦ ÅëÇØ Á¢±Ù °¡´É.
-/// </summary>
+/// ì‹±ê¸€í„´ íŒ¨í„´ìœ¼ë¡œ êµ¬ì„±ë˜ì–´ ì–´ëŠ ìŠ¤í¬ë¦½íŠ¸ë“  TemperatureManager.Instanceë¥¼ í†µí•´ ì ‘ê·¼ ê°€ëŠ¥.
+/// </summary> 
 public class TemperatureManager : MonoBehaviour
 {
-    // ½Ì±ÛÅÏ ÀÎ½ºÅÏ½º (¿ÜºÎ¿¡¼­ TemperatureManager.Instance·Î Á¢±Ù °¡´É)
+    // ì‹±ê¸€í„´ ì¸ìŠ¤í„´ìŠ¤ (ì™¸ë¶€ì—ì„œ TemperatureManager.Instanceë¡œ ì ‘ê·¼ ê°€ëŠ¥)
     public static TemperatureManager Instance { get; private set; }
 
-    [Tooltip("½Ã°£¿¡ µû¸¥ ¿ùµå ¿Âµµ °î¼± (x: 0~1 ½Ã°£, y: ¿Âµµ ¡ÆC)")]
+    [Tooltip("ì‹œê°„ì— ë”°ë¥¸ ì›”ë“œ ì˜¨ë„ ê³¡ì„  (x: 0~1 ì‹œê°„, y: ì˜¨ë„ Â°C)")]
     public AnimationCurve temperatureCurve;
 
-    [Tooltip("ÇöÀç ¿Âµµ (ÀĞ±â Àü¿ë)")]
+    [Tooltip("í˜„ì¬ ì˜¨ë„ (ì½ê¸° ì „ìš©)")]
     public float currentTemperature { get; private set; }
 
-    [Tooltip("DayNightCycle ½ºÅ©¸³Æ® ÂüÁ¶")]
+    [Tooltip("DayNightCycle ìŠ¤í¬ë¦½íŠ¸ ì°¸ì¡°")]
     public DayNightCycle dayNightCycle;
 
     [Header("World Temperature")]
     [SerializeField]
-    private float worldTemperature; // ÇöÀç ¿ùµåÀÇ ½ÇÁ¦ ¿Âµµ (DayNightCycle¿¡¼­ ¼³Á¤ÇÔ)
+    private float worldTemperature; // í˜„ì¬ ì›”ë“œì˜ ì‹¤ì œ ì˜¨ë„ (DayNightCycleì—ì„œ ì„¤ì •í•¨)
 
-    [Tooltip("È¯°æ ¿Âµµ¿¡ µû¶ó Ã¼¿ÂÀÌ ¾ó¸¶³ª ºü¸£°Ô º¯È­ÇÏ´ÂÁö (°ªÀÌ Å¬¼ö·Ï ºü¸£°Ô ¹İÀÀÇÔ)")]
+    [Tooltip("í™˜ê²½ ì˜¨ë„ì— ë”°ë¼ ì²´ì˜¨ì´ ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ë³€í™”í•˜ëŠ”ì§€ (ê°’ì´ í´ìˆ˜ë¡ ë¹ ë¥´ê²Œ ë°˜ì‘í•¨)")]
     public float thermalAdjustmentSpeed = 0.5f;
 
-    private float logTimer = 0f; // ½Ã°£ ´©Àû¿ë Å¸ÀÌ¸Ó
+    private float logTimer = 0f; // ì‹œê°„ ëˆ„ì ìš© íƒ€ì´ë¨¸
 
     private void Awake()
     {
-        // ½Ì±ÛÅÏ ÀÎ½ºÅÏ½º ¼³Á¤ (Áßº¹ »ı¼º ¹æÁö)
+        // ì‹±ê¸€í„´ ì¸ìŠ¤í„´ìŠ¤ ì„¤ì • (ì¤‘ë³µ ìƒì„± ë°©ì§€)
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -48,29 +48,29 @@ public class TemperatureManager : MonoBehaviour
     {
         if (dayNightCycle == null)
         {
-            Debug.LogWarning("DayNightCycleÀÌ ¿¬°áµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("DayNightCycleì´ ì—°ê²°ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
 
         float time = dayNightCycle.time;
 
-        // ÇöÀç ½Ã°£¿¡ µû¸¥ ¿Âµµ °è»ê
+        // í˜„ì¬ ì‹œê°„ì— ë”°ë¥¸ ì˜¨ë„ ê³„ì‚°
         currentTemperature = temperatureCurve.Evaluate(time);
 
-        // 1ÃÊ¸¶´Ù ·Î±× Ãâ·Â
+        // 1ì´ˆë§ˆë‹¤ ë¡œê·¸ ì¶œë ¥
         logTimer += Time.deltaTime;
         if (logTimer >= 5f)
         {
             logTimer = 0f;
-            Debug.Log($"[TemperatureManager] ÇöÀç ¿Âµµ: {currentTemperature:F1}¡ÆC (½Ã°£: {time:F2})");
+            Debug.Log($"[TemperatureManager] í˜„ì¬ ì˜¨ë„: {currentTemperature:F1}Â°C (ì‹œê°„: {time:F2})");
         }
 
-        // ¸Å ÇÁ·¹ÀÓ ÇÃ·¹ÀÌ¾î Ã¼¿ÂÀ» ÇöÀç ¿ùµå ¿Âµµ¿¡ ¸ÂÃç ¼­¼­È÷ º¯È­½ÃÅ´
+        // ë§¤ í”„ë ˆì„ í”Œë ˆì´ì–´ ì²´ì˜¨ì„ í˜„ì¬ ì›”ë“œ ì˜¨ë„ì— ë§ì¶° ì„œì„œíˆ ë³€í™”ì‹œí‚´
         UpdatePlayerBodyTemperature();
     }
 
     /// <summary>
-    /// ÇöÀç ¿ùµå ¿Âµµ¸¦ ¹İÈ¯ (ÇÊ¿ä½Ã ¿ÜºÎ¿¡¼­ ÀĞÀ» ¼ö ÀÖÀ½)
+    /// í˜„ì¬ ì›”ë“œ ì˜¨ë„ë¥¼ ë°˜í™˜ (í•„ìš”ì‹œ ì™¸ë¶€ì—ì„œ ì½ì„ ìˆ˜ ìˆìŒ)
     /// </summary>
     public float GetTemperature()
     {
@@ -78,14 +78,14 @@ public class TemperatureManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇöÀç ¿ùµå ¿Âµµ¿ÍÀÇ Â÷ÀÌ¿¡ µû¶ó ÇÃ·¹ÀÌ¾î Ã¼¿ÂÀ» Á¶±İ¾¿ Á¶ÀıÇÔ
+    /// í˜„ì¬ ì›”ë“œ ì˜¨ë„ì™€ì˜ ì°¨ì´ì— ë”°ë¼ í”Œë ˆì´ì–´ ì²´ì˜¨ì„ ì¡°ê¸ˆì”© ì¡°ì ˆí•¨
     /// </summary>
     /// 
     private void UpdatePlayerBodyTemperature()
     {
         float delta = currentTemperature - PlayerManager.Instance.condition.BodyTemp;
 
-        // È¯°æ ¿Âµµ¿ÍÀÇ Â÷ÀÌ¸¸Å­ Ã¼¿Â Á¶Á¤
+        // í™˜ê²½ ì˜¨ë„ì™€ì˜ ì°¨ì´ë§Œí¼ ì²´ì˜¨ ì¡°ì •
         PlayerManager.Instance.condition.BodyTemp += delta * thermalAdjustmentSpeed * Time.deltaTime;
     }
 }
