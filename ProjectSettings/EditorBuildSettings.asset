@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Kiahn/WorldScene.unity
     guid: 29d040746f7407a49844433c29ffa951
+  - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: 1e91f0abcafd25a46b1755ba891b4166
+  - enabled: 1
+    path: Assets/Scenes/IntroScene.unity
+    guid: bcb3bac2726cf95438204897a8ce1e9d
   m_configObjects: {}
