@@ -57,6 +57,10 @@ public class ItemData : ScriptableObject
     public EquipSlotType equipSlotType;
     public GameObject equipPrefab;
     public int durability;
+
+
+    [Header("Placement")]
     public bool canPlace;
+    public GameObject placeablePrefab;
 }
 

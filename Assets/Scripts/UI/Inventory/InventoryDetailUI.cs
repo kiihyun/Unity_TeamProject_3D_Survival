@@ -53,8 +53,16 @@ public class InventoryDetailUI : MonoBehaviour
             Debug.LogWarning("사용할 아이템이 없습니다.");
             return;
         }
+
         // 플레이어 상태에 효과 적용
         Debug.Log($"사용: {currentItem.displayName}");
+
+        if (currentItem.canPlace)
+        {
+            PlayerManager.Instance.placeSystem.StartPlacing(currentItem);
+            gameObject.SetActive(false);
+            return;
+        }
 
         var playerCondition = PlayerManager.Instance.condition;
         if (playerCondition == null)
@@ -104,7 +112,7 @@ public class InventoryDetailUI : MonoBehaviour
         }
 
 
-        var equipmentSystem = PlayerManager.Instance.GetComponent<EquipmentSystem>();
+        var equipmentSystem = PlayerManager.Instance.player.GetComponent<EquipmentSystem>();
         if (equipmentSystem == null) return;
 
         var equipped = equipmentSystem.GetEquippedItem(currentItem.equipSlotType);

@@ -1,80 +1,105 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ³·°ú ¹ãÀÇ ÁÖ±â¸¦ ½Ã¹Ä·¹ÀÌ¼ÇÇÏ´Â ½ºÅ©¸³Æ®.
-/// - ½Ã°£(time)Àº 0~1 ¹üÀ§·Î ÇÏ·ç¸¦ Ç¥ÇöÇÔ (0 = ÀÚÁ¤, 0.25 = ¿ÀÀü 6½Ã, 0.5 = Á¤¿À, 0.75 = ¿ÀÈÄ 6½Ã)
-/// - ÅÂ¾ç°ú ´ŞÀÇ À§Ä¡, »ö»ó, ¹à±â¸¦ ½Ã°£¿¡ µû¶ó Á¶Á¤ÇÔ
-/// - ambient/reflection Á¶¸íµµ ½Ã°£ ±â¹İÀ¸·Î º¯È­ÇÔ
-/// - temperatureCurve¸¦ ÅëÇØ ½Ã°£¿¡ µû¸¥ ¿ùµå ¿Âµµµµ ÇÔ²² Àü´ŞÇÔ
+/// ë‚®ê³¼ ë°¤ì˜ ì£¼ê¸°ë¥¼ ì‹œë®¬ë ˆì´ì…˜í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸.
+/// - ì‹œê°„(time)ì€ 0~1 ë²”ìœ„ë¡œ í•˜ë£¨ë¥¼ í‘œí˜„í•¨ (0 = ìì •, 0.25 = ì˜¤ì „ 6ì‹œ, 0.5 = ì •ì˜¤, 0.75 = ì˜¤í›„ 6ì‹œ)
+/// - íƒœì–‘ê³¼ ë‹¬ì˜ ìœ„ì¹˜, ìƒ‰ìƒ, ë°ê¸°ë¥¼ ì‹œê°„ì— ë”°ë¼ ì¡°ì •í•¨
+/// - ambient/reflection ì¡°ëª…ë„ ì‹œê°„ ê¸°ë°˜ìœ¼ë¡œ ë³€í™”í•¨
+/// - temperatureCurveë¥¼ í†µí•´ ì‹œê°„ì— ë”°ë¥¸ ì›”ë“œ ì˜¨ë„ë„ í•¨ê»˜ ì „ë‹¬í•¨
 /// </summary>
 public class DayNightCycle : MonoBehaviour
 {
     [Range(0.0f, 1.0f)]
-    public float time; // ÇÏ·ç Áß ÇöÀç ½Ã°£ (0~1)
+    public float time; // í•˜ë£¨ ì¤‘ í˜„ì¬ ì‹œê°„ (0~1)
 
-    public float fullDayLength = 120f; // ÇÑ '°¡»ó ÇÏ·ç'°¡ ½ÇÁ¦ ¸î ÃÊ¿¡ ÇØ´çÇÏ´ÂÁö
-    public float startTime = 0.4f;     // °ÔÀÓ ½ÃÀÛ ½Ã ½Ã°£ (0.4 = ¿ÀÀü 9½Ã 36ºĞÂë)
+    public float fullDayLength = 120f; // í•œ 'ê°€ìƒ í•˜ë£¨'ê°€ ì‹¤ì œ ëª‡ ì´ˆì— í•´ë‹¹í•˜ëŠ”ì§€
+    public float startTime = 0.4f;     // ê²Œì„ ì‹œì‘ ì‹œ ì‹œê°„ (0.4 = ì˜¤ì „ 9ì‹œ 36ë¶„ì¯¤)
 
-    private float timeRate;           // ÇÏ·çÀÇ ½Ã°£ ´ÜÀ§°¡ ¾ó¸¶³ª ºü¸£°Ô Èå¸£´ÂÁö¸¦ ³ªÅ¸³¿ (1 / fullDayLength)
-    public Vector3 noon = new Vector3(0f, 360f, 0f); // Á¤¿À ±âÁØ ±¤¿ø È¸Àü°ª
+    private float timeRate;           // í•˜ë£¨ì˜ ì‹œê°„ ë‹¨ìœ„ê°€ ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ íë¥´ëŠ”ì§€ë¥¼ ë‚˜íƒ€ëƒ„ (1 / fullDayLength)
+    public Vector3 noon = new Vector3(0f, 360f, 0f); // ì •ì˜¤ ê¸°ì¤€ ê´‘ì› íšŒì „ê°’
 
     [Header("Sun")]
-    public Light sun;                     // ÅÂ¾ç ±¤¿ø
-    public Gradient sunColor;            // ½Ã°£¿¡ µû¸¥ ÅÂ¾ç »ö»ó º¯È­
-    public AnimationCurve sunIntensity;  // ½Ã°£¿¡ µû¸¥ ÅÂ¾ç ¹à±â º¯È­
+    public Light sun;                     // íƒœì–‘ ê´‘ì›
+    public Gradient sunColor;            // ì‹œê°„ì— ë”°ë¥¸ íƒœì–‘ ìƒ‰ìƒ ë³€í™”
+    public AnimationCurve sunIntensity;  // ì‹œê°„ì— ë”°ë¥¸ íƒœì–‘ ë°ê¸° ë³€í™”
 
     [Header("Moon")]
-    public Light moon;                   // ´Ş ±¤¿ø
-    public Gradient moonColor;           // ½Ã°£¿¡ µû¸¥ ´Ş »ö»ó º¯È­
-    public AnimationCurve moonIntensity; // ½Ã°£¿¡ µû¸¥ ´Ş ¹à±â º¯È­
+    public Light moon;                   // ë‹¬ ê´‘ì›
+    public Gradient moonColor;           // ì‹œê°„ì— ë”°ë¥¸ ë‹¬ ìƒ‰ìƒ ë³€í™”
+    public AnimationCurve moonIntensity; // ì‹œê°„ì— ë”°ë¥¸ ë‹¬ ë°ê¸° ë³€í™”
 
     [Header("Other Lighting")]
-    public AnimationCurve lightingIntensityMultiplier;     // ½Ã°£¿¡ µû¸¥ È¯°æ±¤ ¹à±â º¯È­
-    public AnimationCurve reflectionIntensityMultiplier;   // ½Ã°£¿¡ µû¸¥ ¹İ»ç±¤ ¹à±â º¯È­
+    public AnimationCurve lightingIntensityMultiplier;     // ì‹œê°„ì— ë”°ë¥¸ í™˜ê²½ê´‘ ë°ê¸° ë³€í™”
+    public AnimationCurve reflectionIntensityMultiplier;   // ì‹œê°„ì— ë”°ë¥¸ ë°˜ì‚¬ê´‘ ë°ê¸° ë³€í™”
+
+    [Header("Weather Settings")]
+    public float weatherChangeInterval = 0.25f; // í•˜ë£¨ ì¤‘ ë‚ ì”¨ ë³€ê²½ ê°„ê²© (0.25 = 6ì‹œê°„)
+    private float lastWeatherCheckTime = -1f;
 
     private void Start()
     {
-        // ÇÏ·ç°¡ ¾ó¸¶³ª ºü¸£°Ô Èå¸¦Áö °è»ê (ex. 120ÃÊ = 1ÀÏÀÌ¸é 1/120¸¸Å­¾¿ Áõ°¡)
+        // í•˜ë£¨ê°€ ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ íë¥¼ì§€ ê³„ì‚° (ex. 120ì´ˆ = 1ì¼ì´ë©´ 1/120ë§Œí¼ì”© ì¦ê°€)
         timeRate = (fullDayLength > 0f) ? 1.0f / fullDayLength : 0f;
 
-        // ½ÃÀÛ ½Ã°£ ¼³Á¤
+        // ì‹œì‘ ì‹œê°„ ì„¤ì •
         time = startTime % 1.0f;
     }
 
     private void Update()
     {
-        // ÇÏ·ç ½Ã°£ °æ°ú Ã³¸® (·çÇÁ: 0.0 ~ 1.0)
+        // í•˜ë£¨ ì‹œê°„ ê²½ê³¼ ì²˜ë¦¬ (ë£¨í”„: 0.0 ~ 1.0)
         time = (time + timeRate * Time.deltaTime) % 1.0f;
 
-        // ÅÂ¾ç°ú ´ŞÀÇ »óÅÂ ¾÷µ¥ÀÌÆ®
+        // íƒœì–‘ê³¼ ë‹¬ì˜ ìƒíƒœ ì—…ë°ì´íŠ¸
         UpdateLighting(sun, sunColor, sunIntensity);
         UpdateLighting(moon, moonColor, moonIntensity);
 
-        // Àü¿ª Á¶¸í ¹İ¿µ
+        // ì „ì—­ ì¡°ëª… ë°˜ì˜
         RenderSettings.ambientIntensity = lightingIntensityMultiplier.Evaluate(time);
         RenderSettings.reflectionIntensity = reflectionIntensityMultiplier.Evaluate(time);
+
+        // ë‚ ì”¨ ì—…ë°ì´íŠ¸
+        UpdateWeather();
     }
 
     /// <summary>
-    /// ÁÖ¾îÁø ±¤¿ø(ÅÂ¾ç ¶Ç´Â ´Ş)¿¡ ´ëÇØ È¸Àü, »ö»ó, ¹à±â¸¦ ¾÷µ¥ÀÌÆ®ÇÏ°í
-    /// ÀÏÁ¤ ¹à±â ÀÌÇÏÀÏ ¶© ºñÈ°¼ºÈ­ Ã³¸®
+    /// ì£¼ì–´ì§„ ê´‘ì›(íƒœì–‘ ë˜ëŠ” ë‹¬)ì— ëŒ€í•´ íšŒì „, ìƒ‰ìƒ, ë°ê¸°ë¥¼ ì—…ë°ì´íŠ¸í•˜ê³ 
+    /// ì¼ì • ë°ê¸° ì´í•˜ì¼ ë• ë¹„í™œì„±í™” ì²˜ë¦¬
     /// </summary>
     void UpdateLighting(Light lightSource, Gradient colorGradient, AnimationCurve intensityCurve)
     {
-        float intensity = intensityCurve.Evaluate(time); // ÇöÀç ½Ã°£ ±âÁØ ¹à±â
+        float intensity = intensityCurve.Evaluate(time); // í˜„ì¬ ì‹œê°„ ê¸°ì¤€ ë°ê¸°
 
-        // ±¤¿ø È¸Àü (Á¤¿À ±âÁØ ¹æÇâ * ½Ã°£ * 4 ¡æ ÇÏ·ç 1È¸Àü)
+        // ê´‘ì› íšŒì „ (ì •ì˜¤ ê¸°ì¤€ ë°©í–¥ * ì‹œê°„ * 4 â†’ í•˜ë£¨ 1íšŒì „)
         float timeOffset = (lightSource == sun) ? 0.25f : 0.75f;
         lightSource.transform.eulerAngles = (time - timeOffset) * noon * 4.0f;
 
-        // ±¤¿ø »ö»ó ¹× ¹à±â Àû¿ë
+        // ê´‘ì› ìƒ‰ìƒ ë° ë°ê¸° ì ìš©
         lightSource.color = colorGradient.Evaluate(time);
         lightSource.intensity = intensity;
 
-        // ¹à±â°¡ 0ÀÌ¸é ºñÈ°¼ºÈ­ÇÏ¿© ÃÖÀûÈ­
+        // ë°ê¸°ê°€ 0ì´ë©´ ë¹„í™œì„±í™”í•˜ì—¬ ìµœì í™”
         GameObject go = lightSource.gameObject;
         bool shouldBeActive = intensity > 0f;
         if (go.activeSelf != shouldBeActive)
             go.SetActive(shouldBeActive);
+    }
+
+    private void UpdateWeather()
+    {
+        // ì¼ì • ì‹œê°„ëŒ€ë§ˆë‹¤ í•œ ë²ˆë§Œ ë‚ ì”¨ ë³€ê²½ ì‹œë„ 
+        float currentChunk = Mathf.Floor(time / weatherChangeInterval) * weatherChangeInterval;
+        if (Mathf.Approximately(currentChunk, lastWeatherCheckTime)) return;
+
+        lastWeatherCheckTime = currentChunk;
+
+        // ëª¨ë“  ë‚ ì”¨ íƒ€ì… ì¤‘ì—ì„œ ë¬´ì‘ìœ„ ì„ íƒ
+        WeatherType[] allWeathers = (WeatherType[])System.Enum.GetValues(typeof(WeatherType));
+        WeatherType newWeather = allWeathers[Random.Range(0, allWeathers.Length)];
+
+        WeatherManager.Instance.SetWeather(newWeather);
+
+        // í˜„ì¬ ë‚ ì”¨ ë””ë²„ê·¸ ì¶œë ¥
+        Debug.Log($"[DayNightCycle] {System.DateTime.Now:T} - ë‚ ì”¨ ë³€ê²½ë¨ â†’ {newWeather}");
     }
 }

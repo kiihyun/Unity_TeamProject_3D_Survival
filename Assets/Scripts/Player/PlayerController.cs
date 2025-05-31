@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Random = UnityEngine.Random;
@@ -28,7 +28,13 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     public Rigidbody _rigidbody;
     private AudioSource _audioSource;
 
+    [Header("UI 패널 참조")]
+    public GameObject inventoryPanel;
+    public bool isInventoryOpen = false;
+
     public bool canControl = true; //플레이어 컨트롤 가능 여부
+
+    public GameObject craftingUI; // 유니티에서 UI 캔버스 연결
 
     void Awake()
     {
@@ -40,7 +46,7 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             Debug.LogError("Rigidbody is null");
         }
 
-        if(!TryGetComponent<AudioSource>(out _audioSource))
+        if (!TryGetComponent<AudioSource>(out _audioSource))
         {
             Debug.LogError("AudioSource is null");
         }
@@ -49,10 +55,23 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     private void Start()
     {
         curSpeed = walkSpeed;
+
+        // 인벤토리를 처음엔 꺼둠
+        inventoryPanel.SetActive(false);
+        craftingUI.SetActive(false); // 제작 UI도 처음엔 꺼둠
+        SetCursorState(false);
     }
 
     void Update()
     {
+        if (!canControl) // UI가 열려 있을 때 ESC로 닫기
+        {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                CloseCraftingUI();
+                return;
+            }
+        }
         if (!canControl) return; //컨트롤 불가능하면 업데이트 중지
 
         Move();
@@ -147,6 +166,51 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
             PlayerManager.Instance.footStep.JumpClipPlay();
             _audioSource.PlayOneShot(jumpClips[Random.Range(0, jumpClips.Length)]);
         }
+    }
+
+    // Input System의 "Inventory" 액션에 연결됨
+    public void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ToggleInventory();
+        }
+    }
+
+    private void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+        inventoryPanel.SetActive(isInventoryOpen);
+        SetCursorState(isInventoryOpen);
+    }
+
+    private void SetCursorState(bool isVisible)
+    {
+        Cursor.visible = isVisible;
+        Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    public void OpenCraftingUI()
+    {
+        craftingUI.SetActive(true); // UI 띄우기
+        SetControl(false);          // 플레이어 조작 막기
+        Cursor.visible = true;      // 마우스 커서 보이기
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void OnOpenCraftingInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OpenCraftingUI();
+        }
+    }
+    public void CloseCraftingUI()
+    {
+        craftingUI.SetActive(false);      // UI 끄기
+        SetControl(true);                 // 플레이어 조작 다시 허용
+        Cursor.visible = false;           // 마우스 커서 숨기기
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     //지면 감지
