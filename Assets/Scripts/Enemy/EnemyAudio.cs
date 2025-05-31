@@ -9,19 +9,18 @@ public class EnemyAudio : MonoBehaviour
     public AudioClip deathSound;
 
     private AudioSource audioSource;
-    private Enemy enemy; // Á»ºñ »óÅÂ °ü¸® ½ºÅ©¸³Æ®
+    private Enemy enemy; // ì¢€ë¹„ ìƒíƒœ ê´€ë¦¬ ìŠ¤í¬ë¦½íŠ¸
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         enemy = GetComponent<Enemy>();
         if (audioSource == null)
-            Debug.LogError("AudioSource°¡ ¾ø½À´Ï´Ù! ÇÁ¸®ÆÕ¿¡ Ãß°¡ÇÏ¼¼¿ä.");
+            Debug.LogError("AudioSourceê°€ ì—†ìŠµë‹ˆë‹¤! í”„ë¦¬íŒ¹ì— ì¶”ê°€í•˜ì„¸ìš”.");
     }
 
     private void Update()
     {
-        audioSource.PlayOneShot(deathSound);
         switch (enemy.aiState)
         {
             case AIState.Idle:
