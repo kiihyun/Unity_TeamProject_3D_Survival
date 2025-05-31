@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public enum WeatherType
 {
@@ -13,7 +13,6 @@ public enum WeatherType
 public class WeatherManager : MonoBehaviour
 {
     public static WeatherManager Instance { get; private set; }
-
     public WeatherType currentWeather { get; private set; }
 
     [Header("Weather Prefabs")]
@@ -46,7 +45,7 @@ public class WeatherManager : MonoBehaviour
                 break;
 
             case WeatherType.Cloudy:
-                // ±¸¸§ ÀÌ¹ÌÁö ¿À¹ö·¹ÀÌ µî
+                // êµ¬ë¦„ ì´ë¯¸ì§€ ì˜¤ë²„ë ˆì´ ë“±
                 break;
 
             //case WeatherType.Rain:
@@ -59,7 +58,7 @@ public class WeatherManager : MonoBehaviour
 
             //case WeatherType.Storm:
             //    currentEffect = Instantiate(stormEffect, transform);
-            //    // ¹ø°³³ª ¹Ù¶÷ ¼Ò¸® Ãß°¡ °¡´É
+            //    // ë²ˆê°œë‚˜ ë°”ëŒ ì†Œë¦¬ ì¶”ê°€ ê°€ëŠ¥
             //    break;
 
             //case WeatherType.Foggy:
@@ -73,6 +72,6 @@ public class WeatherManager : MonoBehaviour
             RenderSettings.fog = false;
         }
 
-        Debug.Log($"[WeatherManager] ÇöÀç ³¯¾¾: {newWeather}");
+        Debug.Log($"[WeatherManager] í˜„ì¬ ë‚ ì”¨: {newWeather}");
     }
 }
