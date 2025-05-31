@@ -17,7 +17,12 @@ MonoBehaviour:
   walkSpeed: 0.5
   runSpeed: 2
   spawnCount: 20
-  prefab: {fileID: 8065048971340992996, guid: 02e0fe25656e4754f9d712dd3b3007e2, type: 3}
+  prefab:
+  - {fileID: 8065048971340992996, guid: c9ffdbc956405f5479739222ee6a80f3, type: 3}
+  - {fileID: 8065048971340992996, guid: 02e0fe25656e4754f9d712dd3b3007e2, type: 3}
+  - {fileID: 8065048971340992996, guid: b4dca6c462a9c9e4384af9845977804d, type: 3}
+  - {fileID: 8065048971340992996, guid: 2967c034e94c8ec4894b519bfa42e078, type: 3}
+  - {fileID: 8065048971340992996, guid: bb5001a15dccc4647b30cb88b77a18d2, type: 3}
   dropOnDeath: []
   detectDistance: 5
   minWanderDistance: 5

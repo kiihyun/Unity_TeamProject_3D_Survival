@@ -12,7 +12,8 @@ public class EnemyDataSO : ScriptableObject
     public float walkSpeed;
     public float runSpeed;
     public int spawnCount;
-    public GameObject prefab;
+
+    public GameObject[] prefab;
     public ItemData[] dropOnDeath;
 
     [Header("AI")]
