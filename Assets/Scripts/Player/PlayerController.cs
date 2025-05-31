@@ -4,14 +4,12 @@ using System;
 
 public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable, IJumpable
 {
-    [Header("State")]
-    public PlayerState state;  //플레이어 상태
-
     [Header("Movement")]
     public float curSpeed;
     public float walkSpeed;         //속도
     public float sprintSpeed;
-    private Vector2 curMoveInput;   //이동 입력값
+    public Vector2 curMoveInput;   //이동 입력값
+    public bool isRun;
 
     [Header("Jump")]
     public Transform foot;          //지면 감지
@@ -40,41 +38,29 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     private void Start()
     {
-        state = PlayerState.Idle; //플레이어 상태 초기화
         curSpeed = walkSpeed;
     }
 
     void Update()
     {
         Move();
+        if(PlayerManager.Instance.condition.Stamina <= 0)
+        {
+            curSpeed = walkSpeed; //스태미나가 없으면 이동 불가
+        }
     }
     void LateUpdate()
     {
         Look();
     }
 
-    private float CurrentSpeed(PlayerState _state)
-    {
-        switch (_state)
-        {
-            case PlayerState.Idle:
-                curSpeed = 0f;
-                break;
-            case PlayerState.Walk:
-                curSpeed = walkSpeed;
-                break;
-            case PlayerState.Run:
-                curSpeed = sprintSpeed;
-                break;
-        }
-        return curSpeed;
-    }
-
     //이동
     public void Move()
     {
         Vector3 moveDir = (transform.forward * curMoveInput.y) + (transform.right * curMoveInput.x);
-        _rigidbody.MovePosition(_rigidbody.position + moveDir * CurrentSpeed(state) * Time.deltaTime);
+        moveDir *= curSpeed;
+        moveDir.y = _rigidbody.velocity.y;
+        _rigidbody.velocity = moveDir; //이동 방향으로 속도 설정
     }
 
     //이동 입력
@@ -82,12 +68,12 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            state = PlayerState.Walk; //플레이어 상태 변경
+            curSpeed = walkSpeed; //걷기 속도로 변경
             curMoveInput = context.ReadValue<Vector2>();
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            state = PlayerState.Idle; //플레이어 상태 변경
+            curSpeed = 0;
             curMoveInput = Vector2.zero;
         }
     }
@@ -95,13 +81,15 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
     //달리기
     public void OnSprintInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed && PlayerManager.Instance.condition.Stamina > 0)
+        if (context.phase == InputActionPhase.Started)
         {
-            state = PlayerState.Run; //플레이어 상태 변경
+            curSpeed = sprintSpeed; //달리기 속도로 변경
+            isRun = true;
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
-            state = PlayerState.Walk; //플레이어 상태 변경
+            curSpeed = walkSpeed; //걷기 속도로 변경
+            isRun = false;
         }
     }
 
@@ -123,9 +111,8 @@ public class PlayerController : MonoBehaviour, IMovable, ISprintable, ILookable,
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > 0)
+        if (context.phase == InputActionPhase.Started && IsGrounded() && PlayerManager.Instance.condition.Stamina > PlayerManager.Instance.condition.jumpDecStamina)
         {
-            state = PlayerState.Jump; //플레이어 상태 변경
             _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             PlayerManager.Instance.condition.JumpStamina(); //점프 시 스태미나 감소
             PlayerManager.Instance.footStep.JumpClipPlay();

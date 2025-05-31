@@ -44,6 +44,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     [SerializeField] private float hunger;
     public float maxHunger;//최대 배고픔
     public float hungerDecRate = 3f;
+    public float hungerDamage;
     public float hungerToHeal;
     public float Hunger
     {
@@ -58,6 +59,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     [SerializeField] private float thirst;
     public float maxThirst; //최대 목마름
     public float thirstDegenRate = 3f; //목마름 감소 속도
+    public float thirstDamage;
     public float thirstToHeal;
     public float Thirst
     {
@@ -84,13 +86,20 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-    //테스트용 UI 요소들
-    public Slider healthUI;
-    public Slider staminaUI;
-    public Slider hungerUI;
-    public Slider thirstUI;
-    public TextMeshProUGUI tempUI;
-    //-------------------------
+    private PlayerController controller;
+
+
+    public event Action onTakeDamage; // DamageIndicotor
+
+    void Awake()
+    {
+        controller = GetComponent<PlayerController>(); //플레이어 컨트롤러 컴포넌트 가져오기
+        //예외처리
+        if (controller == null)
+        {
+            Debug.LogError("PlayerController is null");
+        }
+    }
 
     void Start()
     {
@@ -105,7 +114,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     {
         UpdateConditions();
         ConditionState(); //플레이어 상태 변경 메소드 호출
-        TestUI(); //UI 업데이트 메소드 호출 (테스트용)
     }
 
     //플레이어 컨디션 상태 변경
@@ -140,34 +148,16 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         // 체온 상태
         if (bodyTemp < minNormalBodyTemp)
         {
-            if (!conditionStats.Contains(PlayerConditionState.Cold))
+            //저체온증
+            if (!conditionStats.Contains(PlayerConditionState.Hypothermia))
             {
-                conditionStats.Add(PlayerConditionState.Cold);
+                conditionStats.Add(PlayerConditionState.Hypothermia);
             }
-            conditionStats.Remove(PlayerConditionState.Fever);
-        }
-        else if (bodyTemp > maxNormalBodyTemp)
-        {
-            if (!conditionStats.Contains(PlayerConditionState.Fever))
-            {
-                conditionStats.Add(PlayerConditionState.Fever);
-            }
-            conditionStats.Remove(PlayerConditionState.Cold);
         }
         else
         {
-            conditionStats.Remove(PlayerConditionState.Cold);
-            conditionStats.Remove(PlayerConditionState.Fever);
+            conditionStats.Remove(PlayerConditionState.Hypothermia);
         }
-    }
-
-    public void TestUI()
-    {
-        healthUI.value = health / maxHealth; //체력 UI 업데이트
-        staminaUI.value = stamina / maxStamina; //스태미나 UI 업데이트
-        hungerUI.value = hunger / maxHunger; //배고픔 UI 업데이트
-        thirstUI.value = thirst / maxThirst; //목마름 UI 업데이트
-        tempUI.text = $"Temp: {bodyTemp:F1}°C"; //체온 UI 업데이트
     }
 
     //회복 조건
@@ -178,8 +168,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         if (health < maxHealth
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && !conditionStats.Contains(PlayerConditionState.Cold)
-            && !conditionStats.Contains(PlayerConditionState.Fever)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
             && hunger >= hungerToHeal
             && thirst >= thirstToHeal)
         {
@@ -188,39 +177,44 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         // 어떠한 이상상태가 있을 시 체력감소
         else if (conditionStats.Contains(PlayerConditionState.Hungry)
             || conditionStats.Contains(PlayerConditionState.Thirsty)
-            || conditionStats.Contains(PlayerConditionState.Cold)
-            || conditionStats.Contains(PlayerConditionState.Fever))
+            || conditionStats.Contains(PlayerConditionState.Hypothermia))
         {
-            GenerateHealth(-healthDecRate);
+            if (conditionStats.Contains(PlayerConditionState.Hungry))
+            {
+                GenerateHealth(-hungerDamage);
+            }
+            else if (conditionStats.Contains(PlayerConditionState.Thirsty))
+            {
+                GenerateHealth(-thirstDamage);
+            }
         }
 
         // 스태미나
         // 플레이어가 달리지 않고, 스태미나가 최대가 아니며, 배고픔과 목마름 상태가 없을 때 스태미나 회복
-        if (stamina < maxStamina 
+        if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
-            && PlayerManager.Instance.controller.state != PlayerState.Run)
+            && controller.curSpeed <= controller.walkSpeed)
         {
             GenerateStamina(staminaRecovRate);
         }
         // 플레이어가 달릴 때 스태미나 감소
-        else if (stamina > 0f && PlayerManager.Instance.controller.state == PlayerState.Run)
+        else if (stamina > 0f && controller.curSpeed <= controller.sprintSpeed)
         {
             GenerateStamina(-staminaDecRate);
         }
 
         //배고픔 지속적으로 줄어듬
-        if(hunger > 0f)
+        if (hunger > 0f)
         {
             GenerateHunger(hungerDecRate);
         }
-        
+
         // 목마름 지속적으로 줄어듬
-        if(thirst > 0f)
+        if (thirst > 0f)
         {
             GenerateThirst(thirstDegenRate);
         }
-
     }
 
     //체력 증가와 감소 메소드
@@ -279,7 +273,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-
     //체력 회복 메소드
     public void Heal(int _healAmount)
     {
@@ -306,5 +299,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             //체력이 0이 되면 죽음 처리
             Debug.Log("Player is dead");
         }
+        onTakeDamage?.Invoke(); // damageIndicator
     }
 }

@@ -11,17 +11,14 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float maxSpwanPos;
     [SerializeField] private int enemyCount;
     
-    private List<Enemy> enemiyList = new List<Enemy>();
-    // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < enemyCount; i++)
         {
             Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpwanPos, maxSpwanPos);
-            Vector3 spawnPos = enemySpwanPos.position + new Vector3(randCircle.x, 0f, randCircle.y);
+            Vector3 spawnPos = new Vector3(randCircle.x, 0f, randCircle.y);
+            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(enemyPrefab, enemySpwanPos, spawnPos);
 
-            GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-            enemiyList.Add(obj.GetComponent<Enemy>());
         }
         
 
