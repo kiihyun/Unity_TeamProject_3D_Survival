@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: -8727763968272365441}
   - component: {fileID: 1750844178748256015}
   - component: {fileID: 148840456659481483}
-  - component: {fileID: -3113342570447924448}
   m_Layer: 0
   m_Name: ItemMedickit
   m_TagString: Untagged
@@ -163,17 +162,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-3113342570447924448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969316656174410046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData: {fileID: 0}
-  amount: 1
