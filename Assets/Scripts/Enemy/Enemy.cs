@@ -10,6 +10,7 @@ public enum AIState // 임시, 추후 이넘스크립트로 이동
     Wandering,
     Attacking,
     Running,
+    Fleeing,
 }
 
 public class Enemy : MonoBehaviour, IDamagable
@@ -67,11 +68,10 @@ public class Enemy : MonoBehaviour, IDamagable
                 AttackingUpdate();
                 break;
         }
-
-        animator.speed = agent.speed / data.walkSpeed;
     }
     public void SetState(AIState state)
     {
+        if (aiState == state) return; //  동일한 상태면 무시
         aiState = state;
 
         switch (aiState)
@@ -89,6 +89,7 @@ public class Enemy : MonoBehaviour, IDamagable
                 agent.isStopped = false;
                 break;
         }
+        animator.speed = agent.speed / data.walkSpeed;
     }
 
     void PassiveUpdate()
@@ -101,7 +102,7 @@ public class Enemy : MonoBehaviour, IDamagable
             Invoke("WanderToNewLocation", Random.Range(data.minWanderWaitTime, data.maxWanderWaitTime));
         }
 
-        if (playerDistance < data.detectDistance)
+        if (playerDistance < data.detectDistance && aiState != AIState.Attacking)
         {
             SetState(AIState.Attacking);
         }
@@ -137,25 +138,23 @@ public class Enemy : MonoBehaviour, IDamagable
             Debug.Log($"agent.isStopped : {agent.isStopped}");
             if (Time.time - lastAttackTime > data.attackRate)
             {
-                Debug.Log("좀비가 공격");
-                animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
                 PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
+                Debug.Log("좀비가 공격");
+                animator.speed = 1;
+                animator.SetTrigger("Attack");
             }
             return;
         }
         else
-        {
+        { // 공격 범위 밖 감지범위 안
             if (playerDistance < data.detectDistance)
             {
-                if (agent.isStopped) agent.isStopped = false;
+                agent.isStopped = false;
                 NavMeshPath path = new NavMeshPath();
                 if (agent.CalculatePath(PlayerManager.Instance.player.transform.position, path))
                 {
-                    if (!agent.isStopped)
-                    {
-                        agent.SetDestination(PlayerManager.Instance.player.transform.position);
-                    }
+                    agent.SetDestination(PlayerManager.Instance.player.transform.position);
                 }
                 else
                 {
@@ -163,9 +162,8 @@ public class Enemy : MonoBehaviour, IDamagable
                     agent.isStopped = true;
                     SetState(AIState.Wandering);
                 }
-
             }
-            else
+            else //감지 범위 밖
             {
                 agent.SetDestination(transform.position);
                 agent.isStopped = true;
@@ -192,14 +190,13 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 meshRenderers[i].material.color = Color.white;
             }
-            
+
             Die();
 
         }
     }
     void Die()
     {
-
         for (int i = 0; i < dropOnDeath.Length; i++)
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);

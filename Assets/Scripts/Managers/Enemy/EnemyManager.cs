@@ -29,7 +29,8 @@ public class EnemyManager : MonoBehaviour
 
             Vector3 spawnPos = GetValidNavMeshPosition(rawPos, 2f); // NavMesh 위 위치로 보정
 
-            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, null, spawnPos);
+            int randomIndex = Random.Range(0, data.prefab.Length);
+            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab[randomIndex], null, spawnPos);
             obj.transform.SetParent(enemyParent);
             NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
             if (agent != null)
