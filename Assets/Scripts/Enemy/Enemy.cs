@@ -11,6 +11,7 @@ public enum AIState // 임시, 추후 이넘스크립트로 이동
     Attacking,
     Running,
     Fleeing,
+    Death,
 }
 
 public class Enemy : MonoBehaviour, IDamagable
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     [Header("AI")]
     private NavMeshAgent agent;
-    private AIState aiState;
+    public AIState aiState;
 
     [Header("Combat")]
     private float lastAttackTime;
@@ -74,7 +75,7 @@ public class Enemy : MonoBehaviour, IDamagable
         if (aiState == state) return; //  동일한 상태면 무시
         aiState = state;
 
-        switch (aiState)
+         switch (aiState)
         {
             case AIState.Idle:
                 agent.speed = data.walkSpeed;

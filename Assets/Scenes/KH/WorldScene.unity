@@ -697,6 +697,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  weatherChangeInterval: 0.25
 --- !u!114 &230993869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1044,10 +1045,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2330272274727997644, guid: 36fb67dcf54ab1c46aaedc642a1aa24d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 96324406760486162, guid: 36fb67dcf54ab1c46aaedc642a1aa24d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 595161421}
   m_SourcePrefab: {fileID: 100100000, guid: 36fb67dcf54ab1c46aaedc642a1aa24d, type: 3}
 --- !u!1 &450569941
 GameObject:
@@ -1411,6 +1416,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &595161415 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 96324406760486162, guid: 36fb67dcf54ab1c46aaedc642a1aa24d, type: 3}
+  m_PrefabInstance: {fileID: 400030526}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &595161421
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595161415}
+  m_Enabled: 1
 --- !u!1 &729662926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,8 +1912,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 1911631167}
   dialogueUI: {fileID: 870164425}
-  uiInventory: {fileID: 0}
-  uiCrafting: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  craftingPanel: {fileID: 0}
+  pausePanel: {fileID: 0}
 --- !u!114 &1117599481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7876,6 +7895,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curEquip: {fileID: 0}
+  animator: {fileID: 0}
+  meshRenderer: {fileID: 0}
   defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
 --- !u!4 &8323017704229000239
 Transform:

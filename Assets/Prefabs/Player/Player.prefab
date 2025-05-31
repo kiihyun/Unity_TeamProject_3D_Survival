@@ -1017,6 +1017,7 @@ GameObject:
   - component: {fileID: 8257771053221458312}
   - component: {fileID: 1329043631359751974}
   - component: {fileID: 1104351902857617713}
+  - component: {fileID: 5806067394454036596}
   m_Layer: 7
   m_Name: SK_Military_Survivalist (1)
   m_TagString: Untagged
@@ -1105,6 +1106,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5806067394454036596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2187052019189463651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41690b120a21e6546934950230d6a2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curEquip: {fileID: 0}
+  animator: {fileID: 0}
+  defaultUnarmed: {fileID: 5983212237278632731, guid: 0a599cf76f05b8d448fa70687e9f131e, type: 3}
 --- !u!1 &2192354733948796736
 GameObject:
   m_ObjectHideFlags: 0
@@ -4073,6 +4089,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5806067394454036596}
+        m_TargetAssemblyTypeName: Equipment, Assembly-CSharp
+        m_MethodName: OnAttackInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d73c9cb1-793b-44a7-a12c-61fdbf1b30b8
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
@@ -4092,7 +4120,19 @@ MonoBehaviour:
     m_ActionId: 015dcd2d-ac63-4891-802a-05e37effe996
     m_ActionName: Player/Inventory[/Keyboard/tab]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnEscPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 91925913-4d78-4ac7-b854-aa1afa3d84ab
     m_ActionName: Player/Menu[/Keyboard/escape]
   - m_PersistentCalls:
@@ -4120,7 +4160,7 @@ MonoBehaviour:
   walkSpeed: 1.5
   sprintSpeed: 3
   curMoveInput: {x: 0, y: 0}
-  isRun: 1
+  isRun: 0
   foot: {fileID: 2419651263007219341}
   groundLayer:
     serializedVersion: 2
@@ -4174,6 +4214,8 @@ MonoBehaviour:
   minNormalBodyTemp: 35
   maxNormalBodyTemp: 38
   hypothermiaDamage: 0.1
+  maxCarryWeight: 50
+  currentCarryWeight: 0
   hitClips:
   - {fileID: 8300000, guid: 5319d335f47c30c45a098c3b7207d360, type: 3}
   - {fileID: 8300000, guid: a118b77559d9f764cbc3b30b4be64c29, type: 3}
@@ -4377,6 +4419,7 @@ MonoBehaviour:
   equipSlots:
   - slotType: 0
     equippedItem: {fileID: 0}
+  equipPos: {fileID: 8794110103408931617}
 --- !u!1 &8384466031092537439
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,7 +4533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6596172623590623938
 Transform:
   m_ObjectHideFlags: 0
