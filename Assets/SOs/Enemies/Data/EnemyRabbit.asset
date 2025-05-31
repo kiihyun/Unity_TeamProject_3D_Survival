@@ -16,7 +16,7 @@ MonoBehaviour:
   maxHealth: 1
   walkSpeed: 3
   runSpeed: 5
-  spawnCount: 10
+  spawnCount: 1
   prefab: {fileID: 6206966632080291316, guid: 1dc60f7a8e12ca943b5446fc88a463e3, type: 3}
   dropOnDeath: []
   detectDistance: 3

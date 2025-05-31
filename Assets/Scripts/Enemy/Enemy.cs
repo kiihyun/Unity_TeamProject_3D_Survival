@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour, IDamagable
     [Header("Combat")]
     private float lastAttackTime;
     private float playerDistance;
+    private bool isDead;
 
 
     [Header("Data")]
@@ -128,6 +129,8 @@ public class Enemy : MonoBehaviour, IDamagable
 
     void AttackingUpdate()
     {
+        if (isDead) return;
+
         if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
         {
             agent.isStopped = true;
@@ -189,7 +192,7 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 meshRenderers[i].material.color = Color.white;
             }
-            agent.enabled = false;
+            
             Die();
 
         }
@@ -205,6 +208,8 @@ public class Enemy : MonoBehaviour, IDamagable
         OnDieCallback?.Invoke(this.gameObject);
         StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
+        agent.enabled = false;
+        isDead = true;
     }
 
     IEnumerator DamageFlash()
@@ -245,5 +250,26 @@ public class Enemy : MonoBehaviour, IDamagable
             }
             return false;
         }
+    }
+
+    public void Init() // 초기화
+    {
+        curHealth = data.maxHealth;
+        isDead = false;
+        gameObject.SetActive(true);
+
+        if (agent != null)
+        {
+            agent.enabled = true;
+            agent.isStopped = false;
+        }
+
+        if (animator != null)
+        {
+            animator.Rebind(); // 애니메이션 초기화
+            animator.Update(0f); // 즉시 반영
+        }
+
+        // 기타 상태값 초기화
     }
 }
