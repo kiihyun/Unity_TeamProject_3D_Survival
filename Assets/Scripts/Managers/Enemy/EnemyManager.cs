@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Transform enemyParent;
     [SerializeField] private float minSpawnPos;
     [SerializeField] private float maxSpawnPos;
-    [SerializeField] private float respawnDelay =  5f;
+    [SerializeField] private float respawnDelay =  10f;
     [SerializeField] private List<EnemyDataEntry> enemyEntries;
 
     void Start()
@@ -29,7 +29,8 @@ public class EnemyManager : MonoBehaviour
 
             Vector3 spawnPos = GetValidNavMeshPosition(rawPos, 2f); // NavMesh 위 위치로 보정
 
-            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab, null, spawnPos);
+            int randomIndex = Random.Range(0, data.prefab.Length);
+            GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab[randomIndex], null, spawnPos);
             obj.transform.SetParent(enemyParent);
             NavMeshAgent agent = obj.GetComponent<NavMeshAgent>();
             if (agent != null)
@@ -53,6 +54,17 @@ public class EnemyManager : MonoBehaviour
 
             //리스폰
             Enemy enemy = obj.GetComponent<Enemy>();
+            //enemy 초기화
+            if (enemy != null)
+            {
+                enemy.data = data;
+                enemy.Init(); // 상태 초기화
+                enemy.OnDieCallback = (deadObj) =>
+                {
+                    entry.activeEnemies.Remove(deadObj);
+                    StartCoroutine(RespawnOneAfterDelay(entry));
+                };
+            }
             if (enemy != null)
             {
                 enemy.data = data;
@@ -81,7 +93,11 @@ public class EnemyManager : MonoBehaviour
     IEnumerator RespawnOneAfterDelay(EnemyDataEntry entry)
     {
         yield return new WaitForSeconds(respawnDelay);
-        SpawnEnemies(entry, 1);
+        // 현재 활성 적 수가 스폰 제한보다 적을 경우에만 리스폰
+        if (entry.activeEnemies.Count < entry.data.spawnCount)
+        {
+            SpawnEnemies(entry, 1);
+        }
     }
     Vector3 GetValidNavMeshPosition(Vector3 position, float maxDistance = 2f)
     {
