@@ -389,10 +389,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2105671100586821084, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4280969504020511615, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: promptUI
       value: 
       objectReference: {fileID: 1464695040}
+    - target: {fileID: 5806067394454036596, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: meshRenderer
+      value: 
+      objectReference: {fileID: 1586619767}
     - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2879,6 +2887,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99019438a69165f4bb964c07d98be502, type: 3}
+--- !u!137 &1586619767 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2105671100586821084, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+  m_PrefabInstance: {fileID: 555424918}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1616332071
 PrefabInstance:
   m_ObjectHideFlags: 0
