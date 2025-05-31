@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2ebf089e22d9344fbbea5ff9349f550, type: 3}
-  m_Name: ItemFlare
+  m_Name: ItemRadio
   m_EditorClassIdentifier: 
-  displayName: "\uD50C\uB808\uC5B4"
-  description: "\uD50C\uB808\uC5B4\uAC74\uC5D0 \uB123\uC5B4 \uC0AC\uC6A9\uD560 \uC218
-    \uC788\uB2E4"
+  displayName: "\uB77C\uB514\uC624 \uC1A1\uC2E0\uAE30"
+  description: "\uAD6C\uC870\uC694\uCCAD\uC744 \uD560 \uC218\uC788\uB2E4"
   itemMass: 1
-  type: 2
+  type: 0
   icon: {fileID: 0}
-  dropPrefab: {fileID: 6602709104897420555, guid: efcfaa6634c5ff642881609d0a688fbe, type: 3}
+  dropPrefab: {fileID: 4132749325848674738, guid: d78ce56f2bafe0345ad85bd218510e73, type: 3}
   canStack: 0
   maxStackAmount: 0
   consumables: []
