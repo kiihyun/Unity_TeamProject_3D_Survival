@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 680925cad200bea4ba1634e9522cea3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 213886a7d24708047ba7ad5499a77c54, type: 2}
+  data: {fileID: 11400000, guid: d55fad6b68111b5439b85871ecdbd7e2, type: 2}
 --- !u!114 &4371550938019307234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b181928e2533d44b6b6c1eb17e61b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 0}
+  itemData: {fileID: 11400000, guid: d55fad6b68111b5439b85871ecdbd7e2, type: 2}
   amount: 1
 --- !u!65 &2763754909294776262
 BoxCollider:

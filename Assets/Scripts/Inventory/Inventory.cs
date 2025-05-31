@@ -32,8 +32,16 @@ public class Inventory : MonoBehaviour
 
 
 
-    public void AddItem(ItemData item, int amount = 1)
+    public bool AddItem(ItemData item, int amount = 1)
     {
+        //인벤토리 무게 계산, 만약 초과한다면 아이템 획득 불가능
+        float newWeight = GetTotalWeight() + item.itemMass * amount;
+        if (newWeight > PlayerManager.Instance.condition.maxCarryWeight)
+        {
+            Debug.Log("무게 초과로 아이템을 획득할 수 없습니다.");
+            return false;
+        }
+
         // 스택 가능한 경우 + 기존 슬롯에 이미 존재할 경우 숫자 추가
         InventorySlot slot = slots.Find(s => s.item == item && item.canStack);
         if (slot != null)
@@ -42,11 +50,19 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            if (slots.Count >= maxSlots) return; // 인벤토리 꽉 참
+            if (slots.Count >= maxSlots)
+            {
+                Debug.Log("인벤토리 초과로 아이템을 획득할 수 없습니다.");
+                return false;
+            } // 인벤토리 꽉 참
             slots.Add(new InventorySlot(item, amount));
         }
 
         onInventoryChanged?.Invoke();
+
+        PlayerManager.Instance.condition.currentCarryWeight += item.itemMass * amount;
+
+        return true;
     }
 
 
@@ -61,6 +77,7 @@ public class Inventory : MonoBehaviour
             slots.Remove(slot);
 
         onInventoryChanged?.Invoke();
+        PlayerManager.Instance.condition.currentCarryWeight -= item.itemMass * amount;
     }
 
     //특정 아이템이 일정 수량 이상 있는지 확인합니다. 디폴트 1
@@ -80,4 +97,21 @@ public class Inventory : MonoBehaviour
         InventorySlot slot = slots.Find(s => s.item == item);
         return slot != null ? slot.count : 0;
     }
+
+
+
+    ///인벤토리 총 아이템의 무게를 계산하는 함수
+    ///아이템 추가하거나 제거할 때마다 이 함수 호출해주기!!
+    public float GetTotalWeight()
+    {
+        float total = 0f;
+        foreach (var slot in slots)
+        {
+            if (slot.item != null)
+                total += slot.item.itemMass * slot.count;
+        }
+        return total;
+    }
+
+
 }
