@@ -1103,7 +1103,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7331822607916879815}
   m_Direction: 2
   m_Value: 0.5
-  m_Size: 0.5809129
+  m_Size: 0.5809128
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6255,8 +6255,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameplayUI: {fileID: 443380046080897596}
   dialogueUI: {fileID: 401270072164024026}
-  uiInventory: {fileID: 2367118659962899327}
-  uiCrafting: {fileID: 1082347732298679655}
+  inventoryPanel: {fileID: 2367118659962899327}
+  craftingPanel: {fileID: 1082347732298679655}
+  pausePanel: {fileID: 7223761257370374201}
 --- !u!1 &6417012622484569985
 GameObject:
   m_ObjectHideFlags: 0
@@ -6959,7 +6960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2699954612306741339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7035,6 +7036,7 @@ MonoBehaviour:
   backButton: {fileID: 3557064312946512941}
   optionsButton: {fileID: 1906135773979781980}
   quitButton: {fileID: 6233539945940189998}
+  pausePanel: {fileID: 7223761257370374201}
 --- !u!1 &7425427344336164482
 GameObject:
   m_ObjectHideFlags: 0
@@ -8109,7 +8111,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6863397234885856436}
   m_Direction: 2
   m_Value: 0.5
-  m_Size: 0.9655172
+  m_Size: 0.9655171
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

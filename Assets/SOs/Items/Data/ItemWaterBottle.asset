@@ -24,6 +24,7 @@ MonoBehaviour:
   - type: 2
     value: 20
   equipSlotType: 0
-  equipPrefab: {fileID: 0}
+  equipPrefab: {fileID: 5753355869556442149, guid: b0a8e771620b9e24d92f4a2904040de1, type: 3}
   durability: 0
   canPlace: 0
+  placeablePrefab: {fileID: 0}
