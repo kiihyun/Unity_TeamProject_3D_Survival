@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,13 +8,13 @@ using Random = UnityEngine.Random;
 public class PlayerCondition : MonoBehaviour, IDamagable
 {
     [Header("Condition State")]
-    public List<PlayerConditionState> conditionStats = new List<PlayerConditionState>(); //ÇÃ·¹ÀÌ¾î »óÅÂ ¸®½ºÆ®
+    public List<PlayerConditionState> conditionStats = new List<PlayerConditionState>(); //í”Œë ˆì´ì–´ ìƒíƒœ ë¦¬ìŠ¤íŠ¸
 
     [Header("Health")]
     [SerializeField] private float health;
-    public float maxHealth; //ÃÖ´ë Ã¼·Â
-    public float healthRecovRate; //Ã¼·Â È¸º¹ ¼Óµµ
-    public float healthDecRate; //Ã¼·Â °¨¼Ò ¼Óµµ
+    public float maxHealth; //ìµœëŒ€ ì²´ë ¥
+    public float healthRecovRate; //ì²´ë ¥ íšŒë³µ ì†ë„
+    public float healthDecRate; //ì²´ë ¥ ê°ì†Œ ì†ë„
     public float Health
     {
         get { return health; }
@@ -26,10 +26,10 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     [Header("Stamina")]
     [SerializeField] private float stamina;
-    public float maxStamina; //ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public float staminaRecovRate = 0.1f; //½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public float staminaDecRate = 0.1f; //½ºÅÂ¹Ì³ª °¨¼Ò ¼Óµµ
-    public float jumpDecStamina; //½ºÅÂ¹Ì³ª È¸º¹ Á¶°Ç
+    public float maxStamina; //ìµœëŒ€ ìŠ¤íƒœë¯¸ë‚˜
+    public float staminaRecovRate = 0.1f; //ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì†ë„
+    public float staminaDecRate = 0.1f; //ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ ì†ë„
+    public float jumpDecStamina; //ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì¡°ê±´
     public float Stamina
     {
         get { return stamina; }
@@ -41,7 +41,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     [Header("Hunger")]
     [SerializeField] private float hunger;
-    public float maxHunger;//ÃÖ´ë ¹è°íÇÄ
+    public float maxHunger;//ìµœëŒ€ ë°°ê³ í””
     public float hungerDecRate = 3f;
     public float hungerDamage;
     public float hungerToHeal;
@@ -56,8 +56,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     [Header("Thirst")]
     [SerializeField] private float thirst;
-    public float maxThirst; //ÃÖ´ë ¸ñ¸¶¸§
-    public float thirstDegenRate = 3f; //¸ñ¸¶¸§ °¨¼Ò ¼Óµµ
+    public float maxThirst; //ìµœëŒ€ ëª©ë§ˆë¦„
+    public float thirstDegenRate = 3f; //ëª©ë§ˆë¦„ ê°ì†Œ ì†ë„
     public float thirstDamage;
     public float thirstToHeal;
     public float Thirst
@@ -71,11 +71,17 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     [Header("body Temperature")]
     [SerializeField] private float bodyTemp;
-    public const float minBodyTemp = 33f; //ÃÖ¼Ò Ã¼¿Â
-    public const float maxBodyTemp = 40f; //ÃÖ´ë Ã¼¿Â
-    public float minNormalBodyTemp = 35f; //ÃÖ¼Ò Á¤»ó Ã¼¿Â
-    public float maxNormalBodyTemp = 38f; //ÃÖ´ë Á¤»ó Ã¼¿Â
+    public const float minBodyTemp = 33f; //ìµœì†Œ ì²´ì˜¨
+    public const float maxBodyTemp = 40f; //ìµœëŒ€ ì²´ì˜¨
+    public float minNormalBodyTemp = 35f; //ìµœì†Œ ì •ìƒ ì²´ì˜¨
+    public float maxNormalBodyTemp = 38f; //ìµœëŒ€ ì •ìƒ ì²´ì˜¨
     public float hypothermiaDamage;
+
+    [Header("Inventory Weight")]
+    public float maxCarryWeight = 50f; // ìµœëŒ€ í—ˆìš© ë¬´ê²Œ
+    public float currentCarryWeight = 0f; // í˜„ì¬ ì´ ë¬´ê²Œ
+
+
 
     public float BodyTemp
     {
@@ -116,30 +122,30 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     void Start()
     {
-        health = maxHealth; //ÃÊ±â Ã¼·Â ¼³Á¤
-        stamina = maxStamina; //ÃÊ±â ½ºÅÂ¹Ì³ª ¼³Á¤
-        hunger = maxHunger; //ÃÊ±â ¹è°íÇÄ ¼³Á¤
-        thirst = maxHunger; //ÃÊ±â ¸ñ¸¶¸§ ¼³Á¤
-        bodyTemp = 36.5f; //ÃÊ±â Ã¼¿Â ¼³Á¤ (Á¤»ó ¹üÀ§ ³»¿¡¼­ ¼³Á¤)
+        health = maxHealth; //ì´ˆê¸° ì²´ë ¥ ì„¤ì •
+        stamina = maxStamina; //ì´ˆê¸° ìŠ¤íƒœë¯¸ë‚˜ ì„¤ì •
+        hunger = maxHunger; //ì´ˆê¸° ë°°ê³ í”” ì„¤ì •
+        thirst = maxHunger; //ì´ˆê¸° ëª©ë§ˆë¦„ ì„¤ì •
+        bodyTemp = 36.5f; //ì´ˆê¸° ì²´ì˜¨ ì„¤ì • (ì •ìƒ ë²”ìœ„ ë‚´ì—ì„œ ì„¤ì •)
     }
 
     void Update()
     {
         UpdateConditions();
-        ConditionState(); //ÇÃ·¹ÀÌ¾î »óÅÂ º¯°æ ¸Ş¼Òµå È£Ãâ
+        ConditionState(); //í”Œë ˆì´ì–´ ìƒíƒœ ë³€ê²½ ë©”ì†Œë“œ í˜¸ì¶œ
     }
 
-    //ÇÃ·¹ÀÌ¾î ÄÁµğ¼Ç »óÅÂ º¯°æ
+    //í”Œë ˆì´ì–´ ì»¨ë””ì…˜ ìƒíƒœ ë³€ê²½
     public void ConditionState()
     {
-        // ¹è°íÇÄ »óÅÂ
+        // ë°°ê³ í”” ìƒíƒœ
         if (hunger <= 0f)
         {
             if (!conditionStats.Contains(PlayerConditionState.Hungry))
             {
                 conditionStats.Add(PlayerConditionState.Hungry);
                 audioSource.clip = hungerClip;
-                audioSource.Play();   //¹è°íÇÄ »ç¿îµå
+                audioSource.Play();   //ë°°ê³ í”” ì‚¬ìš´ë“œ
             }
         }
         else
@@ -147,14 +153,14 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             conditionStats.Remove(PlayerConditionState.Hungry);
         }
 
-        // ¸ñ¸¶¸§ »óÅÂ
+        // ëª©ë§ˆë¦„ ìƒíƒœ
         if (thirst <= 0f)
         {
             if (!conditionStats.Contains(PlayerConditionState.Thirsty))
             {
                 conditionStats.Add(PlayerConditionState.Thirsty);
                 audioSource.clip = thirstClip;
-                audioSource.Play();   //¸ñ¸¶¸§ »ç¿îµå
+                audioSource.Play();   //ëª©ë§ˆë¦„ ì‚¬ìš´ë“œ
             }
         }
         else
@@ -162,15 +168,15 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             conditionStats.Remove(PlayerConditionState.Thirsty);
         }
 
-        // Ã¼¿Â »óÅÂ
+        // ì²´ì˜¨ ìƒíƒœ
         if (bodyTemp < minNormalBodyTemp)
         {
-            //ÀúÃ¼¿ÂÁõ
+            //ì €ì²´ì˜¨ì¦
             if (!conditionStats.Contains(PlayerConditionState.Hypothermia))
             {
                 conditionStats.Add(PlayerConditionState.Hypothermia);
                 audioSource.clip = hypothermiaClip;
-                audioSource.Play();   //ÀúÃ¼¿ÂÁõ »ç¿îµå
+                audioSource.Play();   //ì €ì²´ì˜¨ì¦ ì‚¬ìš´ë“œ
             }
         }
         else
@@ -178,14 +184,14 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             conditionStats.Remove(PlayerConditionState.Hypothermia);
         }
 
-        //ÁöÃÆÀ» ¶§ »ç¿îµå Àç»ı
+        //ì§€ì³¤ì„ ë•Œ ì‚¬ìš´ë“œ ì¬ìƒ
         if (stamina <= 0f)
         {
             if (!conditionStats.Contains(PlayerConditionState.Tired))
             {
                 conditionStats.Add(PlayerConditionState.Tired);
                 audioSource.clip = tiredClip;
-                audioSource.Play();   //ÁöÃÆÀ» ¶§ »ç¿îµå
+                audioSource.Play();   //ì§€ì³¤ì„ ë•Œ ì‚¬ìš´ë“œ
             }
         }
         else
@@ -194,11 +200,11 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-    //È¸º¹ Á¶°Ç
+    //íšŒë³µ ì¡°ê±´
     public void UpdateConditions()
     {
-        // Ã¼·Â
-        // Ã¼·ÂÀÌ ÃÖ´ë°¡ ¾Æ´Ï°í, ¾î¶°ÇÑ ÀÌ»ó»óÅÂ°¡ ¾øÀ» ½Ã Ã¼·ÂÈ¸º¹
+        // ì²´ë ¥
+        // ì²´ë ¥ì´ ìµœëŒ€ê°€ ì•„ë‹ˆê³ , ì–´ë– í•œ ì´ìƒìƒíƒœê°€ ì—†ì„ ì‹œ ì²´ë ¥íšŒë³µ
         if (health < maxHealth
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
@@ -208,7 +214,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         {
             GenerateHealth(healthRecovRate);
         }
-        // ¾î¶°ÇÑ ÀÌ»ó»óÅÂ°¡ ÀÖÀ» ½Ã Ã¼·Â°¨¼Ò
+        // ì–´ë– í•œ ì´ìƒìƒíƒœê°€ ìˆì„ ì‹œ ì²´ë ¥ê°ì†Œ
         else if (conditionStats.Contains(PlayerConditionState.Hungry)
             || conditionStats.Contains(PlayerConditionState.Thirsty)
             || conditionStats.Contains(PlayerConditionState.Hypothermia))
@@ -227,8 +233,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             }
         }
 
-        // ½ºÅÂ¹Ì³ª
-        // ÇÃ·¹ÀÌ¾î°¡ ´Ş¸®Áö ¾Ê°í, ½ºÅÂ¹Ì³ª°¡ ÃÖ´ë°¡ ¾Æ´Ï¸ç, ¹è°íÇÄ°ú ¸ñ¸¶¸§ »óÅÂ°¡ ¾øÀ» ¶§ ½ºÅÂ¹Ì³ª È¸º¹
+        // ìŠ¤íƒœë¯¸ë‚˜
+        // í”Œë ˆì´ì–´ê°€ ë‹¬ë¦¬ì§€ ì•Šê³ , ìŠ¤íƒœë¯¸ë‚˜ê°€ ìµœëŒ€ê°€ ì•„ë‹ˆë©°, ë°°ê³ í””ê³¼ ëª©ë§ˆë¦„ ìƒíƒœê°€ ì—†ì„ ë•Œ ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ
         if (stamina < maxStamina
             && !conditionStats.Contains(PlayerConditionState.Hungry)
             && !conditionStats.Contains(PlayerConditionState.Thirsty)
@@ -237,50 +243,50 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         {
             GenerateStamina(staminaRecovRate);
         }
-        // ÇÃ·¹ÀÌ¾î°¡ ´Ş¸± ¶§ ½ºÅÂ¹Ì³ª °¨¼Ò
+        // í”Œë ˆì´ì–´ê°€ ë‹¬ë¦´ ë•Œ ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ
         else if (stamina > 0f && controller.curSpeed == controller.sprintSpeed)
         {
             GenerateStamina(-staminaDecRate);
         }
 
-        //¹è°íÇÄ Áö¼ÓÀûÀ¸·Î ÁÙ¾îµë
+        //ë°°ê³ í”” ì§€ì†ì ìœ¼ë¡œ ì¤„ì–´ë“¬
         if (hunger > 0f)
         {
             GenerateHunger(hungerDecRate);
         }
 
-        // ¸ñ¸¶¸§ Áö¼ÓÀûÀ¸·Î ÁÙ¾îµë
+        // ëª©ë§ˆë¦„ ì§€ì†ì ìœ¼ë¡œ ì¤„ì–´ë“¬
         if (thirst > 0f)
         {
             GenerateThirst(thirstDegenRate);
         }
     }
 
-    //Ã¼·Â Áõ°¡¿Í °¨¼Ò ¸Ş¼Òµå
+    //ì²´ë ¥ ì¦ê°€ì™€ ê°ì†Œ ë©”ì†Œë“œ
     public void GenerateHealth(float _amount)
     {
         health += _amount * Time.deltaTime;
     }
 
-    //½ºÅÂ¹Ì³ª Áõ°¡¿Í °¨¼Ò ¸Ş¼Òµå
+    //ìŠ¤íƒœë¯¸ë‚˜ ì¦ê°€ì™€ ê°ì†Œ ë©”ì†Œë“œ
     public void GenerateStamina(float _amount)
     {
         stamina += _amount * Time.deltaTime;
     }
 
-    //Á¡ÇÁ ½Ã ½ºÅÂ¹Ì³ª °¨¼Ò ¸Ş¼Òµå
+    //ì í”„ ì‹œ ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ ë©”ì†Œë“œ
     public void JumpStamina()
     {
         stamina -= jumpDecStamina;
     }
 
-    //¹è°íÇÄ Áõ°¡ ¸Ş¼Òµå
+    //ë°°ê³ í”” ì¦ê°€ ë©”ì†Œë“œ
     public void GenerateHunger(float _amount)
     {
         hunger -= _amount * Time.deltaTime;
     }
 
-    //À½½Ä ¼·Ãë ½Ã, ¹è°íÇÄ È¸º¹ ¸Ş¼Òµå
+    //ìŒì‹ ì„­ì·¨ ì‹œ, ë°°ê³ í”” íšŒë³µ ë©”ì†Œë“œ
     public void RecoverHunger(float _amount)
     {
         if (hunger < maxHunger)
@@ -293,13 +299,13 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-    //¸ñ¸¶¸§ Áõ°¡ ¸Ş¼Òµå
+    //ëª©ë§ˆë¦„ ì¦ê°€ ë©”ì†Œë“œ
     public void GenerateThirst(float _amount)
     {
         thirst -= _amount * Time.deltaTime;
     }
 
-    //À½½Ä ¼·Ãë ½Ã, ¸ñ¸¶¸§ È¸º¹ ¸Ş¼Òµå
+    //ìŒì‹ ì„­ì·¨ ì‹œ, ëª©ë§ˆë¦„ íšŒë³µ ë©”ì†Œë“œ
     public void RecoverThirst(float _amount)
     {
         if (thirst < maxThirst)
@@ -312,7 +318,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
     }
 
-    //Ã¼·Â È¸º¹ ¸Ş¼Òµå
+    //ì²´ë ¥ íšŒë³µ ë©”ì†Œë“œ
     public void Heal(int _healAmount)
     {
         if (health < maxHealth)
@@ -321,12 +327,12 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
         else if (health >= maxHealth)
         {
-            //Ã¼·Â È¸º¹ÀÌ ¾ÈµÇ°Ô Ã³¸®
+            //ì²´ë ¥ íšŒë³µì´ ì•ˆë˜ê²Œ ì²˜ë¦¬
             Debug.Log("Player health is full");
         }
     }
 
-    //°ø°İ¹Ş´Â ¸Ş¼Òµå
+    //ê³µê²©ë°›ëŠ” ë©”ì†Œë“œ
     public void TakePhysicalDamage(int _damageAmount)
     {
         if (health > 0f)
@@ -337,11 +343,24 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         }
         else if (health <= 0f)
         {
-            //Ã¼·ÂÀÌ 0ÀÌ µÇ¸é Á×À½ Ã³¸®
+            //ì²´ë ¥ì´ 0ì´ ë˜ë©´ ì£½ìŒ ì²˜ë¦¬
             Debug.Log("Player is dead");
             audioSource.clip = hitClips[Random.Range(0, dieClips.Length)];
             audioSource.Play();
         }
         onTakeDamage?.Invoke(); // damageIndicator
+    }
+
+    public WeightState WeightStatus
+    {
+        get
+        {
+            float ratio = currentCarryWeight / maxCarryWeight;
+
+            if (ratio < 0.3f) return WeightState.Light;
+            else if (ratio < 0.7f) return WeightState.Normal;
+            else if (ratio < 1f) return WeightState.Heavy;
+            else return WeightState.Overloaded;
+        }
     }
 }
