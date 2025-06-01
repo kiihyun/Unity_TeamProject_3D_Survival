@@ -13,7 +13,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
 
     [Header("AI")]
     private NavMeshAgent agent;
-    private AIState aiState;
+    public AIState aiState;
 
     [Header("Combat")]
     private float playerDistance;
