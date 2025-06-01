@@ -6,41 +6,35 @@ using TMPro;
 
 public class CraftingUIManager : MonoBehaviour
 {
-    [Header("UI ����")]
+    [Header("UI 연결")]
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI weightText;
-    public TextMeshProUGUI craftingTimeText;
+    public TextMeshProUGUI verifyingSuccessText;  // 여기에 제작 성공/실패 메시지 출력
     public Button craftButton;
 
-    [Header("��� ��� UI")]
+    [Header("재료 목록 UI")]
     public Transform requiredInfoParent;
     public GameObject requiredInfoPrefab;
 
-    [Header("�˾� UI")]
-    public GameObject craftingResultPopup;
-    public TextMeshProUGUI popupText;
-
-    [Header("�⺻ ����")]
+    [Header("기본 연결")]
     public Inventory playerInventory;
-
-    [Header("����")]
-    public float defaultCraftTime = 3f;
 
     private CraftItemData currentRecipe;
     private bool isCrafting = false;
+    private Button lastSelectedButton;
 
     public void DisplayRecipe(CraftItemData recipe)
     {
         currentRecipe = recipe;
 
-        // �⺻ ���� ǥ��
+        // 기본 정보 표시
         itemNameText.text = recipe.resultItem.displayName;
         descriptionText.text = recipe.resultItem.description;
         weightText.text = recipe.resultItem.itemMass + " kg";
-        craftingTimeText.text = $"{defaultCraftTime} SECONDS";
+        
 
-        // ���� ��� UI �����
+        // 기존 재료 UI 지우기
         foreach (Transform child in requiredInfoParent)
         {
             Destroy(child.gameObject);
@@ -51,51 +45,84 @@ public class CraftingUIManager : MonoBehaviour
         foreach (var req in recipe.materials.Take(4))
         {
             int owned = playerInventory.GetItemCount(req.item);
+            Debug.Log($"{req.item.displayName}: 가진 것 {owned} / 필요한 것 {req.amount}");
             if (owned < req.amount) canCraft = false;
 
             GameObject go = Instantiate(requiredInfoPrefab, requiredInfoParent);
+            Debug.Log("재료 UI 생성됨: " + req.item.displayName);
             go.GetComponent<RequiredInfoUI>().Set(req.item.displayName, owned, req.amount);
+            var ui = go.GetComponent<RequiredInfoUI>();
+            if (ui == null)
+            {
+                Debug.LogError(" RequiredInfoUI 컴포넌트 없음!");
+            }
+            else
+            {
+                ui.Set(req.item.displayName, owned, req.amount);
+                Debug.Log(" Set() 호출 성공");
+            }
+        }
+        Debug.Log($"최종 제작 가능 여부: {canCraft}");
+        craftButton.interactable = canCraft;
+        // DisplayRecipe 끝나기 전에 강제로 보이게 하기
+        foreach (Transform child in requiredInfoParent)
+        {
+            child.gameObject.SetActive(true);
+            var texts = child.GetComponentsInChildren<TextMeshProUGUI>();
+            foreach (var t in texts)
+            {
+                t.color = Color.white;
+                t.fontSize = 36;
+            }
         }
 
-        craftButton.interactable = canCraft;
     }
 
+    // 변경된 부분만 발췌
     public void OnClickCraft()
     {
         if (!craftButton.interactable || isCrafting) return;
 
-        StartCoroutine(CraftCoroutine());
+        TryCraftItem();
     }
 
-    IEnumerator CraftCoroutine()
+    void TryCraftItem()
     {
-        isCrafting = true;
-        craftButton.interactable = false;
-
-        yield return new WaitForSeconds(defaultCraftTime);
+        bool hasAllMaterials = true;
 
         foreach (var req in currentRecipe.materials)
         {
-            playerInventory.RemoveItem(req.item, req.amount);
+            if (!playerInventory.HasItem(req.item, req.amount))
+            {
+                hasAllMaterials = false;
+                break;
+            }
         }
 
-        playerInventory.AddItem(currentRecipe.resultItem, currentRecipe.resultAmount);
+        if (hasAllMaterials)
+        {
+            foreach (var req in currentRecipe.materials)
+            {
+                playerInventory.RemoveItem(req.item, req.amount);
+            }
 
-        ShowCraftingResultPopup(currentRecipe.resultItem.displayName, currentRecipe.resultAmount);
-        DisplayRecipe(currentRecipe); // UI ����
+            playerInventory.AddItem(currentRecipe.resultItem, currentRecipe.resultAmount);
+            verifyingSuccessText.text = "제작 성공!";
+        }
+        else
+        {
+            verifyingSuccessText.text = "제작 실패";
+        }
 
-        isCrafting = false;
+        DisplayRecipe(currentRecipe); // UI 갱신
     }
-
-    void ShowCraftingResultPopup(string itemName, int amount)
+    public void SelectSlot(Button newButton)
     {
-        popupText.text = $"{itemName} x{amount} ���� �Ϸ�!";
-        craftingResultPopup.SetActive(true);
-        Invoke("HidePopup", 2.5f);
+        if (lastSelectedButton != null)
+            lastSelectedButton.interactable = true; // 이전 버튼 다시 활성화
+
+        lastSelectedButton = newButton; // 새 버튼 저장
+        newButton.interactable = false; // 새 버튼 비활성화
     }
 
-    void HidePopup()
-    {
-        craftingResultPopup.SetActive(false);
-    }
 }
