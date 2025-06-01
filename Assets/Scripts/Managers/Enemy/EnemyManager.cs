@@ -25,9 +25,9 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector2 randCircle = Random.insideUnitCircle.normalized * Random.Range(minSpawnPos, maxSpawnPos);
-            Vector3 rawPos = entry.spawnPoint.position+ new Vector3(randCircle.x, 0f, randCircle.y);
+            Vector3 rawPos = entry.spawnPoint.position + new Vector3(randCircle.x, 0f, randCircle.y);
 
-            Vector3 spawnPos = GetValidNavMeshPosition(rawPos, 2f); // NavMesh À§ À§Ä¡·Î º¸Á¤
+            Vector3 spawnPos = GetValidNavMeshPosition(rawPos, 2f); // NavMesh ìœ„ ìœ„ì¹˜ë¡œ ë³´ì •
 
             int randomIndex = Random.Range(0, data.prefab.Length);
             GameObject obj = ObjectPoolManager.Instance.GetObjectByPrefab(data.prefab[randomIndex], null, spawnPos);
@@ -52,19 +52,10 @@ public class EnemyManager : MonoBehaviour
 
             entry.activeEnemies.Add(obj);
 
-            //¸®½ºÆù
+            //ë¦¬ìŠ¤í°
             Enemy enemy = obj.GetComponent<Enemy>();
-            //enemy ÃÊ±âÈ­
-            if (enemy != null)
-            {
-                enemy.data = data;
-                enemy.Init(); // »óÅÂ ÃÊ±âÈ­
-                enemy.OnDieCallback = (deadObj) =>
-                {
-                    entry.activeEnemies.Remove(deadObj);
-                    StartCoroutine(RespawnOneAfterDelay(entry));
-                };
-            }
+            //enemy ì´ˆê¸°í™”
+
             if (enemy != null)
             {
                 enemy.data = data;
@@ -74,7 +65,7 @@ public class EnemyManager : MonoBehaviour
                     StartCoroutine(RespawnOneAfterDelay(entry));
                 };
             }
-            else // BaseEnemy·Î »ó¼Ó¹Ş¾Æ Áßº¹ÄÚµå Á¤¸® ¿¹Á¤
+            else // BaseEnemyë¡œ ìƒì†ë°›ì•„ ì¤‘ë³µì½”ë“œ ì •ë¦¬ ì˜ˆì •
             {
                 PassiveAnimal animal = obj.GetComponent<PassiveAnimal>();
                 if (animal != null)
@@ -93,7 +84,7 @@ public class EnemyManager : MonoBehaviour
     IEnumerator RespawnOneAfterDelay(EnemyDataEntry entry)
     {
         yield return new WaitForSeconds(respawnDelay);
-        // ÇöÀç È°¼º Àû ¼ö°¡ ½ºÆù Á¦ÇÑº¸´Ù ÀûÀ» °æ¿ì¿¡¸¸ ¸®½ºÆù
+        // í˜„ì¬ í™œì„± ì  ìˆ˜ê°€ ìŠ¤í° ì œí•œë³´ë‹¤ ì ì„ ê²½ìš°ì—ë§Œ ë¦¬ìŠ¤í°
         if (entry.activeEnemies.Count < entry.data.spawnCount)
         {
             SpawnEnemies(entry, 1);
@@ -107,8 +98,8 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"NavMesh À§¿¡ À¯È¿ÇÑ À§Ä¡°¡ ¾øÀ½: {position}");
-            return position; // ½ÇÆĞ ½Ã ¿ø·¡ À§Ä¡ »ç¿ë (¿À·ù´Â ³¯ ¼ö ÀÖÀ½)
+            Debug.LogWarning($"NavMesh ìœ„ì— ìœ íš¨í•œ ìœ„ì¹˜ê°€ ì—†ìŒ: {position}");
+            return position; // ì‹¤íŒ¨ ì‹œ ì›ë˜ ìœ„ì¹˜ ì‚¬ìš© (ì˜¤ë¥˜ëŠ” ë‚  ìˆ˜ ìˆìŒ)
         }
     }
 }

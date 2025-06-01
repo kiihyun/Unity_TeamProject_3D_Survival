@@ -8,8 +8,8 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     [Header("Stats")]
     private int curHealth;
     public ItemData[] dropOnDeath;
-    private float lastFleeTime; // ¸¶Áö¸· µµ¸Á ½Ã°£
-    public float fleeCooldown = 2f; // µµ¸Á Àç½Ãµµ±îÁöÀÇ Áö¿¬
+    private float lastFleeTime; // ë§ˆì§€ë§‰ ë„ë§ ì‹œê°„
+    public float fleeCooldown = 2f; // ë„ë§ ì¬ì‹œë„ê¹Œì§€ì˜ ì§€ì—°
 
     [Header("AI")]
     private NavMeshAgent agent;
@@ -64,8 +64,8 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
             if (Time.time > lastFleeTime + fleeCooldown && agent.remainingDistance < 1f)
             {
                 agent.SetDestination(GetFleeLocation());
-                lastFleeTime = Time.time; // ´ÙÀ½ µµ¸ÁÀº ÄğÅ¸ÀÓ ÀÌÈÄ¿¡ °¡´É
-                Debug.Log("Åä³¢µµ¸Á»óÅÂ");
+                lastFleeTime = Time.time; // ë‹¤ìŒ ë„ë§ì€ ì¿¨íƒ€ì„ ì´í›„ì— ê°€ëŠ¥
+                Debug.Log("í† ë¼ë„ë§ìƒíƒœ");
             }
             else
             {
@@ -81,7 +81,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
 
     public void SetState(AIState state)
     {
-        if (aiState == state) return; //Áßº¹ÀüÈ¯ ¹æÁö
+        if (aiState == state) return; //ì¤‘ë³µì „í™˜ ë°©ì§€
         aiState = state;
 
         switch (aiState)
@@ -114,7 +114,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
         if (playerDistance < data.detectDistance && Time.time > lastFleeTime + fleeCooldown)
         {
             SetState(AIState.Running);
-            lastFleeTime = Time.time; // µµ¸Á °£ ½ÃÁ¡ ÀúÀå
+            lastFleeTime = Time.time; // ë„ë§ ê°„ ì‹œì  ì €ì¥
         }
     }
 
@@ -153,7 +153,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     {
         StartCoroutine(DamageFlash());
         curHealth -= damage;
-        Debug.Log($"enemy {damage}ÇÇÇØ¹ŞÀ½ {curHealth}Ã¼·Â³²À½");
+        Debug.Log($"enemy {damage}í”¼í•´ë°›ìŒ {curHealth}ì²´ë ¥ë‚¨ìŒ");
         if (curHealth <= 0)
         {
             for (int i = 0; i < meshRenderers.Length; i++)
@@ -170,7 +170,7 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         }
-        // Pool¿¡ ¹İÈ¯ÇÏ°Å³ª ÆÄ±« Àü
+        // Poolì— ë°˜í™˜í•˜ê±°ë‚˜ íŒŒê´´ ì „
         OnDieCallback?.Invoke(this.gameObject);
         StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
@@ -191,13 +191,13 @@ public class PassiveAnimal : MonoBehaviour, IDamagable
     }
     IEnumerator DieCoroutine()
     {
-        animator.SetBool("Die", true); // Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+        animator.SetBool("Die", true); // ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜
 
-        yield return new WaitForSeconds(2f); // Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç ±æÀÌ¸¸Å­ ´ë±â
+        yield return new WaitForSeconds(5f); // ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜ ê¸¸ì´ë§Œí¼ ëŒ€ê¸°
 
-        OnDieCallback?.Invoke(this.gameObject); //  ¸®½ºÆù Æ®¸®°Å
+        OnDieCallback?.Invoke(this.gameObject); //  ë¦¬ìŠ¤í° íŠ¸ë¦¬ê±°
 
-        gameObject.SetActive(false); // ¿©±â¼­ ºñÈ°¼ºÈ­
+        gameObject.SetActive(false); // ì—¬ê¸°ì„œ ë¹„í™œì„±í™”
     }
 
 }

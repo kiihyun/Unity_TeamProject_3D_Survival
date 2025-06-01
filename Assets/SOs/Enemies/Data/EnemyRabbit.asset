@@ -18,6 +18,7 @@ MonoBehaviour:
   runSpeed: 5
   spawnCount: 10
   prefab:
+  - {fileID: 6206966632080291316, guid: 285fd953f46a07540a6c79700a89af1f, type: 3}
   - {fileID: 6206966632080291316, guid: 1dc60f7a8e12ca943b5446fc88a463e3, type: 3}
   dropOnDeath: []
   detectDistance: 3
