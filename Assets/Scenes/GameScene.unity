@@ -474,7 +474,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3152733697540767584}
     - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6939195095495038426}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6939195095495038426}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6939195095495038426}
     - target: {fileID: 7626783387476105381, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
@@ -10265,7 +10273,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8354817313989867813}
   m_HandleRect: {fileID: 7331822606529410872}
   m_Direction: 2
-  m_Value: 0.5
+  m_Value: 0.5000001
   m_Size: 0.5809129
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10476,8 +10484,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1075273740737070847}
   m_HandleRect: {fileID: 6863397233623594059}
   m_Direction: 2
-  m_Value: 0.5000012
-  m_Size: 0.96551734
+  m_Value: 0.5
+  m_Size: 0.9655172
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11176,7 +11184,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8674176317670130080}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3446095859677232062}
+        m_TargetAssemblyTypeName: PausedController, Assembly-CSharp
+        m_MethodName: OnClickQuitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &558934235338348929
 GameObject:
   m_ObjectHideFlags: 0
@@ -21022,7 +21042,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6346812861871488663}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3446095859677232062}
+        m_TargetAssemblyTypeName: PausedController, Assembly-CSharp
+        m_MethodName: OnClickbackButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &7331822606529410872
 RectTransform:
   m_ObjectHideFlags: 0
