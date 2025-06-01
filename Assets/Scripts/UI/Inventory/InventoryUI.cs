@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using static UnityEditor.Progress;
 
 public class InventoryUI : MonoBehaviour

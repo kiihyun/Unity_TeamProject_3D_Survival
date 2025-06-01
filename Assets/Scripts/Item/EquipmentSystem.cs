@@ -2,41 +2,41 @@ using UnityEngine;
 
 public class EquipmentSystem : MonoBehaviour
 {
-    public EquipSlot[] equipSlots; //ÀåÂø °¡´ÉÇÑ ¾ÆÀÌÅÛµé
+    public EquipSlot[] equipSlots; //ì¥ì°© ê°€ëŠ¥í•œ ì•„ì´í…œë“¤
     public Transform equipPos;
 
-    public void EquipItem(ItemData item)//ÀåÂø
+    public void EquipItem(ItemData item)//ì¥ì°©
     {
         foreach (var slot in equipSlots)
         {
-            Debug.Log($"[Àåºñ Ã¼Å©] ½½·Ô Å¸ÀÔ: {slot.slotType}, ¾ÆÀÌÅÛ Å¸ÀÔ: {item.equipSlotType}");
+            Debug.Log($"[ì¥ë¹„ ì²´í¬] ìŠ¬ë¡¯ íƒ€ì…: {slot.slotType}, ì•„ì´í…œ íƒ€ì…: {item.equipSlotType}");
             if (slot.slotType == item.equipSlotType)
             {
                 slot.equippedItem = item;
-                Debug.Log($"Âø¿ëµÊ: {item.displayName}");
+                Debug.Log($"ì°©ìš©ë¨: {item.displayName}");
 
                 GameObject gameObject = Instantiate(slot.equippedItem.equipPrefab, equipPos);
                 gameObject.transform.position = equipPos.position;
                 return;
             }
         }
-        Debug.LogWarning("EquipItem ½ÇÆĞ: ÀÏÄ¡ÇÏ´Â ½½·ÔÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+        Debug.LogWarning("EquipItem ì‹¤íŒ¨: ì¼ì¹˜í•˜ëŠ” ìŠ¬ë¡¯ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
     }
 
-    public void UnequipItem(EquipSlotType slotType)//¾ÆÀÌÅÛ ÇØÁ¦
+    public void UnequipItem(EquipSlotType slotType)//ì•„ì´í…œ í•´ì œ
     {
         foreach (var slot in equipSlots)
         {
             if (slot.slotType == slotType)
             {
-                Debug.Log($"ÇØÁ¦µÊ: {slot.equippedItem?.displayName}");
+                Debug.Log($"í•´ì œë¨: {slot.equippedItem?.displayName}");
                 slot.equippedItem = null;
                 return;
             }
         }
     }
 
-    public ItemData GetEquippedItem(EquipSlotType slotType)//ÀåÂøµÈ ¾ÆÀÌÅÛ È®ÀÎ
+    public ItemData GetEquippedItem(EquipSlotType slotType)//ì¥ì°©ëœ ì•„ì´í…œ í™•ì¸
     {
         foreach (var slot in equipSlots)
         {
