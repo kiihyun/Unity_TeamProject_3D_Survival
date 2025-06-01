@@ -83,9 +83,9 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        if (InventoryInfoUI.Instance == null)
+        if (InventoryDetailUI.Instance == null)
         {
-            Debug.LogError("InventoryInfoUI.Instance가 null입니다.");
+            Debug.LogError("InventoryDetailUI.Instance가 null입니다.");
             return;
         }
 
