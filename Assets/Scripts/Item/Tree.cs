@@ -5,24 +5,35 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
-
+    public GameObject treeObject;
+    private BoxCollider collider;
     public ItemData itemData;
     public int amount = 1;
     public int count = 0;
     public int maxCount = 3;
     public float cycle;
-    // ÇÃ·¹ÀÌ¾î°¡ È£ÃâÇÔ
+    public float maxCycle = 20f;
+    // í”Œë ˆì´ì–´ê°€ í˜¸ì¶œí•¨
 
+    private void Start()
+    {
+        collider = GetComponent<BoxCollider>();
+    }
     private void Update()
     {
-        if (count > maxCount)
+        if (count >= maxCount)
         {
+            treeObject.SetActive(false);
+            collider.enabled = false;
             cycle += Time.deltaTime;
-            if (cycle > 20f)
+            if (cycle > maxCycle)
             {
+                treeObject.SetActive(true);
+                collider.enabled = true;
                 cycle = 0;
                 count = 0;
             }
+
         }
     }
 
@@ -32,7 +43,7 @@ public class Tree : MonoBehaviour
         if (count <= maxCount)
         {
             inventory.AddItem(itemData, amount);
-            Debug.Log($"{itemData.displayName} ¾òÀ½");
+            Debug.Log($"{itemData.displayName} ì–»ìŒ");
         }
     }
 }
