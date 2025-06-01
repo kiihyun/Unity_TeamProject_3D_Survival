@@ -17625,6 +17625,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNameText: {fileID: 6553149143359560116}
   itemDescText: {fileID: 2916493763057897524}
+  itemMassText: {fileID: 7774173133978709756}
+  itemQuenText: {fileID: 7943041059745928525}
   useButton: {fileID: 6896009600285888306}
   equipButton: {fileID: 1451981140198412809}
   dropButton: {fileID: 2739807416412416280}
@@ -19531,6 +19533,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNameText: {fileID: 3723798921893244965}
   itemDescText: {fileID: 9198542611071908042}
+  itemMassText: {fileID: 0}
+  itemQuenText: {fileID: 0}
   useButton: {fileID: 0}
   equipButton: {fileID: 0}
   dropButton: {fileID: 0}
