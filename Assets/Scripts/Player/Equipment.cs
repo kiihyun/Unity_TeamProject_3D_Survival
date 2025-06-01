@@ -40,10 +40,12 @@ public class Equipment : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        var equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
+        EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
+        Debug.Log(equipSlots.ToString());
         foreach (var slot in equipSlots) 
         {
-            if (slot.slotType == EquipSlotType.Weapon) return;
+            Debug.Log(slot);
+            //if (slot.slotType == EquipSlotType.Weapon) return;
         }
 
         if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
