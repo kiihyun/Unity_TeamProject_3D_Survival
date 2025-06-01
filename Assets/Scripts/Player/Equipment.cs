@@ -41,7 +41,6 @@ public class Equipment : MonoBehaviour
     public void OnAttackInput(InputAction.CallbackContext context)
     {
         EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
-        Debug.Log($"장착:{equipSlots.ToString()}");
         foreach (var slot in equipSlots) 
         {
             Debug.Log(slot);
