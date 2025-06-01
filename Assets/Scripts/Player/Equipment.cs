@@ -10,11 +10,12 @@ public class Equipment : MonoBehaviour
     public Equip curEquip;
     public Animator animator;
     public SkinnedMeshRenderer meshRenderer;
+    public Equip defaultUnarmed;
     private bool isAttacking;
 
     private PlayerController controller;
+    private ItemData curWeapon;
 
-    [SerializeField] private Equip defaultUnarmed;
 
     private void Awake()
     {
@@ -39,6 +40,12 @@ public class Equipment : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
+        var equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
+        foreach (var slot in equipSlots) 
+        {
+            if (slot.slotType == EquipSlotType.Weapon) return;
+        }
+
         if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
         {
             meshRenderer.enabled = true;

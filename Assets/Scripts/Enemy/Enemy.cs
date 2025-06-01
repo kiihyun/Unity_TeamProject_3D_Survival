@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AIState // ÀÓ½Ã, ÃßÈÄ ÀÌ³Ñ½ºÅ©¸³Æ®·Î ÀÌµ¿
+public enum AIState // ì„ì‹œ, ì¶”í›„ ì´ë„˜ìŠ¤í¬ë¦½íŠ¸ë¡œ ì´ë™
 {
     Idle,
     Wandering,
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour, IDamagable
         animator = GetComponent<Animator>();
         meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
 
-        NavMeshUtility.TrySnapToNavMesh(transform); // NavMesh º¸Á¤
+        NavMeshUtility.TrySnapToNavMesh(transform); // NavMesh ë³´ì •
     }
 
     void Start()
@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviour, IDamagable
     }
     public void SetState(AIState state)
     {
-        if (aiState == state) return; //  µ¿ÀÏÇÑ »óÅÂ¸é ¹«½Ã
+        if (aiState == state) return; //  ë™ì¼í•œ ìƒíƒœë©´ ë¬´ì‹œ
         aiState = state;
 
          switch (aiState)
@@ -141,14 +141,14 @@ public class Enemy : MonoBehaviour, IDamagable
             {
                 lastAttackTime = Time.time;
                 PlayerManager.Instance.player.GetComponent<IDamagable>().TakePhysicalDamage(data.damage);
-                Debug.Log("Á»ºñ°¡ °ø°İ");
+                Debug.Log("ì¢€ë¹„ê°€ ê³µê²©");
                 animator.speed = 1;
                 animator.SetTrigger("Attack");
             }
             return;
         }
         else
-        { // °ø°İ ¹üÀ§ ¹Û °¨Áö¹üÀ§ ¾È
+        { // ê³µê²© ë²”ìœ„ ë°– ê°ì§€ë²”ìœ„ ì•ˆ
             if (playerDistance < data.detectDistance)
             {
                 agent.isStopped = false;
@@ -164,7 +164,7 @@ public class Enemy : MonoBehaviour, IDamagable
                     SetState(AIState.Wandering);
                 }
             }
-            else //°¨Áö ¹üÀ§ ¹Û
+            else //ê°ì§€ ë²”ìœ„ ë°–
             {
                 agent.SetDestination(transform.position);
                 agent.isStopped = true;
@@ -184,7 +184,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         StartCoroutine(DamageFlash());
         curHealth -= damage;
-        Debug.Log($"enemy {damage}ÇÇÇØ¹ŞÀ½ {curHealth}Ã¼·Â³²À½");
+        Debug.Log($"enemy {damage}í”¼í•´ë°›ìŒ {curHealth}ì²´ë ¥ë‚¨ìŒ");
         if (curHealth <= 0)
         {
             for (int i = 0; i < meshRenderers.Length; i++)
@@ -202,7 +202,7 @@ public class Enemy : MonoBehaviour, IDamagable
         {
             Instantiate(dropOnDeath[i].dropPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
         }
-        // Pool¿¡ ¹İÈ¯ÇÏ°Å³ª ÆÄ±« Àü
+        // Poolì— ë°˜í™˜í•˜ê±°ë‚˜ íŒŒê´´ ì „
         OnDieCallback?.Invoke(this.gameObject);
         StartCoroutine(DieCoroutine());
         Debug.Log("enemy Die");
@@ -226,14 +226,14 @@ public class Enemy : MonoBehaviour, IDamagable
 
     IEnumerator DieCoroutine()
     {
-        Debug.Log("dieÄÚ·çÆ¾");
-        animator.SetTrigger("Die"); // Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç
+        Debug.Log("dieì½”ë£¨í‹´");
+        animator.SetTrigger("Die"); // ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜
 
-        yield return new WaitForSeconds(5f); // Á×´Â ¾Ö´Ï¸ŞÀÌ¼Ç ±æÀÌ¸¸Å­ ´ë±â
+        yield return new WaitForSeconds(5f); // ì£½ëŠ” ì• ë‹ˆë©”ì´ì…˜ ê¸¸ì´ë§Œí¼ ëŒ€ê¸°
 
-        OnDieCallback?.Invoke(this.gameObject); //  ¸®½ºÆù Æ®¸®°Å
+        OnDieCallback?.Invoke(this.gameObject); //  ë¦¬ìŠ¤í° íŠ¸ë¦¬ê±°
 
-        gameObject.SetActive(false); // ¿©±â¼­ ºñÈ°¼ºÈ­
+        gameObject.SetActive(false); // ì—¬ê¸°ì„œ ë¹„í™œì„±í™”
     }
 
     public static class NavMeshUtility
@@ -250,7 +250,7 @@ public class Enemy : MonoBehaviour, IDamagable
         }
     }
 
-    public void Init() // ÃÊ±âÈ­
+    public void Init() // ì´ˆê¸°í™”
     {
         curHealth = data.maxHealth;
         isDead = false;
@@ -264,10 +264,10 @@ public class Enemy : MonoBehaviour, IDamagable
 
         if (animator != null)
         {
-            animator.Rebind(); // ¾Ö´Ï¸ŞÀÌ¼Ç ÃÊ±âÈ­
-            animator.Update(0f); // Áï½Ã ¹İ¿µ
+            animator.Rebind(); // ì• ë‹ˆë©”ì´ì…˜ ì´ˆê¸°í™”
+            animator.Update(0f); // ì¦‰ì‹œ ë°˜ì˜
         }
 
-        // ±âÅ¸ »óÅÂ°ª ÃÊ±âÈ­
+        // ê¸°íƒ€ ìƒíƒœê°’ ì´ˆê¸°í™”
     }
 }
