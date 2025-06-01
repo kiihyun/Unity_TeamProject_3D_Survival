@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// 낮과 밤의 주기를 시뮬레이션하는 스크립트.
@@ -59,7 +59,7 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.reflectionIntensity = reflectionIntensityMultiplier.Evaluate(time);
 
         // 날씨 업데이트
-        UpdateWeather();
+        //UpdateWeather();
     }
 
     /// <summary>

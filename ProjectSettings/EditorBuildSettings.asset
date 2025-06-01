@@ -11,8 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntroScene.unity
     guid: bcb3bac2726cf95438204897a8ce1e9d
-  - enabled: 1
-    path: Assets/Scenes/GameScene.unity
+  - enabled: 0
+    path: Assets/Scenes/GameScene_Backup.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndingScene.unity
     guid: d6d31378a95e74e49b6f6417c44d6d4e
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 57ca7dc34341f2f48b8f3a9e3c09703c
   m_configObjects: {}
