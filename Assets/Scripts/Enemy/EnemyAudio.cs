@@ -43,12 +43,14 @@ public class EnemyAudio : MonoBehaviour
             Debug.Log("Volume: " + audioSource.volume);
             Debug.Log("Mute: " + audioSource.mute);
             //audioSource.Play();
+            audioSource.volume = 0.5f;
             audioSource.PlayOneShot(idleSound);
         }
     }
 
     public void PlayDeathSound()
     {
+        audioSource.volume = 0.5f;
         audioSource.PlayOneShot(deathSound);
     }
 }
