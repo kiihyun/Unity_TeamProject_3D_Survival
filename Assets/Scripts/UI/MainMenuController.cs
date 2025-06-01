@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -41,9 +41,8 @@ public class MainMenuController : MonoBehaviour
     }
     public void OnClickSettings()
     {
-        settingsPanel.SetActive(!settingsPanel.activeSelf); // 설정 패널 토글
-        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // 메인 메뉴 패널 숨김/보임
-
+        settingsPanel.SetActive(true); // 설정 패널 활성화
+        mainMenuPanel.SetActive(false); // 메인 메뉴 패널 비활성화
     }
         
     public void OnClickExitGame()
@@ -65,10 +64,10 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("CreditScene"); // 크레딧 씬 로드
     }
 
-    public void OnConfirmBtn()
+    public void OnClickBackToMainMenu()
     {
-        settingsPanel.SetActive(!settingsPanel.activeSelf); // 설정 패널 토글
-        mainMenuPanel.SetActive(!settingsPanel.activeSelf); // 메인 메뉴 패널 숨김/보임
+        settingsPanel.SetActive(false); // 설정 패널 비활성화
+        mainMenuPanel.SetActive(true); // 메인 메뉴 패널 활성화
     }
 
     IEnumerator PlayIntroSequence()

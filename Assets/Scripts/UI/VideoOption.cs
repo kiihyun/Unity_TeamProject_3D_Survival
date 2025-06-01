@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class VideoOption : MonoBehaviour
 {
     FullScreenMode screenMode;
-    public Dropdown resolutionDropdown; // ��Ӵٿ� UI ������Ʈ
+    public Dropdown resolutionDropdown; // 드롭다운 UI 컴포넌트
     public Toggle fullscreenBtn;
-    List<Resolution> resolutions = new List<Resolution>();
+    public List<Resolution> resolutions = new List<Resolution>();
 
-    int resolutionNum;
+    public int resolutionNum;
 
     void Start()
     {
@@ -46,15 +46,17 @@ public class VideoOption : MonoBehaviour
     public void DropboxOptionChange(int x)
     {
         resolutionNum = x;
+        SettingsManager.Instance.resolutionIndex = x; // 저장
     }
 
     public void FullScreenBtn(bool isFull)
     {
         screenMode = isFull ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        SettingsManager.Instance.isFullscreen = isFull; // 저장
     }
 
     public void OkBtnClick()
     {
-        Screen.SetResolution(resolutions[resolutionNum].width, resolutions[resolutionNum].height, screenMode);
+        SettingsManager.Instance.ApplyAllSettings(resolutions); // 저장된 값 적용
     }
 }
