@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Equipment : MonoBehaviour
 {
     public Equip curEquip;
     public Animator animator;
     public SkinnedMeshRenderer meshRenderer;
+    public Equip defaultUnarmed;
     private bool isAttacking;
 
     private PlayerController controller;
+    private ItemData curWeapon;
 
-    [SerializeField] private Equip defaultUnarmed;
 
     private void Awake()
     {
@@ -38,11 +40,19 @@ public class Equipment : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && curEquip != null)
+        EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
+        Debug.Log($"Ïû•Ï∞©:{equipSlots.ToString()}");
+        foreach (var slot in equipSlots) 
+        {
+            Debug.Log(slot);
+            if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem != null) return;
+        }
+
+        if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
         {
             meshRenderer.enabled = true;
             animator.SetTrigger("Attack");
-            curEquip.OnAttackInput(); // «ˆ¿Á ¿Â∫Òµ» ∏«º’ Ω∫≈©∏≥∆Æ Ω««‡
+            curEquip.OnAttackInput(); // ÌòÑÏû¨ Ïû•ÎπÑÎêú Îß®ÏÜê Ïä§ÌÅ¨Î¶ΩÌä∏ Ïã§Ìñâ
         }
     }
 
