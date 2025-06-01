@@ -1,4 +1,4 @@
-﻿using Cinemachine;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,16 +20,12 @@ public class DialogueManager : MonoBehaviour
     private Coroutine typingCoroutine;
     private bool isTyping = false;
 
-    private PlayerController playerController;
-
     private HashSet<string> seenStroyDialogues = new HashSet<string>(); // 스토리 대화 중복 방지용
 
     void Start()
     {
         sentences = new Queue<string>();
         nextButton.onClick.AddListener(OnNextClicked);
-
-        playerController = FindObjectOfType<PlayerController>();
 
         dialogueUI.SetActive(false);
     }
@@ -60,6 +56,8 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string npcName, string[] dialogueLines, Transform npcTarget)
     {
+        UIManager.Instance.ShowDialogueUI(); // 모든 비게임 UI 꺼지고 대화 UI만 켜짐
+
         // 플레이어 카메라를 비활성화하고 NPC 카메라를 활성화
         npcCamera.Follow = npcTarget;
         npcCamera.LookAt = npcTarget;
@@ -67,10 +65,7 @@ public class DialogueManager : MonoBehaviour
         playerCamera.gameObject.SetActive(false);
         npcCamera.gameObject.SetActive(true);
 
-        // 플레이어 컨트롤러 비활성화
-        playerController?.SetControl(false);
-
-        UIManager.Instance.ShowDialogueUI(); // 모든 비게임 UI 꺼지고 대화 UI만 켜짐
+        
 
         nameText.text = npcName;
 
@@ -129,9 +124,6 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         UIManager.Instance.HideDialogueUI(); // 다시 UI 복구
-
-        // 플레이어 컨트롤러 활성화
-        playerController?.SetControl(true);
 
         // 카메라 전환: NPC 카메라 비활성화, 플레이어 카메라 활성화
         npcCamera.gameObject.SetActive(false);

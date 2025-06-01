@@ -8,7 +8,7 @@ public class PausedController : MonoBehaviour
     public GameObject optionsButton;
     public GameObject quitButton;
 
-    public GameObject pausePanel; // Pause UI ÆĞ³Î
+    public GameObject pausePanel; // Pause UI íŒ¨ë„
 
     void Start()
     {
@@ -17,14 +17,25 @@ public class PausedController : MonoBehaviour
 
     public void OnClickbackButton()
     {
-        ResumeGame(); // °ÔÀÓ Àç°³
+        ResumeGame(); // ê²Œì„ ì¬ê°œ
     }
 
     public void ResumeGame()
     {
-        Time.timeScale = 1f; // ½Ã°£ Àç°³
-        pausePanel.SetActive(false); // UI ºñÈ°¼ºÈ­
+        Time.timeScale = 1f; // ì‹œê°„ ì¬ê°œ
+        pausePanel.SetActive(false); // UI ë¹„í™œì„±í™”
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked; // ¸¶¿ì½º Ä¿¼­ Àá±İ
+        Cursor.lockState = CursorLockMode.Locked; // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì ê¸ˆ
+    }
+
+    public void OnClickOptionsButton()
+    {
+        // ì˜µì…˜ UI ë¡œì§ì„ ì—¬ê¸°ì— ì¶”ê°€
+        Debug.Log("Options clicked");
+    }
+
+    public void OnClickQuitButton()
+    {
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
