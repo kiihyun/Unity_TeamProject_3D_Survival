@@ -106,8 +106,16 @@ public class CraftingUIManager : MonoBehaviour
                 playerInventory.RemoveItem(req.item, req.amount);
             }
 
-            playerInventory.AddItem(currentRecipe.resultItem, currentRecipe.resultAmount);
-            verifyingSuccessText.text = "제작 성공!";
+            bool added = playerInventory.AddItem(currentRecipe.resultItem, currentRecipe.resultAmount);
+            if (added)
+            {
+                verifyingSuccessText.text = "제작 성공!";
+            }
+            else
+            {
+                verifyingSuccessText.text = "제작 실패 (무게 초과 또는 슬롯 초과)";
+            }
+
         }
         else
         {
@@ -124,5 +132,31 @@ public class CraftingUIManager : MonoBehaviour
         lastSelectedButton = newButton; // 새 버튼 저장
         newButton.interactable = false; // 새 버튼 비활성화
     }
+
+    void OnDisable()
+    {
+        // UI 초기화
+        itemNameText.text = "";
+        descriptionText.text = "";
+        weightText.text = "";
+        verifyingSuccessText.text = "";
+
+        foreach (Transform child in requiredInfoParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        craftButton.interactable = false;
+
+        // 버튼 선택 초기화
+        if (lastSelectedButton != null)
+        {
+            lastSelectedButton.interactable = true;
+            lastSelectedButton = null;
+        }
+
+        currentRecipe = null;
+    }
+
 
 }
