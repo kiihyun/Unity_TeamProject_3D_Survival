@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour, IInteractable
 {
@@ -98,18 +99,51 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (!PlayerManager.Instance.controller.isInventoryOpen)
+        // 기본 null 방지 체크
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.controller == null ||
+            PlayerManager.Instance.player == null)
         {
-            var tree = curDetectObject.GetComponent<Tree>();
-            if (context.phase == InputActionPhase.Started)
+            Debug.LogWarning("PlayerManager의 필드가 null입니다. 연결을 확인하세요.");
+            return;
+        }
+
+        if (!PlayerManager.Instance.controller.isInventoryOpen && context.phase == InputActionPhase.Started)
+        {
+            // EquipmentSystem 컴포넌트 존재 여부 확인
+            var equipmentSystem = PlayerManager.Instance.player.GetComponent<EquipmentSystem>();
+            if (equipmentSystem == null)
             {
+                Debug.LogWarning("Player에 EquipmentSystem 컴포넌트가 없습니다.");
+                return;
+            }
+
+            EquipSlot[] slots = equipmentSystem.equipSlots;
+
+            foreach (var slot in slots)
+            {
+                if (slot == null || slot.equippedItem == null) continue;
+
+                if (slot.slotType == EquipSlotType.Weapon &&
+                    slot.equippedItem.displayName == "플레어건") // 이름이 정확히 일치해야 함
+                {
+                    Debug.Log("플레어건으로 엔딩 진입!");
+                    SceneManager.LoadScene("EndingScene");
+                    return;
+                }
+            }
+
+            // 나무를 공격하는 로직
+            if (curDetectObject != null)
+            {
+                var tree = curDetectObject.GetComponent<Tree>();
                 if (tree != null)
                 {
                     hitTreeCount++;
                     if (hitTreeCount == maxHitTreeCount)
                     {
                         tree.ItemInteract(inventory);
-                        Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+                        Debug.Log($"{curDetectObject.name}와 상호작용 성공 (나무)");
                         hitTreeCount = 0;
                         return;
                     }
@@ -117,6 +151,7 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             }
         }
     }
+
 
     // 오브젝트를 Raycast로 감지하는 메소드
     public void DetectObject()
