@@ -24,6 +24,12 @@ public class EquipTool : Equip
     }
     void PerformAttack()
     {
+        EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
+        foreach (var slot in equipSlots)
+        {
+            if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem == null) return;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0));
         if (Physics.Raycast(ray, out RaycastHit hit, attackDistance))
         {

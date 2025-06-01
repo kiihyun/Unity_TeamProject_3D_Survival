@@ -43,7 +43,6 @@ public class Equipment : MonoBehaviour
         EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
         foreach (var slot in equipSlots) 
         {
-            Debug.Log(slot);
             if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem != null) return;
         }
 
