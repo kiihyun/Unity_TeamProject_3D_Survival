@@ -226,7 +226,6 @@ public class Enemy : MonoBehaviour, IDamagable
 
     IEnumerator DieCoroutine()
     {
-        Debug.Log("die코루틴");
         animator.SetTrigger("Die"); // 죽는 애니메이션
 
         yield return new WaitForSeconds(5f); // 죽는 애니메이션 길이만큼 대기

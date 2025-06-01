@@ -2641,6 +2641,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3152733697540767584}
     - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: -675444398429973743, guid: f7f6fc78c7b1c9e42abc0458d3517983, type: 3}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6939195095495038426}
@@ -2652,6 +2664,22 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6939195095495038426}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnAttackInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: EquipTool, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6412728762575952555, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7626783387476105381, guid: c30c08f78e0b6a1499732d4c19955a67, type: 3}
       propertyPath: craftingUI
       value: 
@@ -10993,7 +11021,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6863397233623594059}
   m_Direction: 2
   m_Value: 0.5000012
-  m_Size: 0.96551716
+  m_Size: 0.96551734
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
