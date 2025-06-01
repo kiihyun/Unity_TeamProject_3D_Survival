@@ -41,11 +41,11 @@ public class Equipment : MonoBehaviour
     public void OnAttackInput(InputAction.CallbackContext context)
     {
         EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
-        Debug.Log(equipSlots.ToString());
+        Debug.Log($"장착:{equipSlots.ToString()}");
         foreach (var slot in equipSlots) 
         {
             Debug.Log(slot);
-            //if (slot.slotType == EquipSlotType.Weapon) return;
+            if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem != null) return;
         }
 
         if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
