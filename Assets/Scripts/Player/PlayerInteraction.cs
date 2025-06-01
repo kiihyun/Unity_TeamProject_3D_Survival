@@ -86,10 +86,14 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
             return;
         }
 
-
+        var corpse = curDetectObject.GetComponent<Corpse>();
+        if (corpse != null)
+        {
+            //Songdo 시체 상호작용 처리
+            corpse.Interact(inventory);
+        }
 
         Debug.LogWarning("상호작용 가능한 컴포넌트가 없습니다: " + curDetectObject.name);
-
     }
 
     public void Attack(InputAction.CallbackContext context)
