@@ -9,6 +9,7 @@ public class PausedController : MonoBehaviour
     public GameObject quitButton;
 
     public GameObject pausePanel; // Pause UI 패널
+    public GameObject optionPanel; // 옵션 UI 패널
 
     void Start()
     {
@@ -30,8 +31,8 @@ public class PausedController : MonoBehaviour
 
     public void OnClickOptionsButton()
     {
-        // 옵션 UI 로직을 여기에 추가
-        Debug.Log("Options clicked");
+        pausePanel.SetActive(false); // 일시정지 패널 비활성화
+        optionPanel.SetActive(true); // 옵션 패널 활성화
     }
 
     public void OnClickQuitButton()
