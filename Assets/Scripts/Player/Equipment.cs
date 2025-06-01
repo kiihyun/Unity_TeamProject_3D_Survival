@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class Equipment : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class Equipment : MonoBehaviour
 
     private PlayerController controller;
     private ItemData curWeapon;
-
+    private EquipTool equipTool;
 
     private void Awake()
     {
@@ -43,7 +44,14 @@ public class Equipment : MonoBehaviour
         EquipSlot[] equipSlots = PlayerManager.Instance.player.GetComponent<EquipmentSystem>().equipSlots;
         foreach (var slot in equipSlots) 
         {
-            if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem != null) return;
+            if (slot.slotType == EquipSlotType.Weapon && slot.equippedItem != null)
+            {
+                curEquip = PlayerManager.Instance.player.GetComponentInChildren<EquipTool>();
+                if (curEquip == null)
+                    Debug.Log("EquipTool not found on equippedItem");
+                curEquip.OnAttackInput();
+                return;
+            }
         }
 
         if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
@@ -63,6 +71,5 @@ public class Equipment : MonoBehaviour
     {
         meshRenderer.enabled = false;
         isAttacking = false;
-
     }
 }

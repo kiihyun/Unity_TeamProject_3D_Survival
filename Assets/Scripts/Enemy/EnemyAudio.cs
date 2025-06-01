@@ -40,9 +40,6 @@ public class EnemyAudio : MonoBehaviour
         if (!audioSource.isPlaying)
         {
             audioSource.clip = clip;
-            Debug.Log("Current clip: " + audioSource.clip);
-            Debug.Log("Volume: " + audioSource.volume);
-            Debug.Log("Mute: " + audioSource.mute);
             audioSource.volume = 0.4f;
             audioSource.maxDistance = 10f;
             audioSource.spatialBlend = 1f;
