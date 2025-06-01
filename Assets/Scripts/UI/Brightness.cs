@@ -38,4 +38,10 @@ public class Brightness : MonoBehaviour
             Debug.LogWarning("AutoExposure settings not found in Brightness script.");
         }
     }
+
+    public void OnBrightnessChanged(float value)
+    {
+        SettingsManager.Instance.brightness = value;
+        AdjustBrightness(value);
+    }
 }

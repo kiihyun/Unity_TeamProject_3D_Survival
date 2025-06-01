@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject craftingPanel;
     public GameObject pausePanel;
+    public GameObject optionPanel; // 옵션 패널 참조
 
     private bool isPaused = false;
     private bool isInventoryOpen = false;
@@ -177,5 +178,11 @@ public class UIManager : MonoBehaviour
 
         // 플레이어 컨트롤러 활성화
         playerController?.SetControl(true);
+    }
+
+    public void OptionConfirm()
+    {
+        optionPanel.SetActive(false); // 옵션 패널 비활성화
+        ResumeGame(); // 게임 재개
     }
 }
