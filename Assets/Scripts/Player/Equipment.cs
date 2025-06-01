@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Equipment : MonoBehaviour
 {
@@ -38,11 +39,11 @@ public class Equipment : MonoBehaviour
 
     public void OnAttackInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && curEquip != null)
+        if (context.phase == InputActionPhase.Started && curEquip != null && !EventSystem.current.IsPointerOverGameObject())
         {
             meshRenderer.enabled = true;
             animator.SetTrigger("Attack");
-            curEquip.OnAttackInput(); // ÇöÀç ÀåºñµÈ ¸Ç¼Õ ½ºÅ©¸³Æ® ½ÇÇà
+            curEquip.OnAttackInput(); // í˜„ì¬ ì¥ë¹„ëœ ë§¨ì† ìŠ¤í¬ë¦½íŠ¸ ì‹¤í–‰
         }
     }
 
