@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EquipTool : Equip
 {
+    public Animator animator;
     public float attackRate;
     private bool attacking = false;
     public float attackDistance;
@@ -12,12 +13,16 @@ public class EquipTool : Equip
     [Header("Combat")]
     public bool doesDealDamage;
     public int damage;
-
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     public override void OnAttackInput()
     {
         if (attacking) return;
 
         attacking = true;
+        animator.SetTrigger("Attack");
         Invoke(nameof(OnCanAttack), attackRate);
 
         PerformAttack();
@@ -36,6 +41,7 @@ public class EquipTool : Equip
             if (hit.collider.TryGetComponent(out IDamagable target))
             {
                 target.TakePhysicalDamage(damage);
+                Debug.Log(animator); // null 여부
             }
         }
     }
