@@ -7,11 +7,11 @@ public class Corpse : MonoBehaviour
 
     private bool hasLooted = false;
 
-    public void Interact()
+    public void Interact(Inventory inventory)
     {
         if (hasLooted) return;
 
-        bool added = Inventory.Instance.AddItem(lootItem, amount);
+        bool added = inventory.AddItem(lootItem, amount);
         if (added)
         {
             hasLooted = true;
