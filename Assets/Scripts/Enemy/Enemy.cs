@@ -136,7 +136,6 @@ public class Enemy : MonoBehaviour, IDamagable
         if (playerDistance < data.attackDistance && IsPlayerInFieldOfView())
         {
             agent.isStopped = true;
-            Debug.Log($"agent.isStopped : {agent.isStopped}");
             if (Time.time - lastAttackTime > data.attackRate)
             {
                 lastAttackTime = Time.time;

@@ -150,9 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f673a717fd67934b86e9d50a207c02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 625676334210554796}
   attackRate: 1
   attackDistance: 1
   useStamina: 10
-  doesDealDamage: 0
+  doesDealDamage: 1
   damage: 10

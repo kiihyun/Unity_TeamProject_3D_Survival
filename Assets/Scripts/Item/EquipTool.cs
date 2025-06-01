@@ -22,6 +22,7 @@ public class EquipTool : Equip
         if (attacking) return;
 
         attacking = true;
+        animator.SetTrigger("Attack");
         Invoke(nameof(OnCanAttack), attackRate);
 
         PerformAttack();
@@ -39,16 +40,8 @@ public class EquipTool : Equip
         {
             if (hit.collider.TryGetComponent(out IDamagable target))
             {
-                if (animator == null)
-                {
-                    animator = GetComponent<Animator>();
-                }
-                Debug.Log("=============");
                 target.TakePhysicalDamage(damage);
                 Debug.Log(animator); // null 여부
-                Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Axe_Attack")); // 상태 진입 여부
-                animator.SetTrigger("Attack");
-                Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Axe_Attack")); // 상태 진입 여부
             }
         }
     }
