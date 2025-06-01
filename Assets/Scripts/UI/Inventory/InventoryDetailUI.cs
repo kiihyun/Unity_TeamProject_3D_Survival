@@ -13,6 +13,8 @@ public class InventoryDetailUI : MonoBehaviour
     public TextMeshProUGUI itemMassText;
     public TextMeshProUGUI itemQuenText;
 
+    public Image icon;
+
     public GameObject useButton;
     public GameObject equipButton;
     public GameObject dropButton;
@@ -44,6 +46,8 @@ public class InventoryDetailUI : MonoBehaviour
         itemQuenText.text = Inventory.Instance.GetItemCount(data).ToString();
 
 
+        icon.sprite = data.icon;
+
         // 버튼 활성화 여부
         ////아이템 데이터가 사용 가능한 경우
         useButton.gameObject.SetActive(data.type == ItemType.Consumable);
@@ -65,7 +69,6 @@ public class InventoryDetailUI : MonoBehaviour
         if (currentItem.canPlace)
         {
             PlayerManager.Instance.placeSystem.StartPlacing(currentItem);
-            gameObject.SetActive(false);
             return;
         }
 
