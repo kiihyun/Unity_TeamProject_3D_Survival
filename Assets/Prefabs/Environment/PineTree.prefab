@@ -324,7 +324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 387005771240840432}
   - component: {fileID: 3569056248763215655}
-  - component: {fileID: 4201675020653817972}
+  - component: {fileID: 381059933756317956}
   m_Layer: 0
   m_Name: PineTree
   m_TagString: Untagged
@@ -369,7 +369,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.27743596, y: 4.5526066, z: 0.32560694}
   m_Center: {x: 0.012042731, y: 1.7763033, z: -0.024085462}
---- !u!114 &4201675020653817972
+--- !u!114 &381059933756317956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,11 +378,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7840982927044324245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a0b919f105c9274e84159b10823ae2b, type: 3}
+  m_Script: {fileID: 11500000, guid: a68cd3cb43aa67d4f869e059cf2bb694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeObject: {fileID: 703273799542582175}
+  resourceObject: {fileID: 703273799542582175}
   itemData: {fileID: 11400000, guid: 3dff6deb6a9c0be4c99d8ea559b33344, type: 2}
   amount: 1
   count: 0
   maxCount: 3
+  cycle: 0
+  maxCycle: 20
