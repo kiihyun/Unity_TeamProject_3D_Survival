@@ -43,7 +43,8 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         if (curDetectObject == null) return;
 
         var itemObject = curDetectObject.GetComponent<ItemObject>();
-        if (itemObject != null)
+        var stone = curDetectObject.GetComponent<Stone>();
+        if (itemObject != null && stone == null)
         {
             //itemObject 상호작용 처리
             itemObject.OnInteract();
@@ -69,6 +70,16 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         {
             //Songdo 아이템 오브젝트에 붙어있는 itempickup에 들어있는 ItemInteract 함수를 통해서 플레이어 인벤토리에 정보를 넘겨줌
             itemPickup.ItemInteract(inventory);
+#if UNITY_EDITOR
+            Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+#endif
+            return;
+        }
+
+        
+        if (stone != null)
+        {
+            stone.ItemInteract(inventory);
 #if UNITY_EDITOR
             Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
 #endif
