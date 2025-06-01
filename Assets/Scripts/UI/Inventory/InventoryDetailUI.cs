@@ -65,7 +65,6 @@ public class InventoryDetailUI : MonoBehaviour
         if (currentItem.canPlace)
         {
             PlayerManager.Instance.placeSystem.StartPlacing(currentItem);
-            gameObject.SetActive(false);
             return;
         }
 
