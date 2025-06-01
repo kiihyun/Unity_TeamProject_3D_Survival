@@ -35,6 +35,9 @@ public class AnimalAudio : MonoBehaviour
     {
         if (!audioSource.isPlaying)
         {
+            audioSource.volume = 0.05f;
+            audioSource.maxDistance = 10f;
+            audioSource.spatialBlend = 1f;
             audioSource.clip = clip;
             audioSource.Play();
         }
@@ -42,6 +45,9 @@ public class AnimalAudio : MonoBehaviour
 
     public void PlayDeathSound()
     {
+        audioSource.volume = 0.05f;
+        audioSource.maxDistance = 10f;
+        audioSource.spatialBlend = 1f;
         audioSource.PlayOneShot(deathSound);
     }
 }

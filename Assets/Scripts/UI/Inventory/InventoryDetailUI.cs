@@ -1,4 +1,5 @@
-﻿using TMPro;
+using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -9,6 +10,10 @@ public class InventoryDetailUI : MonoBehaviour
 
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescText;
+    public TextMeshProUGUI itemMassText;
+    public TextMeshProUGUI itemQuenText;
+
+    public Image icon;
 
     public GameObject useButton;
     public GameObject equipButton;
@@ -37,7 +42,11 @@ public class InventoryDetailUI : MonoBehaviour
         currentItem = data;
         itemNameText.text = data.displayName;
         itemDescText.text = data.description;
+        itemMassText.text = $"{data.itemMass.ToString()}kg";
+        itemQuenText.text = Inventory.Instance.GetItemCount(data).ToString();
 
+
+        icon.sprite = data.icon;
 
         // 버튼 활성화 여부
         ////아이템 데이터가 사용 가능한 경우
@@ -60,7 +69,6 @@ public class InventoryDetailUI : MonoBehaviour
         if (currentItem.canPlace)
         {
             PlayerManager.Instance.placeSystem.StartPlacing(currentItem);
-            gameObject.SetActive(false);
             return;
         }
 

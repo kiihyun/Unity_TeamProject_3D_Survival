@@ -2,10 +2,45 @@ using UnityEngine;
 
 public class PlacementPreview : MonoBehaviour
 {
-    public PlayerInteraction playerInteraction; // «√∑π¿ÃæÓ¿« Ray ¡§∫∏ ªÁøÎ
+    public PlayerInteraction playerInteraction; // Î†àÏù¥Ï∫êÏä§Ìä∏ Ï†ïÎ≥¥
     private GameObject ghostObject;
     private ItemData currentItem;
     private bool isPlacementValid;
+    private bool clickedThisFrame = false;
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            clickedThisFrame = true;
+        }
+
+        if (ghostObject == null || currentItem == null || !playerInteraction.hasHit)
+        {
+            clickedThisFrame = false;
+            return;
+        }
+
+        // Ground Î†àÏù¥Ïñ¥ ÏúÑÏùº ÎïåÎßå ÏÑ§Ïπò Í∞ÄÎä•
+        if (playerInteraction.lastHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            Vector3 hitPos = playerInteraction.lastHit.point;
+
+            // ÏúÑÏπòÎ•º Ìï≠ÏÉÅ ÎïÖ ÏúÑÎ°ú Í≥†Ï†ï
+            PositionGhostOnGround(hitPos);
+
+            isPlacementValid = true;
+            UpdatePreviewColor(isPlacementValid);
+
+            if (clickedThisFrame && isPlacementValid)
+            {
+                Debug.Log("ÏÑ§Ïπò ÏãúÎèÑÎê®!");
+                ConfirmPlacement();
+            }
+        }
+
+        clickedThisFrame = false;
+    }
 
     public void StartPlacing(ItemData item)
     {
@@ -18,70 +53,48 @@ public class PlacementPreview : MonoBehaviour
 
         ghostObject = Instantiate(item.placeablePrefab);
         MakeTransparent(ghostObject);
+
+        // Î¨ºÎ¶¨ ÏòÅÌñ• Ï†úÍ±∞
+        foreach (var rb in ghostObject.GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        foreach (var col in ghostObject.GetComponentsInChildren<Collider>())
+        {
+            col.isTrigger = true;
+        }
     }
 
-    void Update()
+    void PositionGhostOnGround(Vector3 hitPos)
     {
-        if (ghostObject == null || currentItem == null || !playerInteraction.hasHit) return;
-
-        if (playerInteraction.lastHit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        // Î∞ïÏä§ ÏΩúÎùºÏù¥Îçî Í∏∞Ï§Ä ÎÜíÏù¥ Î≥¥Ï†ï
+        BoxCollider col = ghostObject.GetComponentInChildren<BoxCollider>();
+        if (col != null)
         {
-            Vector3 pos = playerInteraction.lastHit.point;
-            Vector3 normal = playerInteraction.lastHit.normal;
-
-            ghostObject.transform.position = pos;
-            isPlacementValid = ValidatePlacement(pos, normal);
-            float slope = Vector3.Angle(normal, Vector3.up);
-            Debug.Log($"[«ˆ¿Á º≥ƒ° ¿ßƒ° ∞ÊªÁ] slope: {slope}µµ");
-
-            UpdatePreviewColor(isPlacementValid);
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                ConfirmPlacement();
-            }
+            float yOffset = col.size.y / 2f;
+            Vector3 correctedPos = new Vector3(hitPos.x, hitPos.y + yOffset, hitPos.z);
+            ghostObject.transform.position = correctedPos;
         }
-
-
+        else
+        {
+            // ÏΩúÎùºÏù¥Îçî ÏóÜÏúºÎ©¥ Í∑∏ÎÉ• ÎÜìÏùå
+            ghostObject.transform.position = hitPos;
+        }
     }
 
-    bool ValidatePlacement(Vector3 pos, Vector3 normal)
+    void ConfirmPlacement()
     {
+        if (ghostObject == null || !isPlacementValid || currentItem == null) return;
 
-        float slope = Vector3.Angle(normal, Vector3.up);
-        if (slope > 25f) return false;
+        Instantiate(currentItem.dropPrefab, ghostObject.transform.position, Quaternion.identity);
+        Inventory.Instance.RemoveItem(currentItem, 1);
+        Debug.Log($"{currentItem.name} ÏÑ§Ïπò ÏôÑÎ£å!");
 
-        // ghostObject¿« BoxCollider ±‚¡ÿ¿∏∑Œ ¡§»Æ«— extents ∞ËªÍ
-        BoxCollider collider = ghostObject.GetComponentInChildren<BoxCollider>();
-        if (collider == null)
-        {
-            Debug.LogWarning("BoxCollider∞° æ¯Ω¿¥œ¥Ÿ.");
-            return false;
-        }
-
-        Vector3 halfExtents = collider.size * 0.5f;
-        Quaternion rotation = ghostObject.transform.rotation;
-        int layerMask = ~(1 << LayerMask.NameToLayer("IgnorePlacementCheck")); // ∞ÌΩ∫∆Æ ø¿∫Í¡ß∆Æø° «ÿ¥Á«œ¥¬ ∑π¿ÃæÓ∏∏ π´Ω√«ÿº≠ º≥ƒ° ø©∫Œ∏¶ ∆«¥‹
-
-        Collider[] overlaps = Physics.OverlapBox(
-            pos + collider.center,
-            halfExtents,
-            rotation,
-            layerMask
-            );
-
-        Debug.Log($"[Overlap Check] Found {overlaps.Length} colliders");
-
-        foreach (Collider c in overlaps)
-        {
-            Debug.Log($"∞„ƒß ø¿∫Í¡ß∆Æ: {c.name}, isTrigger: {c.isTrigger}");
-            if (c.gameObject == ghostObject) continue; // ¿⁄±‚ ¿⁄Ω≈¿Ã∏È π´Ω√
-            if (c.gameObject.GetComponent<Terrain>() != null) continue; // Terrainµµ π´Ω√
-
-            if (!c.isTrigger) return false;
-        }
-
-        return true;
+        Destroy(ghostObject);
+        currentItem = null;
+        isPlacementValid = false;
     }
 
     void UpdatePreviewColor(bool valid)
@@ -113,20 +126,5 @@ public class PlacementPreview : MonoBehaviour
                 mat.renderQueue = 3000;
             }
         }
-    }
-
-    public void ConfirmPlacement()
-    {//
-        if (ghostObject == null || !isPlacementValid || currentItem == null) return;
-
-        Instantiate(currentItem.dropPrefab, ghostObject.transform.position, Quaternion.identity);
-        Destroy(ghostObject);
-        Inventory.Instance.RemoveItem(currentItem, 1);
-        Debug.Log($"{currentItem.name}º≥ƒ°øœ∑·");
-        //ghostObject = null;
-        //currentItem = null;
-
-        // ¿Œ∫•≈‰∏Æ∞° ∫Ø∞Êµ… ∂ß∏∂¥Ÿ UI ªı∑Œ∞Ìƒß
-        
     }
 }
