@@ -3466,7 +3466,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7346139459148521202}
   - component: {fileID: 4188262509614992947}
-  - component: {fileID: 1722026270894108997}
   - component: {fileID: 5603869169408982860}
   m_Layer: 0
   m_Name: MiniMapCamera
@@ -3541,14 +3540,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1722026270894108997
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6843272281611532598}
-  m_Enabled: 1
 --- !u!114 &5603869169408982860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4215,9 +4206,9 @@ MonoBehaviour:
     m_ActionName: Player/Attack[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7626783387476105381}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnToggleInventory
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnInventoryInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4249,6 +4240,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8e2361c4-4704-451f-9d30-8f5582b6b532
     m_ActionName: Player/Build[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OpenCrafting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 864dad9d-6119-4969-90d6-ccb3dbcd8a25
+    m_ActionName: Player/Crafting[/Keyboard/c]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
