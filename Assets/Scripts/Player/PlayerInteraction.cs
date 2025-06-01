@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,7 +47,9 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         {
             //itemObject 상호작용 처리
             itemObject.OnInteract();
+#if UNITY_EDITOR
             Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (itemObject)");
+#endif
             return;
         }
 
@@ -56,7 +58,9 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         {
             //NPC 상호작용 처리
             npc.StartDialogue();
+#if UNITY_EDITOR
             Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (NPC)");
+#endif
             return;
         }
 
@@ -65,7 +69,9 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         {
             //Songdo 아이템 오브젝트에 붙어있는 itempickup에 들어있는 ItemInteract 함수를 통해서 플레이어 인벤토리에 정보를 넘겨줌
             itemPickup.ItemInteract(inventory);
+#if UNITY_EDITOR
             Debug.Log(curDetectObject.gameObject.name + "와 상호작용 성공 (Item)");
+#endif
             return;
         }
 
