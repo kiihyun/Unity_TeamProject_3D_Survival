@@ -24,6 +24,7 @@ public class EnemyAudio : MonoBehaviour
         switch (enemy.aiState)
         {
             case AIState.Idle:
+            case AIState.Wandering:
                 PlaySoundOnce(idleSound);
                 break;
             case AIState.Attacking:
@@ -42,9 +43,8 @@ public class EnemyAudio : MonoBehaviour
             Debug.Log("Current clip: " + audioSource.clip);
             Debug.Log("Volume: " + audioSource.volume);
             Debug.Log("Mute: " + audioSource.mute);
-            //audioSource.Play();
             audioSource.volume = 0.5f;
-            audioSource.PlayOneShot(idleSound);
+            audioSource.Play();
         }
     }
 

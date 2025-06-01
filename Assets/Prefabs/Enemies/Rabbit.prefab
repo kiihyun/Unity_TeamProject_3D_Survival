@@ -761,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropOnDeath: []
   fleeCooldown: 2
+  aiState: 0
   data: {fileID: 11400000, guid: 48913369f2435764fa7a8d34b21dfd8b, type: 2}
 --- !u!195 &1054842761843236036
 NavMeshAgent:
@@ -817,6 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25cddfa382aa6b148aee37613bd7ea88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleSound: {fileID: 8300000, guid: 87fd8d561f47e154798acabe2e731a00, type: 3}
   deathSound: {fileID: 8300000, guid: fc0f77465c64c3749a95ec2943343bb3, type: 3}
 --- !u!82 &8797368939489044015
 AudioSource:

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AnimalAudio : MonoBehaviour
 {
+    public AudioClip idleSound;
     public AudioClip deathSound;
 
     private AudioSource audioSource;
@@ -23,13 +24,21 @@ public class AnimalAudio : MonoBehaviour
         {
             case AIState.Idle:
             case AIState.Attacking:
+                PlaySoundOnce(idleSound); 
                 break;
             case AIState.Death:
                 PlayDeathSound();
                 break;
         }
     }
-
+    private void PlaySoundOnce(AudioClip clip)
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
 
     public void PlayDeathSound()
     {
