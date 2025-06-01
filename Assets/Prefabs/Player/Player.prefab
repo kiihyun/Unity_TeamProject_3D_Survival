@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 8129668916163613300}
   - component: {fileID: 8132673528036891316}
   - component: {fileID: 5475050530383496778}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FPS_Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
