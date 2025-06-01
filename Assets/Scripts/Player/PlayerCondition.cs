@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -70,6 +71,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
 
     [Header("body Temperature")]
+    public TextMeshProUGUI bodyTempUI;
     [SerializeField] private float bodyTemp;
     public const float minBodyTemp = 33f; //최소 체온
     public const float maxBodyTemp = 40f; //최대 체온
@@ -260,6 +262,8 @@ public class PlayerCondition : MonoBehaviour, IDamagable
         {
             GenerateThirst(thirstDegenRate);
         }
+
+        bodyTempUI.text = bodyTemp.ToString("N1") + "°C";
     }
 
     //체력 증가와 감소 메소드
