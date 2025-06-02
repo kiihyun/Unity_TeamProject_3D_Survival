@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InventoryUIManager : MonoBehaviour
 {
-    /// 인벤토리 열고 닫기 위해서 있는 스크립트입니다.
+    // 인벤토리 열고 닫기 위해서 있는 스크립트입니다.
 
     [Header("UI 패널 참조")]
     public GameObject inventoryPanel;

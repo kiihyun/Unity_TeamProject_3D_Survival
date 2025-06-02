@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NPCInteraction : MonoBehaviour
 {
-    [Tooltip("NPC°¡ °¡Áø ¿©·¯ ´ë»çµé")]
+    [Tooltip("NPCê°€ ê°€ì§„ ì—¬ëŸ¬ ëŒ€ì‚¬ë“¤")]
     public List<DialogueData> dialogueDataList;
 
     private DialogueManager dialogueManager;
@@ -28,7 +28,7 @@ public class NPCInteraction : MonoBehaviour
 
     private DialogueData SelectDialogue()
     {
-        // ¿¹½Ã: Á¶°Ç¿¡ µû¶ó °í¸£±â (¿ì¼±¼øÀ§: Story > Quest > Tip)
+        // ì¡°ê±´ì— ë”°ë¼ ê³ ë¥´ê¸° (ìš°ì„ ìˆœìœ„: Story > Quest > Tip)
         foreach (var dialogue in dialogueDataList)
         {
             if (dialogue.dialogueType == DialogueType.Story &&
@@ -47,7 +47,7 @@ public class NPCInteraction : MonoBehaviour
             }
         }
 
-        // TipÀº ·£´ıÇÏ°Ô ÇÏ³ª ¼±ÅÃ
+        // Tipì€ ëœë¤í•˜ê²Œ í•˜ë‚˜ ì„ íƒ
         List<DialogueData> tipDialogues = dialogueDataList.FindAll(d => d.dialogueType == DialogueType.Tip);
         if (tipDialogues.Count > 0)
         {
