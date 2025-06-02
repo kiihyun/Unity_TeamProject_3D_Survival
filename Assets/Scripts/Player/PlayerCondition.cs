@@ -1,189 +1,370 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
+
+
 
 public class PlayerCondition : MonoBehaviour, IDamagable
 {
+    [Header("Condition State")]
+    public List<PlayerConditionState> conditionStats = new List<PlayerConditionState>(); //í”Œë ˆì´ì–´ ìƒíƒœ ë¦¬ìŠ¤íŠ¸
+
     [Header("Health")]
-    [SerializeField] public float health;
-    public float minHealth = 0f; //ÃÖ¼Ò Ã¼·Â
-    public float maxHealth; //ÃÖ´ë Ã¼·Â
-    public float healthRegenRate; //Ã¼·Â È¸º¹ ¼Óµµ
-    public float healthDegenRate; //Ã¼·Â °¨¼Ò ¼Óµµ
-    public float Health 
+    [SerializeField] private float health;
+    public float maxHealth; //ìµœëŒ€ ì²´ë ¥
+    public float healthRecovRate; //ì²´ë ¥ íšŒë³µ ì†ë„
+    public float healthDecRate; //ì²´ë ¥ ê°ì†Œ ì†ë„
+    public float Health
     {
-        get { return health; } 
-        set 
+        get { return health; }
+        set
         {
-            health = Mathf.Clamp(value, 0, maxHealth); 
+            health = Mathf.Clamp(value, 0, maxHealth);
         }
     }
 
     [Header("Stamina")]
-    [SerializeField] public float stamina;
-    public float minStamina = 0f; //ÃÖ¼Ò ½ºÅÂ¹Ì³ª
-    public float maxStamina; //ÃÖ´ë ½ºÅÂ¹Ì³ª
-    public float staminaRegenRate = 0.1f; //½ºÅÂ¹Ì³ª È¸º¹ ¼Óµµ
-    public float staminaDegenRate = 0.1f; //½ºÅÂ¹Ì³ª °¨¼Ò ¼Óµµ
-    public float Stamina 
+    [SerializeField] private float stamina;
+    public float maxStamina; //ìµœëŒ€ ìŠ¤íƒœë¯¸ë‚˜
+    public float staminaRecovRate = 0.1f; //ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì†ë„
+    public float staminaDecRate = 0.1f; //ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ ì†ë„
+    public float jumpDecStamina; //ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ ì¡°ê±´
+    public float Stamina
     {
-        get { return stamina; } 
-        set 
+        get { return stamina; }
+        set
         {
-            stamina = Mathf.Clamp(value, 0, maxStamina); 
+            stamina = Mathf.Clamp(value, 0, maxStamina);
         }
     }
 
     [Header("Hunger")]
-    [SerializeField] public float hunger;
-    public float minHunger = 0f; //ÃÖ¼Ò ¹è°íÇÄ
-    public float maxHunger;//ÃÖ´ë ¹è°íÇÄ
+    [SerializeField] private float hunger;
+    public float maxHunger;//ìµœëŒ€ ë°°ê³ í””
+    public float hungerDecRate = 3f;
+    public float hungerDamage;
     public float hungerToHeal;
-    public float Hunger 
+    public float Hunger
     {
-        get { return hunger; } 
-        set 
+        get { return hunger; }
+        set
         {
-            hunger = Mathf.Clamp(value, 0, maxHunger); 
+            hunger = Mathf.Clamp(value, 0, maxHunger);
         }
     }
 
     [Header("Thirst")]
-    [SerializeField] public float thirst;
-    public float minThirst = 0f; //ÃÖ¼Ò ¸ñ¸¶¸§
-    public float maxThirst; //ÃÖ´ë ¸ñ¸¶¸§
+    [SerializeField] private float thirst;
+    public float maxThirst; //ìµœëŒ€ ëª©ë§ˆë¦„
+    public float thirstDegenRate = 3f; //ëª©ë§ˆë¦„ ê°ì†Œ ì†ë„
+    public float thirstDamage;
     public float thirstToHeal;
-    public float Thirst 
+    public float Thirst
     {
-        get { return thirst; } 
-        set 
+        get { return thirst; }
+        set
         {
-            thirst = Mathf.Clamp(value, 0, maxThirst); 
+            thirst = Mathf.Clamp(value, 0, maxThirst);
         }
     }
 
     [Header("body Temperature")]
-    [SerializeField] public float bodyTemp;
-    public const float minBodyTemp = 33f; //ÃÖ¼Ò Ã¼¿Â
-    public const float maxBodyTemp = 40f; //ÃÖ´ë Ã¼¿Â
-    public float minNormalBodyTemp = 35f; //ÃÖ¼Ò Á¤»ó Ã¼¿Â
-    public float maxNormalBodyTemp = 38f; //ÃÖ´ë Á¤»ó Ã¼¿Â
+    public TextMeshProUGUI bodyTempUI;
+    [SerializeField] private float bodyTemp;
+    public const float minBodyTemp = 33f; //ìµœì†Œ ì²´ì˜¨
+    public const float maxBodyTemp = 40f; //ìµœëŒ€ ì²´ì˜¨
+    public float minNormalBodyTemp = 35f; //ìµœì†Œ ì •ìƒ ì²´ì˜¨
+    public float maxNormalBodyTemp = 38f; //ìµœëŒ€ ì •ìƒ ì²´ì˜¨
+    public float hypothermiaDamage;
 
-    public float BodyTemp 
+    [Header("Inventory Weight")]
+    public float maxCarryWeight = 50f; // ìµœëŒ€ í—ˆìš© ë¬´ê²Œ
+    public float currentCarryWeight = 0f; // í˜„ì¬ ì´ ë¬´ê²Œ
+
+
+
+    public float BodyTemp
     {
-        get { return bodyTemp; } 
-        set 
+        get { return bodyTemp; }
+        set
         {
-            bodyTemp = Mathf.Clamp(value, minBodyTemp, maxBodyTemp); 
-        } 
+            bodyTemp = Mathf.Clamp(value, minBodyTemp, maxBodyTemp);
+        }
     }
 
+    private PlayerController controller;
 
-    public Slider healthUI;
-    public Slider staminaUI;
-    public Slider hungerUI;
-    public Slider thirstUI;
-    public TextMeshProUGUI tempUI;
+    [Header("Sound")]
+    private AudioSource audioSource;
+    public AudioClip[] hitClips;
+    public AudioClip[] dieClips;
+    public AudioClip tiredClip;
+    public AudioClip hungerClip;
+    public AudioClip thirstClip;
+    public AudioClip hypothermiaClip;
 
+    public event Action onTakeDamage; // DamageIndicotor
+
+    void Awake()
+    {
+        if (!TryGetComponent<PlayerController>(out controller))
+        {
+            Debug.LogError("PlayerController is null");
+            return;
+        }
+        
+        if (!TryGetComponent<AudioSource>(out audioSource))
+        {
+            Debug.LogError("AudioSource is null");
+            return;
+        }
+    }
 
     void Start()
     {
-        health = maxHealth; //ÃÊ±â Ã¼·Â ¼³Á¤
-        stamina = maxStamina; //ÃÊ±â ½ºÅÂ¹Ì³ª ¼³Á¤
-        hunger = maxHunger; //ÃÊ±â ¹è°íÇÄ ¼³Á¤
-        thirst = maxHunger; //ÃÊ±â ¸ñ¸¶¸§ ¼³Á¤
-        bodyTemp = 36.5f; //ÃÊ±â Ã¼¿Â ¼³Á¤ (Á¤»ó ¹üÀ§ ³»¿¡¼­ ¼³Á¤)
+        health = maxHealth; //ì´ˆê¸° ì²´ë ¥ ì„¤ì •
+        stamina = maxStamina; //ì´ˆê¸° ìŠ¤íƒœë¯¸ë‚˜ ì„¤ì •
+        hunger = maxHunger; //ì´ˆê¸° ë°°ê³ í”” ì„¤ì •
+        thirst = maxHunger; //ì´ˆê¸° ëª©ë§ˆë¦„ ì„¤ì •
+        bodyTemp = 36.5f; //ì´ˆê¸° ì²´ì˜¨ ì„¤ì • (ì •ìƒ ë²”ìœ„ ë‚´ì—ì„œ ì„¤ì •)
     }
 
     void Update()
     {
         UpdateConditions();
-        TestUI(); //UI ¾÷µ¥ÀÌÆ® ¸Ş¼Òµå È£Ãâ (Å×½ºÆ®¿ë)
+        ConditionState(); //í”Œë ˆì´ì–´ ìƒíƒœ ë³€ê²½ ë©”ì†Œë“œ í˜¸ì¶œ
     }
 
-    //È¸º¹ Á¶°Ç
-
-    public void TestUI()
+    //í”Œë ˆì´ì–´ ì»¨ë””ì…˜ ìƒíƒœ ë³€ê²½
+    public void ConditionState()
     {
-        healthUI.value = health / maxHealth; //Ã¼·Â UI ¾÷µ¥ÀÌÆ®
-        staminaUI.value = stamina / maxStamina; //½ºÅÂ¹Ì³ª UI ¾÷µ¥ÀÌÆ®
-        hungerUI.value = hunger / maxHunger; //¹è°íÇÄ UI ¾÷µ¥ÀÌÆ®
-        thirstUI.value = thirst / maxThirst; //¸ñ¸¶¸§ UI ¾÷µ¥ÀÌÆ®
-        tempUI.text = $"Temp: {bodyTemp:F1}¡ÆC"; //Ã¼¿Â UI ¾÷µ¥ÀÌÆ®
+        // ë°°ê³ í”” ìƒíƒœ
+        if (hunger <= 0f)
+        {
+            if (!conditionStats.Contains(PlayerConditionState.Hungry))
+            {
+                conditionStats.Add(PlayerConditionState.Hungry);
+                audioSource.clip = hungerClip;
+                audioSource.Play();   //ë°°ê³ í”” ì‚¬ìš´ë“œ
+            }
+        }
+        else
+        {
+            conditionStats.Remove(PlayerConditionState.Hungry);
+        }
+
+        // ëª©ë§ˆë¦„ ìƒíƒœ
+        if (thirst <= 0f)
+        {
+            if (!conditionStats.Contains(PlayerConditionState.Thirsty))
+            {
+                conditionStats.Add(PlayerConditionState.Thirsty);
+                audioSource.clip = thirstClip;
+                audioSource.Play();   //ëª©ë§ˆë¦„ ì‚¬ìš´ë“œ
+            }
+        }
+        else
+        {
+            conditionStats.Remove(PlayerConditionState.Thirsty);
+        }
+
+        // ì²´ì˜¨ ìƒíƒœ
+        if (bodyTemp < minNormalBodyTemp)
+        {
+            //ì €ì²´ì˜¨ì¦
+            if (!conditionStats.Contains(PlayerConditionState.Hypothermia))
+            {
+                conditionStats.Add(PlayerConditionState.Hypothermia);
+                audioSource.clip = hypothermiaClip;
+                audioSource.Play();   //ì €ì²´ì˜¨ì¦ ì‚¬ìš´ë“œ
+            }
+        }
+        else
+        {
+            conditionStats.Remove(PlayerConditionState.Hypothermia);
+        }
+
+        //ì§€ì³¤ì„ ë•Œ ì‚¬ìš´ë“œ ì¬ìƒ
+        if (stamina <= 0f)
+        {
+            if (!conditionStats.Contains(PlayerConditionState.Tired))
+            {
+                conditionStats.Add(PlayerConditionState.Tired);
+                audioSource.clip = tiredClip;
+                audioSource.Play();   //ì§€ì³¤ì„ ë•Œ ì‚¬ìš´ë“œ
+            }
+        }
+        else
+        {
+            conditionStats.Remove(PlayerConditionState.Tired);
+        }
     }
 
+    //íšŒë³µ ì¡°ê±´
     public void UpdateConditions()
     {
-        // Ã¼·Â
-        // Ã¼·ÂÀÌ ÃÖ´ë°¡ ¾Æ´Ï°í, ¹è°íÇÄ°ú ¸ñ¸¶¸§ÀÌ È¸º¹ Á¶°ÇÀ» ¸¸Á·ÇÏ¸ç, Ã¼¿ÂÀÌ Á¤»ó ¹üÀ§¿¡ ÀÖÀ» ¶§ Ã¼·Â È¸º¹
-        if (health < maxHealth && hunger > hungerToHeal && Thirst > thirstToHeal && (bodyTemp > minNormalBodyTemp && bodyTemp < maxNormalBodyTemp))
+        // ì²´ë ¥
+        // ì²´ë ¥ì´ ìµœëŒ€ê°€ ì•„ë‹ˆê³ , ì–´ë– í•œ ì´ìƒìƒíƒœê°€ ì—†ì„ ì‹œ ì²´ë ¥íšŒë³µ
+        if (health < maxHealth
+            && !conditionStats.Contains(PlayerConditionState.Hungry)
+            && !conditionStats.Contains(PlayerConditionState.Thirsty)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
+            && hunger >= hungerToHeal
+            && thirst >= thirstToHeal)
         {
-            GenerateHealth(healthRegenRate);
+            GenerateHealth(healthRecovRate);
         }
-        // ¹è°íÇÄ°ú ¸ñ¸¶¸§ÀÌ È¸º¹ Á¶°ÇÀ» ¸¸Á·ÇÏÁö ¾Ê°Å³ª, Ã¼¿ÂÀÌ Á¤»ó ¹üÀ§¸¦ ¹ş¾î³µÀ» ¶§ Ã¼·Â È¸º¹ ¾ÈÇÔ
-        else if ( hunger <= minHunger || thirst == minThirst || (bodyTemp == minNormalBodyTemp || bodyTemp == maxNormalBodyTemp))
+        // ì–´ë– í•œ ì´ìƒìƒíƒœê°€ ìˆì„ ì‹œ ì²´ë ¥ê°ì†Œ
+        else if (conditionStats.Contains(PlayerConditionState.Hungry)
+            || conditionStats.Contains(PlayerConditionState.Thirsty)
+            || conditionStats.Contains(PlayerConditionState.Hypothermia))
         {
-            GenerateHealth(-healthDegenRate * Time.deltaTime);
+            if (conditionStats.Contains(PlayerConditionState.Hungry))
+            {
+                GenerateHealth(-hungerDamage);
+            }
+            else if (conditionStats.Contains(PlayerConditionState.Thirsty))
+            {
+                GenerateHealth(-thirstDamage);
+            }
+            else if (conditionStats.Contains(PlayerConditionState.Hypothermia))
+            {
+                GenerateHealth(-hypothermiaDamage);
+            }
         }
 
-        // ½ºÅÂ¹Ì³ª
-        // ½ºÅÂ¹Ì³ª°¡ ÃÖ´ë°¡ ¾Æ´Ï°í, ¹è°íÇÄ°ú ¸ñ¸¶¸§ÀÌ È¸º¹ Á¶°ÇÀ» ¸¸Á·ÇÏ¸ç, ÇÃ·¹ÀÌ¾î°¡ ´Ş¸®Áö ¾ÊÀ» ¶§ ½ºÅÂ¹Ì³ª È¸º¹
-        if (stamina < maxStamina && hunger > minHunger && thirst > minThirst && !PlayerManager.Instance.controller.isRun)
+        // ìŠ¤íƒœë¯¸ë‚˜
+        // í”Œë ˆì´ì–´ê°€ ë‹¬ë¦¬ì§€ ì•Šê³ , ìŠ¤íƒœë¯¸ë‚˜ê°€ ìµœëŒ€ê°€ ì•„ë‹ˆë©°, ë°°ê³ í””ê³¼ ëª©ë§ˆë¦„ ìƒíƒœê°€ ì—†ì„ ë•Œ ìŠ¤íƒœë¯¸ë‚˜ íšŒë³µ
+        if (stamina < maxStamina
+            && !conditionStats.Contains(PlayerConditionState.Hungry)
+            && !conditionStats.Contains(PlayerConditionState.Thirsty)
+            && !conditionStats.Contains(PlayerConditionState.Hypothermia)
+            && !controller.isRun)
         {
-            GenerateStamina(staminaRegenRate);
+            GenerateStamina(staminaRecovRate);
         }
-        // ÇÃ·¹ÀÌ¾î°¡ ´Ş¸± ¶§ ½ºÅÂ¹Ì³ª °¨¼Ò
-        else if (PlayerManager.Instance.controller.isRun)
+        // í”Œë ˆì´ì–´ê°€ ë‹¬ë¦´ ë•Œ ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ
+        else if (stamina > 0f && controller.isRun)
         {
-            GenerateStamina(-staminaDegenRate);
+            GenerateStamina(-staminaDecRate);
         }
 
+        //ë°°ê³ í”” ì§€ì†ì ìœ¼ë¡œ ì¤„ì–´ë“¬
+        if (hunger > 0f)
+        {
+            GenerateHunger(hungerDecRate);
+        }
 
+        // ëª©ë§ˆë¦„ ì§€ì†ì ìœ¼ë¡œ ì¤„ì–´ë“¬
+        if (thirst > 0f)
+        {
+            GenerateThirst(thirstDegenRate);
+        }
 
-
+        bodyTempUI.text = bodyTemp.ToString("N1") + "Â°C";
     }
 
-    //Ã¼·Â Áõ°¡¿Í °¨¼Ò ¸Ş¼Òµå
-    public void GenerateHealth(float _rate)
+    //ì²´ë ¥ ì¦ê°€ì™€ ê°ì†Œ ë©”ì†Œë“œ
+    public void GenerateHealth(float _amount)
     {
-        health += _rate * Time.deltaTime;
-        health = Mathf.Clamp(health, minHealth, maxHealth);
+        health += _amount * Time.deltaTime;
     }
 
-    //½ºÅÂ¹Ì³ª Áõ°¡¿Í °¨¼Ò ¸Ş¼Òµå
+    //ìŠ¤íƒœë¯¸ë‚˜ ì¦ê°€ì™€ ê°ì†Œ ë©”ì†Œë“œ
     public void GenerateStamina(float _amount)
     {
         stamina += _amount * Time.deltaTime;
-        stamina = Mathf.Clamp(stamina, minStamina, maxStamina);
     }
 
+    //ì í”„ ì‹œ ìŠ¤íƒœë¯¸ë‚˜ ê°ì†Œ ë©”ì†Œë“œ
+    public void JumpStamina()
+    {
+        stamina -= jumpDecStamina;
+    }
 
+    //ë°°ê³ í”” ì¦ê°€ ë©”ì†Œë“œ
+    public void GenerateHunger(float _amount)
+    {
+        hunger -= _amount * Time.deltaTime;
+    }
 
+    //ìŒì‹ ì„­ì·¨ ì‹œ, ë°°ê³ í”” íšŒë³µ ë©”ì†Œë“œ
+    public void RecoverHunger(float _amount)
+    {
+        if (hunger < maxHunger)
+        {
+            hunger += _amount;
+        }
+        else
+        {
+            Console.WriteLine("Player hunger is full");
+        }
+    }
+
+    //ëª©ë§ˆë¦„ ì¦ê°€ ë©”ì†Œë“œ
+    public void GenerateThirst(float _amount)
+    {
+        thirst -= _amount * Time.deltaTime;
+    }
+
+    //ìŒì‹ ì„­ì·¨ ì‹œ, ëª©ë§ˆë¦„ íšŒë³µ ë©”ì†Œë“œ
+    public void RecoverThirst(float _amount)
+    {
+        if (thirst < maxThirst)
+        {
+            thirst += _amount;
+        }
+        else
+        {
+            Console.WriteLine("Player thirst is full");
+        }
+    }
+
+    //ì²´ë ¥ íšŒë³µ ë©”ì†Œë“œ
     public void Heal(int _healAmount)
     {
-        if(health < maxHealth)
+        if (health < maxHealth)
         {
             health += _healAmount;
         }
-        else if (health == maxHealth)
+        else if (health >= maxHealth)
         {
-            //Ã¼·Â È¸º¹ÀÌ ¾ÈµÇ°Ô Ã³¸®
+            //ì²´ë ¥ íšŒë³µì´ ì•ˆë˜ê²Œ ì²˜ë¦¬
             Debug.Log("Player health is full");
         }
     }
 
+    //ê³µê²©ë°›ëŠ” ë©”ì†Œë“œ
     public void TakePhysicalDamage(int _damageAmount)
     {
-        if (health > minHealth)
+        if (health > 0f)
         {
             health -= _damageAmount;
+            audioSource.clip = hitClips[Random.Range(0, hitClips.Length)];
+            audioSource.Play();
         }
-        else if (health == minHealth)
+        else if (health <= 0f)
         {
-            //Ã¼·ÂÀÌ 0ÀÌ µÇ¸é Á×À½ Ã³¸®
+            //ì²´ë ¥ì´ 0ì´ ë˜ë©´ ì£½ìŒ ì²˜ë¦¬
             Debug.Log("Player is dead");
+            audioSource.clip = hitClips[Random.Range(0, dieClips.Length)];
+            audioSource.Play();
+        }
+        onTakeDamage?.Invoke(); // damageIndicator
+    }
+
+    public WeightState WeightStatus
+    {
+        get
+        {
+            float ratio = currentCarryWeight / maxCarryWeight;
+
+            if (ratio < 0.3f) return WeightState.Light;
+            else if (ratio < 0.7f) return WeightState.Normal;
+            else if (ratio < 1f) return WeightState.Heavy;
+            else return WeightState.Overloaded;
         }
     }
 }

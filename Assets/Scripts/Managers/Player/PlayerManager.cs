@@ -1,36 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : Singleton<PlayerManager>
 {
-
-    private static PlayerManager instance;
-    public static PlayerManager Instance { get { return instance; } }
-
-    private void Awake()
-    {
-        if (instance == null)   //인스턴스가 null이면 해당 클래스가 인스턴스
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);      //씬 로드 시, 삭제되지 않음
-        }
-        else
-        {
-            Destroy(gameObject);        //null이 아니면(싱글톤이 또 있으면) 삭제
-        }
-    }
-
     public GameObject player;
-    public PlayerController controller;
-    public PlayerCondition condition;
 
-    private void Start()
+    public PlayerController controller { get; private set; }
+    public PlayerAnimController animator { get; private set; }
+    public PlayerCondition condition { get; private set; }
+    public PlayerInteraction interaction { get; private set; }
+    public FootStep footStep { get; private set; }
+
+    public PlacementPreview placeSystem;
+
+
+    protected override void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        base.Awake();
+        Debug.Log("[PlayerManager] Awake 실행됨");
 
+        player = GameObject.FindWithTag("Player");
+
+        // 필수 컴포넌트 가져오기
         controller = player.GetComponent<PlayerController>();
         condition = player.GetComponent<PlayerCondition>();
+        interaction = player.GetComponent<PlayerInteraction>();
+        placeSystem = player.GetComponent<PlacementPreview>();
+
+        // 자식 오브젝트에서 가져오기
+        footStep = player.GetComponentInChildren<FootStep>();
+        animator = player.GetComponentInChildren<PlayerAnimController>();
+
+        // 예외 상황을 로그로 확인
+        if (controller == null) Debug.LogError("PlayerController가 Player에 없습니다.");
+        if (condition == null) Debug.LogError("PlayerCondition이 Player에 없습니다.");
+        if (interaction == null) Debug.LogError("PlayerInteraction이 Player에 없습니다.");
+        if (placeSystem == null) Debug.LogError("PlacementPreview이 Player에 없습니다.");
+        if (footStep == null) Debug.LogWarning("FootStep이 자식에 없습니다.");
+        if (animator == null) Debug.LogWarning("PlayerAnimController가 자식에 없습니다.");
     }
 }
 

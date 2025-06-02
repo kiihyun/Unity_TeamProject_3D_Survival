@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ebf089e22d9344fbbea5ff9349f550, type: 3}
+  m_Name: ItemFlashlight
+  m_EditorClassIdentifier: 
+  displayName: "\uC190\uC804\uB4F1"
+  description: "\uC5B4\uB460\uC744 \uBC1D\uD790 \uC218 \uC788\uB2E4"
+  itemMass: 2
+  type: 0
+  icon: {fileID: 21300000, guid: 27f0caa801d0a384284b28d7761cc391, type: 3}
+  dropPrefab: {fileID: 93134635677331774, guid: 99019438a69165f4bb964c07d98be502, type: 3}
+  canStack: 0
+  maxStackAmount: 0
+  consumables: []
+  equipSlotType: 0
+  equipPrefab: {fileID: 4335138848613300408, guid: 25af87cfc5dec654e83c65bedc15903b, type: 3}
+  durability: 80
+  canPlace: 0
+  placeablePrefab: {fileID: 0}

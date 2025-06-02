@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7253f3c863e4dc24091825a717c0424c, type: 3}
+  m_Name: EnemyRabbit
+  m_EditorClassIdentifier: 
+  enemyName: "\uD1A0\uB07C"
+  maxHealth: 1
+  walkSpeed: 3
+  runSpeed: 5
+  spawnCount: 2
+  prefab:
+  - {fileID: 6206966632080291316, guid: 285fd953f46a07540a6c79700a89af1f, type: 3}
+  - {fileID: 6206966632080291316, guid: 1dc60f7a8e12ca943b5446fc88a463e3, type: 3}
+  dropOnDeath: []
+  detectDistance: 3
+  minWanderDistance: 5
+  maxWanderDistance: 10
+  minWanderWaitTime: 5
+  maxWanderWaitTime: 10
+  damage: 0
+  attackRate: 0
+  attackDistance: 0
+  fieldOfView: 120

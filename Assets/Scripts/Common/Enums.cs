@@ -1,18 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Enums : MonoBehaviour
+﻿using UnityEngine;
+public enum PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    Idle,
+    Walk,
+    Sprint,
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public enum PlayerConditionState
+{
+    Hungry,       //부상 상태
+    Thirsty,      //배고픔 상태
+    Hypothermia,      //추위 상태
+    Tired
+}
+
+public enum WeightState
+{
+    Light,
+    Normal,
+    Heavy,
+    Overloaded
 }

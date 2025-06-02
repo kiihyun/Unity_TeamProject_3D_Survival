@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280d9be2516b92942a3cc55ac45733b1, type: 3}
+  m_Name: Survivor 2
+  m_EditorClassIdentifier: 
+  dialogueId: 102
+  npcName: "\uC774\uB984 \uBAA8\uB97C \uC0DD\uC874\uC790"
+  dialogueType: 2
+  requiredQuestId: 
+  requiredQuestState: 0
+  dialogueLines:
+  - "\uC5EC\uAE34 \uAC00\uB9CC\uD788 \uC788\uC73C\uBA74 \uB05D\uC7A5\uB098. \uD544\uC694\uD558\uBA74
+    \uB9CC\uB4E4\uC5B4 \uC368\uC57C \uD574.\n\uB9E8\uC190\uC73C\uB85C\uB294 \uC544\uBB34\uAC83\uB3C4
+    \uBABB \uD574. \uCCA0\uC870\uAC01\uC744 \uBAA8\uC544\uB46C."
+  - "\uB098\uB3C4 \uD1B5\uC2E0\uAE30 \uB9CC\uB4E4\uB2E4 \uC7AC\uB8CC\uAC00 \uBAA8\uC790\uB77C\uC11C...
+    \uACB0\uAD6D \uD3EC\uAE30\uD588\uC9C0. \uB10C \uB2E4\uB974\uAE38 \uBC14\uB780\uB2E4."
