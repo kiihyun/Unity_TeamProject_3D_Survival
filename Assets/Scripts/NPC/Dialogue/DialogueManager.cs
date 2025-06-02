@@ -19,15 +19,23 @@ public class DialogueManager : MonoBehaviour
     private string currentSentence;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
+    private bool skipTyping = false;
 
-    private HashSet<string> seenStroyDialogues = new HashSet<string>(); // 스토리 대화 중복 방지용
+    private HashSet<string> seenStroyDialogues = new HashSet<string>();
 
     void Start()
     {
         sentences = new Queue<string>();
         nextButton.onClick.AddListener(OnNextClicked);
-
         dialogueUI.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (dialogueUI.activeSelf && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return)))
+        {
+            OnNextClicked();
+        }
     }
 
     public void TryStartDialogue(DialogueData dialogue, Transform npcTarget)
@@ -38,37 +46,33 @@ public class DialogueManager : MonoBehaviour
                 return;
             seenStroyDialogues.Add(dialogue.dialogueId);
         }
-        else if (dialogue.dialogueType == DialogueType.Quest)
+
+        if (dialogue.dialogueType == DialogueType.Quest)
         {
-            //Quest quest = QuestManager.Instance.GetQuestById(dialogue.requiredQuestId);
-            //if (quest == null || quest.CurrentState != dialogue.requiredQuestState)
-            //    return;
+            // 퀘스트 조건 확인 로직 필요 시 여기에 추가
         }
-        else if (dialogue.dialogueType == DialogueType.Tip)
+
+        if (dialogue.dialogueType == DialogueType.Tip)
         {
-            // 팁은 랜덤 대사 한 줄만 출력
-            string ramdomLine = dialogue.dialogueLines[Random.Range(0, dialogue.dialogueLines.Length)];
-            StartDialogue(dialogue.npcName, new string[] { ramdomLine }, npcTarget);
+            string randomLine = dialogue.dialogueLines[Random.Range(0, dialogue.dialogueLines.Length)];
+            StartDialogue(dialogue.npcName, new string[] { randomLine }, npcTarget);
             return;
         }
+
         StartDialogue(dialogue.npcName, dialogue.dialogueLines, npcTarget);
     }
 
     public void StartDialogue(string npcName, string[] dialogueLines, Transform npcTarget)
     {
-        UIManager.Instance.ShowDialogueUI(); // 모든 비게임 UI 꺼지고 대화 UI만 켜짐
+        UIManager.Instance.ShowDialogueUI();
 
-        // 플레이어 카메라를 비활성화하고 NPC 카메라를 활성화
         npcCamera.Follow = npcTarget;
         npcCamera.LookAt = npcTarget;
 
         playerCamera.gameObject.SetActive(false);
         npcCamera.gameObject.SetActive(true);
 
-        
-
         nameText.text = npcName;
-
         sentences.Clear();
 
         foreach (string line in dialogueLines)
@@ -83,13 +87,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (isTyping)
         {
-            // 현재 타이핑 중인 경우, 즉시 전체 문장을 표시
-            if (typingCoroutine != null)
-            {
-                StopCoroutine(typingCoroutine);
-                dialogueText.text = currentSentence; // 전체 문장 표시
-                typingCoroutine = null;
-            }
+            skipTyping = true;
         }
         else
         {
@@ -99,6 +97,12 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
         if (sentences.Count == 0)
         {
             EndDialogue();
@@ -111,21 +115,30 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sentence)
     {
+        isTyping = true;
+        skipTyping = false;
         dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray())
+
+        foreach (char letter in sentence)
         {
+            if (skipTyping)
+            {
+                dialogueText.text = sentence;
+                break;
+            }
+
             dialogueText.text += letter;
-            yield return new WaitForSeconds(0.03f); // 글자 하나 출력 후 대기
+            yield return new WaitForSeconds(0.03f);
         }
 
+        isTyping = false;
         typingCoroutine = null;
     }
 
     public void EndDialogue()
     {
-        UIManager.Instance.HideDialogueUI(); // 다시 UI 복구
+        UIManager.Instance.HideDialogueUI();
 
-        // 카메라 전환: NPC 카메라 비활성화, 플레이어 카메라 활성화
         npcCamera.gameObject.SetActive(false);
         playerCamera.gameObject.SetActive(true);
     }
