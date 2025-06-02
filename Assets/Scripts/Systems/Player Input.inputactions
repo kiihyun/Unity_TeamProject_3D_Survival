@@ -38,7 +38,7 @@
                     "id": "c14ef8cc-0671-4d54-8853-18dda37c260b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -63,6 +63,15 @@
                     "name": "Inventory",
                     "type": "Button",
                     "id": "015dcd2d-ac63-4891-802a-05e37effe996",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crafting",
+                    "type": "Button",
+                    "id": "864dad9d-6119-4969-90d6-ccb3dbcd8a25",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -167,17 +176,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8b9e407b-4542-43ad-8cfe-5323afe5a389",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "12a19686-2db9-4237-a926-fc17191b811b",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -228,6 +226,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Build",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ca9c475-ebf2-40a6-b2f9-cb7625ecf2f4",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3254690-2d46-42fa-951b-c8da4111d68f",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crafting",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

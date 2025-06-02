@@ -1,20 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour, IInteractable
 {
     [Header("Interact")]
     public GameObject cam;
     public float maxDistance = 3f;
-    public Collider detectedCollider; //°¨ÁöµÈ ¿ÀºêÁ§Æ®¸¦ ÀúÀåÇÒ º¯¼ö
+    public int hitTreeCount;
+    public int maxHitTreeCount;
+    public RaycastHit lastHit { get; private set; }
+    public bool hasHit { get; private set; }
+    public GameObject curDetectObject; //ê°ì§€ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ì €ì¥í•  ë³€ìˆ˜
+    public TextMeshProUGUI promptUI;
 
+
+    private Inventory inventory;//Songdo í”Œë ˆì´ì–´ê°€ ê°€ì§€ëŠ” ì¸ë²¤í† ë¦¬
 
     void Start()
     {
-
+        inventory = GetComponent<Inventory>();//Songdo ì¸ë²¤í† ë¦¬ ê°€ì ¸ì˜´
     }
 
     void Update()
@@ -22,36 +28,163 @@ public class PlayerInteraction : MonoBehaviour, IInteractable
         DetectObject();
     }
 
-    // InputActionÀ» ÅëÇØ »óÈ£ÀÛ¿ë ÀÔ·ÂÀ» ¹Ş´Â ¸Ş¼Òµå
+    // InputActionì„ í†µí•´ ìƒí˜¸ì‘ìš© ì…ë ¥ì„ ë°›ëŠ” ë©”ì†Œë“œ
     public void OnInteractInput(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Started)
         {
-            Interact(); //»óÈ£ÀÛ¿ë ¸Ş¼Òµå È£Ãâ
+            Interact(); //ìƒí˜¸ì‘ìš© ë©”ì†Œë“œ í˜¸ì¶œ
         }
-        //¾ÆÀÌÅÛ µ¥ÀÌÅÍ °¡Á®¿À±â
+        //ì•„ì´í…œ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
     }
 
-    // °¨ÁöµÈ ¿ÀºêÀèÆ®¸¦ ÀÌ¿ëÇÏ¿© »óÈ£ÀÛ¿ëÇÏ´Â ¸Ş¼Òµå
+    // ê°ì§€ëœ ì˜¤ë¸Œì­íŠ¸ë¥¼ ì´ìš©í•˜ì—¬ ìƒí˜¸ì‘ìš©í•˜ëŠ” ë©”ì†Œë“œ
     public void Interact()
     {
-        Debug.Log(detectedCollider.gameObject.name + "¿Í »óÈ£ÀÛ¿ë ¼º°ø");
+        if (curDetectObject == null) return;
+
+        var itemObject = curDetectObject.GetComponent<ItemObject>();
+        var stone = curDetectObject.GetComponent<Stone>();
+        if (itemObject != null && stone == null)
+        {
+            //itemObject ìƒí˜¸ì‘ìš© ì²˜ë¦¬
+            itemObject.OnInteract();
+#if UNITY_EDITOR
+            Debug.Log(curDetectObject.gameObject.name + "ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ (itemObject)");
+#endif
+            return;
+        }
+
+        var npc = curDetectObject.GetComponent<NPCInteraction>();
+        if (npc != null)
+        {
+            //NPC ìƒí˜¸ì‘ìš© ì²˜ë¦¬
+            npc.StartDialogue();
+#if UNITY_EDITOR
+            Debug.Log(curDetectObject.gameObject.name + "ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ (NPC)");
+#endif
+            return;
+        }
+
+        var itemPickup = curDetectObject.GetComponent<ItemPickup>();
+        if (itemPickup != null)
+        {
+            //Songdo ì•„ì´í…œ ì˜¤ë¸Œì íŠ¸ì— ë¶™ì–´ìˆëŠ” itempickupì— ë“¤ì–´ìˆëŠ” ItemInteract í•¨ìˆ˜ë¥¼ í†µí•´ì„œ í”Œë ˆì´ì–´ ì¸ë²¤í† ë¦¬ì— ì •ë³´ë¥¼ ë„˜ê²¨ì¤Œ
+            itemPickup.ItemInteract(inventory);
+#if UNITY_EDITOR
+            Debug.Log(curDetectObject.gameObject.name + "ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ (Item)");
+#endif
+            return;
+        }
+
+        
+        if (stone != null)
+        {
+            stone.ItemInteract(inventory);
+#if UNITY_EDITOR
+            Debug.Log(curDetectObject.gameObject.name + "ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ (Item)");
+#endif
+            return;
+        }
+
+        var corpse = curDetectObject.GetComponent<Corpse>();
+        if (corpse != null)
+        {
+            //Songdo ì‹œì²´ ìƒí˜¸ì‘ìš© ì²˜ë¦¬
+            corpse.Interact(inventory);
+        }
+
+        Debug.LogWarning("ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ì»´í¬ë„ŒíŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤: " + curDetectObject.name);
     }
 
-    // ¿ÀºêÁ§Æ®¸¦ Raycast·Î °¨ÁöÇÏ´Â ¸Ş¼Òµå
-    public Collider DetectObject()
+    public void Attack(InputAction.CallbackContext context)
+    {
+        // ê¸°ë³¸ null ë°©ì§€ ì²´í¬
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.controller == null ||
+            PlayerManager.Instance.player == null)
+        {
+            Debug.LogWarning("PlayerManagerì˜ í•„ë“œê°€ nullì…ë‹ˆë‹¤. ì—°ê²°ì„ í™•ì¸í•˜ì„¸ìš”.");
+            return;
+        }
+
+        if (!PlayerManager.Instance.controller.isInventoryOpen && context.phase == InputActionPhase.Started)
+        {
+            // EquipmentSystem ì»´í¬ë„ŒíŠ¸ ì¡´ì¬ ì—¬ë¶€ í™•ì¸
+            var equipmentSystem = PlayerManager.Instance.player.GetComponent<EquipmentSystem>();
+            if (equipmentSystem == null)
+            {
+                Debug.LogWarning("Playerì— EquipmentSystem ì»´í¬ë„ŒíŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                return;
+            }
+
+            EquipSlot[] slots = equipmentSystem.equipSlots;
+
+            foreach (var slot in slots)
+            {
+                if (slot == null || slot.equippedItem == null) continue;
+
+                if (slot.slotType == EquipSlotType.Weapon &&
+                    slot.equippedItem.displayName == "í”Œë ˆì–´ê±´") // ì´ë¦„ì´ ì •í™•íˆ ì¼ì¹˜í•´ì•¼ í•¨
+                {
+                    Debug.Log("í”Œë ˆì–´ê±´ìœ¼ë¡œ ì—”ë”© ì§„ì…!");
+                    SceneManager.LoadScene("EndingScene");
+                    return;
+                }
+            }
+
+            // ë‚˜ë¬´ë¥¼ ê³µê²©í•˜ëŠ” ë¡œì§
+            if (curDetectObject != null)
+            {
+                var tree = curDetectObject.GetComponent<Tree>();
+                if (tree != null)
+                {
+                    hitTreeCount++;
+                    if (hitTreeCount == maxHitTreeCount)
+                    {
+                        tree.ItemInteract(inventory);
+                        Debug.Log($"{curDetectObject.name}ì™€ ìƒí˜¸ì‘ìš© ì„±ê³µ (ë‚˜ë¬´)");
+                        hitTreeCount = 0;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+    // ì˜¤ë¸Œì íŠ¸ë¥¼ Raycastë¡œ ê°ì§€í•˜ëŠ” ë©”ì†Œë“œ
+    public void DetectObject()
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
 
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
-            Debug.Log(hit.collider.gameObject.name + " °¨Áö");
-            detectedCollider = hit.collider; //°¨ÁöµÈ ¿ÀºêÁ§Æ®¸¦ ÀúÀå
-        }
+            lastHit = hit;
+            hasHit = true;
+            curDetectObject = hit.collider.gameObject;
 
-        return detectedCollider;
-        //°¨ÁöÇÑ ¿ÀºêÁ§Æ®¸¦ ¹İÈ¯ÇÏ´Â ¹æ½ÄÀ¸·Î ÇÏ¸é ÁÁÀ» µí
+            // ìƒí˜¸ì‘ìš© í”„ë¡¬í”„íŠ¸ í‘œì‹œ
+            var npc = curDetectObject.GetComponent<NPCInteraction>();
+            var item = curDetectObject.GetComponent<ItemObject>();
+            var tree = curDetectObject.GetComponent<Tree>();
+
+            if (npc != null)
+                promptUI.text = "NPCì™€ ëŒ€í™”í•˜ê¸°";
+            else if (item != null)
+                promptUI.text = item.GetInteractPrompt();
+            else if (tree != null)
+                promptUI.text = "ë‚˜ë¬´";
+            else
+                promptUI.text = string.Empty;
+        }
+        else
+        {
+            lastHit = default;
+            hasHit = false;
+            curDetectObject = null;
+            promptUI.text = string.Empty;
+        }
     }
 }

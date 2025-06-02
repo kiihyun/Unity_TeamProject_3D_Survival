@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ebf089e22d9344fbbea5ff9349f550, type: 3}
+  m_Name: ItemWoodenHouse
+  m_EditorClassIdentifier: 
+  displayName: "\uC258\uD130"
+  description: "\uB098\uBB34\uB85C \uAE09\uC870\uD55C \uBCF4\uAE08\uC790\uB9AC\uC774\uB2E4.
+    \uD558\uC9C0\uB9CC \uC880\uBE44\uB97C \uB9C9\uC744 \uC218 \uC788\uB294\uC9C0\uB294
+    \uBBF8\uC9C0\uC218."
+  itemMass: 10
+  type: 3
+  icon: {fileID: 0}
+  dropPrefab: {fileID: 9159506482761728192, guid: f821f0949c7e8414588f3300a1649999, type: 3}
+  canStack: 1
+  maxStackAmount: 0
+  consumables: []
+  equipSlotType: 0
+  equipPrefab: {fileID: 0}
+  durability: 0
+  canPlace: 1
+  placeablePrefab: {fileID: 9159506482761728192, guid: f821f0949c7e8414588f3300a1649999, type: 3}
