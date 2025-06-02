@@ -756,8 +756,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   introText: {fileID: 14398940}
   lines:
-  - Ending
-  - "\uC5D4\uB529"
+  - "\uC2E0\uD638\uD0C4 \uBC1C\uC0AC."
+  - "\uAD6C\uC870 \uC694\uCCAD \uD655\uC778\uB428."
+  - "\uD5EC\uAE30 \uC811\uADFC \uC911..."
+  - "\uD68C\uC218 \uC644\uB8CC."
+  - "\uC0DD\uC874\uC790: 1\uBA85."
   typingSpeed: 0.005
   delayBetweenLines: 0.1
   waitAfterText: 0.3

@@ -14132,50 +14132,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: febc494b073a10741bf4234ece21215b, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 253f5c023fc7adc42be62fa9a3a94fbc, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 7f20911d6be54424894a4f80059d53c0, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: e6e21aaa577226d4988419cc1c415486, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 499de5ea812382844a6c8aa0c3e44196, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5165cba13f11aff4287d6877c321f7fc, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6c858171121c2e745b65b3520630b108, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: 499de5ea812382844a6c8aa0c3e44196, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5165cba13f11aff4287d6877c321f7fc, type: 2}
-    - target: {fileID: 3275982293636604120, guid: 36a25f6039c261a4fb7f9b953590be91, type: 3}
-      propertyPath: dialogueDataList.Array.data[9]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6c858171121c2e745b65b3520630b108, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
