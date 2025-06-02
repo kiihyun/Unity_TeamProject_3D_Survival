@@ -72,9 +72,9 @@ public class InventoryDetailUI : MonoBehaviour
 
 
         // 버튼 활성화 여부
-        //아이템 데이터가 사용 가능한 경우
+        ////아이템 데이터가 사용 가능한 경우
         useButton.gameObject.SetActive(data.type == ItemType.Consumable);
-        //아이템 데이터가 장착 가능한 경우
+        ////아이템 데이터가 장착 가능한 경우
         equipButton.gameObject.SetActive(data.type == ItemType.Equipable);
         dropButton.gameObject.SetActive(true);
     }
@@ -127,6 +127,7 @@ public class InventoryDetailUI : MonoBehaviour
         // 인벤토리에서 아이템 1개 소모
         Inventory.Instance.RemoveItem(currentItem, 1);
 
+        /* 아이템 사용 처리 */
     }
     public void OnClickEquip() {
 
@@ -161,6 +162,6 @@ public class InventoryDetailUI : MonoBehaviour
     }
     public void OnClickDrop() {
         Inventory.Instance.RemoveItem(currentItem, 1);
-        Debug.Log($"버림: {currentItem.displayName}");
+        Debug.Log($"버림: {currentItem.displayName}");/* 드롭 처리 */
     }
 }

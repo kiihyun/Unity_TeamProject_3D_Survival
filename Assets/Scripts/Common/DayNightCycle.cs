@@ -1,10 +1,12 @@
 using UnityEngine;
 
-// 낮과 밤의 주기를 시뮬레이션하는 스크립트.
-// - 시간(time)은 0~1 범위로 하루를 표현함 (0 = 자정, 0.25 = 오전 6시, 0.5 = 정오, 0.75 = 오후 6시)
-// - 태양과 달의 위치, 색상, 밝기를 시간에 따라 조정함
-// - ambient/reflection 조명도 시간 기반으로 변화함
-// - temperatureCurve를 통해 시간에 따른 월드 온도도 함께 전달함
+/// <summary>
+/// 낮과 밤의 주기를 시뮬레이션하는 스크립트.
+/// - 시간(time)은 0~1 범위로 하루를 표현함 (0 = 자정, 0.25 = 오전 6시, 0.5 = 정오, 0.75 = 오후 6시)
+/// - 태양과 달의 위치, 색상, 밝기를 시간에 따라 조정함
+/// - ambient/reflection 조명도 시간 기반으로 변화함
+/// - temperatureCurve를 통해 시간에 따른 월드 온도도 함께 전달함
+/// </summary>
 public class DayNightCycle : MonoBehaviour
 {
     [Range(0.0f, 1.0f)]
@@ -60,8 +62,10 @@ public class DayNightCycle : MonoBehaviour
         //UpdateWeather();
     }
 
-    // 주어진 광원(태양 또는 달)에 대해 회전, 색상, 밝기를 업데이트하고
-    // 일정 밝기 이하일 땐 비활성화 처리
+    /// <summary>
+    /// 주어진 광원(태양 또는 달)에 대해 회전, 색상, 밝기를 업데이트하고
+    /// 일정 밝기 이하일 땐 비활성화 처리
+    /// </summary>
     void UpdateLighting(Light lightSource, Gradient colorGradient, AnimationCurve intensityCurve)
     {
         float intensity = intensityCurve.Evaluate(time); // 현재 시간 기준 밝기

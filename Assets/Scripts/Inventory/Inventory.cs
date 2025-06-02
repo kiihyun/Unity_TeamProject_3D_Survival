@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -100,8 +100,8 @@ public class Inventory : MonoBehaviour
 
 
 
-    //인벤토리 총 아이템의 무게를 계산하는 함수
-    //아이템 추가하거나 제거할 때마다 이 함수 호출해주기!!
+    ///인벤토리 총 아이템의 무게를 계산하는 함수
+    ///아이템 추가하거나 제거할 때마다 이 함수 호출해주기!!
     public float GetTotalWeight()
     {
         float total = 0f;

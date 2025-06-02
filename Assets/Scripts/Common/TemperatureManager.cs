@@ -1,11 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-// 게임 내 전체 온도를 관리하는 매니저.
-// - 낮/밤 주기에 따라 변하는 "월드 온도"를 DayNightCycle로부터 받음.
-// - 플레이어의 체온을 환경 온도에 따라 자동으로 변화시킴.
-// - 저체온증/고열 여부도 판정 가능.
-
-// 싱글턴 패턴으로 구성되어 어느 스크립트든 TemperatureManager.Instance를 통해 접근 가능.
+/// <summary>
+/// 게임 내 전체 온도를 관리하는 매니저.
+/// - 낮/밤 주기에 따라 변하는 "월드 온도"를 DayNightCycle로부터 받음.
+/// - 플레이어의 체온을 환경 온도에 따라 자동으로 변화시킴.
+/// - 저체온증/고열 여부도 판정 가능.
+/// 
+/// 싱글턴 패턴으로 구성되어 어느 스크립트든 TemperatureManager.Instance를 통해 접근 가능.
+/// </summary> 
 public class TemperatureManager : MonoBehaviour
 {
     // 싱글턴 인스턴스 (외부에서 TemperatureManager.Instance로 접근 가능)
@@ -67,13 +69,18 @@ public class TemperatureManager : MonoBehaviour
         UpdatePlayerBodyTemperature();
     }
 
-    // 현재 월드 온도를 반환 (필요시 외부에서 읽을 수 있음)
+    /// <summary>
+    /// 현재 월드 온도를 반환 (필요시 외부에서 읽을 수 있음)
+    /// </summary>
     public float GetTemperature()
     {
         return currentTemperature;
     }
 
-    // 현재 월드 온도와의 차이에 따라 플레이어 체온을 조금씩 조절함
+    /// <summary>
+    /// 현재 월드 온도와의 차이에 따라 플레이어 체온을 조금씩 조절함
+    /// </summary>
+    /// 
     private void UpdatePlayerBodyTemperature()
     {
         float delta = currentTemperature - PlayerManager.Instance.condition.BodyTemp;
