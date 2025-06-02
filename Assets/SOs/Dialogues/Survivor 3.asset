@@ -10,16 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 280d9be2516b92942a3cc55ac45733b1, type: 3}
-  m_Name: Survivor 1
+  m_Name: Survivor 3
   m_EditorClassIdentifier: 
-  dialogueId: 101
+  dialogueId: 102
   npcName: "\uC774\uB984 \uBAA8\uB97C \uC0DD\uC874\uC790"
   dialogueType: 2
   requiredQuestId: 
   requiredQuestState: 0
   dialogueLines:
-  - "\uC0B4\uC544\uB0A8\uACE0 \uC2F6\uC73C\uBA74 \uC8FC\uBCC0\uC744 \uB208\uC5D0
-    \uBD88\uC744 \uCF1C\uACE0 \uB4A4\uC838\uC57C \uD574. \uBC15\uC0B4\uB09C \uCC28,
-    \uC4F0\uB7EC\uC9C4 \uB098\uBB34 \uC544\uB798..."
-  - "\uADF8 \uC548\uC5D0 \uB124 \uBAA9\uC228\uC774 \uB4E4\uC5B4 \uC788\uC744 \uC218\uB3C4
-    \uC788\uC5B4."
+  - "\uADF8\uB4E4\uC5D0\uAC8C \uAC00\uAE4C\uC774 \uAC00\uC9C0\uB9C8. "

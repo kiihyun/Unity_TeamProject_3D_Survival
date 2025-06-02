@@ -28,6 +28,19 @@ public class InventoryDetailUI : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        // 초기화
+        itemNameText.text = string.Empty;
+        itemDescText.text = string.Empty;
+        itemMassText.text = string.Empty;
+        itemQuenText.text = string.Empty;
+        icon.sprite = null;
+        icon.gameObject.SetActive(false);
+        useButton.SetActive(false);
+        equipButton.SetActive(false);
+        dropButton.SetActive(false);
+    }
 
     public void ShowItemDetail(ItemData data)
     {
@@ -43,10 +56,20 @@ public class InventoryDetailUI : MonoBehaviour
         itemNameText.text = data.displayName;
         itemDescText.text = data.description;
         itemMassText.text = $"{data.itemMass.ToString()}kg";
-        itemQuenText.text = Inventory.Instance.GetItemCount(data).ToString();
+        itemQuenText.text = $"{Inventory.Instance.GetItemCount(data).ToString()} 개";
 
 
         icon.sprite = data.icon;
+
+        if (data.icon == null)
+        {
+            icon.gameObject.SetActive(false);
+        }
+        else
+        {
+            icon.gameObject.SetActive(true);
+        }
+
 
         // 버튼 활성화 여부
         ////아이템 데이터가 사용 가능한 경우

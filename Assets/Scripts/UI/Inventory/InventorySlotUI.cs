@@ -50,7 +50,7 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         icon.gameObject.SetActive(true);
         icon.sprite = item.icon;
         quantityText.text = quantity > 1 ? quantity.ToString() : string.Empty;
-        weightText.text = itemData.itemMass.ToString();
+        weightText.text = $"{itemData.itemMass.ToString()} kg";
         
         if (outline != null)
         {

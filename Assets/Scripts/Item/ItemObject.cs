@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.TextCore.Text;
 
 
@@ -15,7 +15,7 @@ public class ItemObject : MonoBehaviour, IItemInteractable
 
     public string GetInteractPrompt()
     {
-        string str = $"{data.displayName}\n{data.description}";
+        string str = $"{data.displayName}";
         return str;
     }
 

@@ -878,6 +878,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: febc494b073a10741bf4234ece21215b, type: 2}
   - {fileID: 11400000, guid: 253f5c023fc7adc42be62fa9a3a94fbc, type: 2}
   - {fileID: 11400000, guid: 7f20911d6be54424894a4f80059d53c0, type: 2}
+  - {fileID: 11400000, guid: e6e21aaa577226d4988419cc1c415486, type: 2}
+  - {fileID: 11400000, guid: 499de5ea812382844a6c8aa0c3e44196, type: 2}
+  - {fileID: 11400000, guid: 5165cba13f11aff4287d6877c321f7fc, type: 2}
+  - {fileID: 11400000, guid: 6c858171121c2e745b65b3520630b108, type: 2}
 --- !u!1 &3201348462554498097
 GameObject:
   m_ObjectHideFlags: 0
